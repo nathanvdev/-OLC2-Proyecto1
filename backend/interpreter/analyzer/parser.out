@@ -7,20 +7,32 @@ Rule 1     start -> instrucciones
 Rule 2     instrucciones -> instrucciones instruccion
 Rule 3     instrucciones -> instruccion
 Rule 4     instruccion -> print
-Rule 5     print -> CONSOLE DOT LOG PARA STRING PARC
+Rule 5     print -> CONSOLE DOT LOG PARA EXPRESSION PARC
+Rule 6     EXPRESSION -> PRIMITIVO
+Rule 7     PRIMITIVO -> STRING
+Rule 8     PRIMITIVO -> NUMBER
+Rule 9     PRIMITIVO -> FLOAT
+Rule 10    PRIMITIVO -> BOOLEAN
+Rule 11    PRIMITIVO -> CHAR
 
 Terminals, with rules where they appear
 
+BOOLEAN              : 10
+CHAR                 : 11
 CONSOLE              : 5
 DOT                  : 5
+FLOAT                : 9
 LOG                  : 5
+NUMBER               : 8
 PARA                 : 5
 PARC                 : 5
-STRING               : 5
+STRING               : 7
 error                : 
 
 Nonterminals, with rules where they appear
 
+EXPRESSION           : 5
+PRIMITIVO            : 6
 instruccion          : 2 3
 instrucciones        : 1 2
 print                : 4
@@ -35,7 +47,7 @@ state 0
     (2) instrucciones -> . instrucciones instruccion
     (3) instrucciones -> . instruccion
     (4) instruccion -> . print
-    (5) print -> . CONSOLE DOT LOG PARA STRING PARC
+    (5) print -> . CONSOLE DOT LOG PARA EXPRESSION PARC
 
     CONSOLE         shift and go to state 5
 
@@ -55,7 +67,7 @@ state 2
     (1) start -> instrucciones .
     (2) instrucciones -> instrucciones . instruccion
     (4) instruccion -> . print
-    (5) print -> . CONSOLE DOT LOG PARA STRING PARC
+    (5) print -> . CONSOLE DOT LOG PARA EXPRESSION PARC
 
     $end            reduce using rule 1 (start -> instrucciones .)
     CONSOLE         shift and go to state 5
@@ -81,7 +93,7 @@ state 4
 
 state 5
 
-    (5) print -> CONSOLE . DOT LOG PARA STRING PARC
+    (5) print -> CONSOLE . DOT LOG PARA EXPRESSION PARC
 
     DOT             shift and go to state 7
 
@@ -96,36 +108,90 @@ state 6
 
 state 7
 
-    (5) print -> CONSOLE DOT . LOG PARA STRING PARC
+    (5) print -> CONSOLE DOT . LOG PARA EXPRESSION PARC
 
     LOG             shift and go to state 8
 
 
 state 8
 
-    (5) print -> CONSOLE DOT LOG . PARA STRING PARC
+    (5) print -> CONSOLE DOT LOG . PARA EXPRESSION PARC
 
     PARA            shift and go to state 9
 
 
 state 9
 
-    (5) print -> CONSOLE DOT LOG PARA . STRING PARC
+    (5) print -> CONSOLE DOT LOG PARA . EXPRESSION PARC
+    (6) EXPRESSION -> . PRIMITIVO
+    (7) PRIMITIVO -> . STRING
+    (8) PRIMITIVO -> . NUMBER
+    (9) PRIMITIVO -> . FLOAT
+    (10) PRIMITIVO -> . BOOLEAN
+    (11) PRIMITIVO -> . CHAR
 
-    STRING          shift and go to state 10
+    STRING          shift and go to state 12
+    NUMBER          shift and go to state 13
+    FLOAT           shift and go to state 14
+    BOOLEAN         shift and go to state 15
+    CHAR            shift and go to state 16
 
+    EXPRESSION                     shift and go to state 10
+    PRIMITIVO                      shift and go to state 11
 
 state 10
 
-    (5) print -> CONSOLE DOT LOG PARA STRING . PARC
+    (5) print -> CONSOLE DOT LOG PARA EXPRESSION . PARC
 
-    PARC            shift and go to state 11
+    PARC            shift and go to state 17
 
 
 state 11
 
-    (5) print -> CONSOLE DOT LOG PARA STRING PARC .
+    (6) EXPRESSION -> PRIMITIVO .
 
-    CONSOLE         reduce using rule 5 (print -> CONSOLE DOT LOG PARA STRING PARC .)
-    $end            reduce using rule 5 (print -> CONSOLE DOT LOG PARA STRING PARC .)
+    PARC            reduce using rule 6 (EXPRESSION -> PRIMITIVO .)
+
+
+state 12
+
+    (7) PRIMITIVO -> STRING .
+
+    PARC            reduce using rule 7 (PRIMITIVO -> STRING .)
+
+
+state 13
+
+    (8) PRIMITIVO -> NUMBER .
+
+    PARC            reduce using rule 8 (PRIMITIVO -> NUMBER .)
+
+
+state 14
+
+    (9) PRIMITIVO -> FLOAT .
+
+    PARC            reduce using rule 9 (PRIMITIVO -> FLOAT .)
+
+
+state 15
+
+    (10) PRIMITIVO -> BOOLEAN .
+
+    PARC            reduce using rule 10 (PRIMITIVO -> BOOLEAN .)
+
+
+state 16
+
+    (11) PRIMITIVO -> CHAR .
+
+    PARC            reduce using rule 11 (PRIMITIVO -> CHAR .)
+
+
+state 17
+
+    (5) print -> CONSOLE DOT LOG PARA EXPRESSION PARC .
+
+    CONSOLE         reduce using rule 5 (print -> CONSOLE DOT LOG PARA EXPRESSION PARC .)
+    $end            reduce using rule 5 (print -> CONSOLE DOT LOG PARA EXPRESSION PARC .)
 
