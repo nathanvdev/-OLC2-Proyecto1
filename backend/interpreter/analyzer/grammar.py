@@ -5,6 +5,8 @@ from ..environment.types import ExpressionType
 from ..expression.primitive import Primitive
 from ..instruction.Print import Print
 from ..expression.aritmetic import Aritmetic
+from ..expression.relational import Relational
+from ..expression.logica import Logica
 
 
 #palabras reservadas
@@ -17,7 +19,9 @@ reserved = {
 
 #lista de tokens
 tokens = ['PARA', 'PARC', 'DOT', 'NUMBER', 'FLOAT', 'STRING', 
-          'PLUS', 'LESS', 'BY', 'DIVIDED', 'MODUL'] + list(reserved.values())
+          'PLUS', 'LESS', 'BY', 'DIVIDED', 'MODUL',
+          'EQUAL', 'DIFERENT','MINOR','MINOREQUAL','GREATER','GREATEREQUAL',
+          'AND','OR','NOT'] + list(reserved.values())
 
 
 #-----------------------------------------------------definicion de tokens
@@ -31,6 +35,19 @@ t_LESS = r'\-'
 t_BY = r'\*'
 t_DIVIDED = r'\/'
 t_MODUL = r'\%'
+
+##Relacionales
+t_EQUAL = r'\=\='
+t_DIFERENT = r'\!\='
+t_MINOR = r'\<'
+t_MINOREQUAL = r'\<\='
+t_GREATER = r'\>'
+t_GREATEREQUAL = r'\>\='
+
+##Logicas
+t_AND = r'\&\&'
+t_OR = r'\|\|'
+t_NOT = r'\!'
 
 
 t_CONSOLE = r'console'
@@ -79,9 +96,15 @@ def t_error(t):
 #--------------------------------------------------definicion de la gramatica
     
 ##precedencia
-precedence = (  ('left', 'PLUS', 'LESS'), 
+precedence = (  
+                ('left', 'OR'),
+                ('left', 'AND'),
+                ('left', 'NOT'),
+                ('left', 'EQUAL', 'DIFERENT', 'MINOR', 'MINOREQUAL', 'GREATER', 'GREATEREQUAL'),
+                ('left', 'PLUS', 'LESS'), 
                 ('left', 'BY','DIVIDED', 'MODUL'), 
-                ('right', 'UMENOS'))
+                ('right', 'UMENOS')
+            )
     
 
 
@@ -116,7 +139,9 @@ def p_print(p):
 
 def p_expression(p):
     '''expression : primitivo 
-                  | aritmetica'''
+                  | aritmetica
+                  | relacional
+                  | logica'''
 
     p[0] = p[1]
 
@@ -130,8 +155,7 @@ def p_aritmetica(p):
     
     tmp = get_params(p)
     if p.slice[1].type == 'LESS':
-        tmp2 = Primitive(tmp.line, tmp.column, 0, ExpressionType.INTEGER)
-        p[0] = Aritmetic(tmp.line, tmp.column, tmp2, p[2], p[1])
+        p[0] = Aritmetic(tmp.line, tmp.column, p[2], p[2], p[1])
 
     elif p.slice[2].type == 'PLUS':
         p[0] = Aritmetic(tmp.line, tmp.column, p[1], p[3], p[2])
@@ -151,7 +175,51 @@ def p_aritmetica(p):
 
     elif p.slice[1].type == 'LESS':
         p[0] = Aritmetic(tmp.line, tmp.column, p[2], 0, p[1])
+
+
+def p_relacional(p):
+    '''relacional : expression EQUAL expression
+                    | expression DIFERENT expression
+                    | expression MINOR expression
+                    | expression MINOREQUAL expression
+                    | expression GREATER expression
+                    | expression GREATEREQUAL expression'''
     
+    tmp = get_params(p)
+
+    if p.slice[2].type == 'EQUAL':
+        p[0] = Relational(tmp.line, tmp.column, p[1], p[3], p[2])
+
+    elif p.slice[2].type == 'DIFERENT':
+        p[0] = Relational(tmp.line, tmp.column, p[1], p[3], p[2])
+
+    elif p.slice[2].type == 'MINOR':
+        p[0] = Relational(tmp.line, tmp.column, p[1], p[3], p[2])
+
+    elif p.slice[2].type == 'MINOREQUAL':
+        p[0] = Relational(tmp.line, tmp.column, p[1], p[3], p[2])
+
+    elif p.slice[2].type == 'GREATER':
+        p[0] = Relational(tmp.line, tmp.column, p[1], p[3], p[2])
+
+    elif p.slice[2].type == 'GREATEREQUAL':
+        p[0] = Relational(tmp.line, tmp.column, p[1], p[3], p[2])
+
+
+def p_logica(p):
+    '''logica : boolean AND boolean
+              | boolean OR boolean
+              | NOT boolean'''
+    tmp = get_params(p)
+
+    if p.slice[2].type == 'AND':
+        p[0] = Logica(tmp.line, tmp.column, p[1], p[3], p[2])
+
+    elif p.slice[2].type == 'OR':
+        p[0] = Logica(tmp.line, tmp.column, p[1], p[3], p[2])
+
+    elif p.slice[1].type == 'NOT':
+        p[0] = Logica(tmp.line, tmp.column, p[2], p[2], p[1])
 
 def p_primitivo(p):
     '''primitivo : NUMBER
@@ -168,16 +236,21 @@ def p_primitivo(p):
     elif p.slice[1].type == 'STRING':
         p[0] = Primitive(tmp.line, tmp.column, p[1], ExpressionType.STRING)
     elif p[1] == 'true':
-        p[0] = Primitive(tmp.line, tmp.column, True, ExpressionType.BOOLEAN)
+        p[0] = p[1]
     elif p[1] == 'false':
-        p[0] = Primitive(tmp.line, tmp.column, False, ExpressionType.BOOLEAN)
+        p[0] = p[1]
 
 
 def p_boolean(p):
     '''boolean : TRUE
                | FALSE'''
 
-    p[0] = p[1]
+    tmp = get_params(p)
+
+    if p[1] == 'true':
+        p[0] = Primitive(tmp.line, tmp.column, True, ExpressionType.BOOLEAN)
+    elif p[1] == 'false':
+        p[0] = Primitive(tmp.line, tmp.column, False, ExpressionType.BOOLEAN)
 
 
 def p_error(p):

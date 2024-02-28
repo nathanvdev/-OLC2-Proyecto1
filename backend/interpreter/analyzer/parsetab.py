@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'leftPLUSLESSleftBYDIVIDEDMODULrightUMENOSBY CONSOLE DIVIDED DOT FALSE FLOAT LESS LOG MODUL NUMBER PARA PARC PLUS STRING TRUEstart : instrucciones instrucciones : instrucciones instruccion\n                     | instruccion instruccion : print print : CONSOLE DOT LOG PARA expression PARCexpression : primitivo \n                  | aritmeticaaritmetica : expression PLUS expression\n                  | expression LESS expression\n                  | expression BY expression\n                  | expression DIVIDED expression\n                  | expression MODUL expression\n                  | LESS expression %prec UMENOSprimitivo : NUMBER\n                 | FLOAT\n                 | STRING\n                 | booleanboolean : TRUE\n               | FALSE'
+_lr_signature = 'leftORleftANDleftNOTleftEQUALDIFERENTMINORMINOREQUALGREATERGREATEREQUALleftPLUSLESSleftBYDIVIDEDMODULrightUMENOSAND BY CONSOLE DIFERENT DIVIDED DOT EQUAL FALSE FLOAT GREATER GREATEREQUAL LESS LOG MINOR MINOREQUAL MODUL NOT NUMBER OR PARA PARC PLUS STRING TRUEstart : instrucciones instrucciones : instrucciones instruccion\n                     | instruccion instruccion : print print : CONSOLE DOT LOG PARA expression PARCexpression : primitivo \n                  | aritmetica\n                  | relacional\n                  | logicaaritmetica : expression PLUS expression\n                  | expression LESS expression\n                  | expression BY expression\n                  | expression DIVIDED expression\n                  | expression MODUL expression\n                  | LESS expression %prec UMENOSrelacional : expression EQUAL expression\n                    | expression DIFERENT expression\n                    | expression MINOR expression\n                    | expression MINOREQUAL expression\n                    | expression GREATER expression\n                    | expression GREATEREQUAL expressionlogica : boolean AND boolean\n              | boolean OR boolean\n              | NOT booleanprimitivo : NUMBER\n                 | FLOAT\n                 | STRING\n                 | booleanboolean : TRUE\n               | FALSE'
     
-_lr_action_items = {'CONSOLE':([0,2,3,4,6,20,],[5,5,-3,-4,-2,-5,]),'$end':([1,2,3,4,6,20,],[0,-1,-3,-4,-2,-5,]),'DOT':([5,],[7,]),'LOG':([7,],[8,]),'PARA':([8,],[9,]),'NUMBER':([9,17,21,22,23,24,25,],[13,13,13,13,13,13,13,]),'FLOAT':([9,17,21,22,23,24,25,],[14,14,14,14,14,14,14,]),'STRING':([9,17,21,22,23,24,25,],[15,15,15,15,15,15,15,]),'LESS':([9,10,11,12,13,14,15,16,17,18,19,21,22,23,24,25,26,27,28,29,30,31,],[17,22,-6,-7,-14,-15,-16,-17,17,-18,-19,17,17,17,17,17,-13,-8,-9,-10,-11,-12,]),'TRUE':([9,17,21,22,23,24,25,],[18,18,18,18,18,18,18,]),'FALSE':([9,17,21,22,23,24,25,],[19,19,19,19,19,19,19,]),'PARC':([10,11,12,13,14,15,16,18,19,26,27,28,29,30,31,],[20,-6,-7,-14,-15,-16,-17,-18,-19,-13,-8,-9,-10,-11,-12,]),'PLUS':([10,11,12,13,14,15,16,18,19,26,27,28,29,30,31,],[21,-6,-7,-14,-15,-16,-17,-18,-19,-13,-8,-9,-10,-11,-12,]),'BY':([10,11,12,13,14,15,16,18,19,26,27,28,29,30,31,],[23,-6,-7,-14,-15,-16,-17,-18,-19,-13,23,23,-10,-11,-12,]),'DIVIDED':([10,11,12,13,14,15,16,18,19,26,27,28,29,30,31,],[24,-6,-7,-14,-15,-16,-17,-18,-19,-13,24,24,-10,-11,-12,]),'MODUL':([10,11,12,13,14,15,16,18,19,26,27,28,29,30,31,],[25,-6,-7,-14,-15,-16,-17,-18,-19,-13,25,25,-10,-11,-12,]),}
+_lr_action_items = {'CONSOLE':([0,2,3,4,6,23,],[5,5,-3,-4,-2,-5,]),'$end':([1,2,3,4,6,23,],[0,-1,-3,-4,-2,-5,]),'DOT':([5,],[7,]),'LOG':([7,],[8,]),'PARA':([8,],[9,]),'NUMBER':([9,19,24,25,26,27,28,29,30,31,32,33,34,],[15,15,15,15,15,15,15,15,15,15,15,15,15,]),'FLOAT':([9,19,24,25,26,27,28,29,30,31,32,33,34,],[16,16,16,16,16,16,16,16,16,16,16,16,16,]),'STRING':([9,19,24,25,26,27,28,29,30,31,32,33,34,],[17,17,17,17,17,17,17,17,17,17,17,17,17,]),'LESS':([9,10,11,12,13,14,15,16,17,18,19,21,22,24,25,26,27,28,29,30,31,32,33,34,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,],[19,25,-6,-7,-8,-9,-25,-26,-27,-28,19,-29,-30,19,19,19,19,19,19,19,19,19,19,19,-15,-24,-10,-11,-12,-13,-14,25,25,25,25,25,25,-22,-23,]),'NOT':([9,19,24,25,26,27,28,29,30,31,32,33,34,],[20,20,20,20,20,20,20,20,20,20,20,20,20,]),'TRUE':([9,19,20,24,25,26,27,28,29,30,31,32,33,34,35,36,],[21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,]),'FALSE':([9,19,20,24,25,26,27,28,29,30,31,32,33,34,35,36,],[22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,]),'PARC':([10,11,12,13,14,15,16,17,18,21,22,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,],[23,-6,-7,-8,-9,-25,-26,-27,-28,-29,-30,-15,-24,-10,-11,-12,-13,-14,-16,-17,-18,-19,-20,-21,-22,-23,]),'PLUS':([10,11,12,13,14,15,16,17,18,21,22,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,],[24,-6,-7,-8,-9,-25,-26,-27,-28,-29,-30,-15,-24,-10,-11,-12,-13,-14,24,24,24,24,24,24,-22,-23,]),'BY':([10,11,12,13,14,15,16,17,18,21,22,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,],[26,-6,-7,-8,-9,-25,-26,-27,-28,-29,-30,-15,-24,26,26,-12,-13,-14,26,26,26,26,26,26,-22,-23,]),'DIVIDED':([10,11,12,13,14,15,16,17,18,21,22,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,],[27,-6,-7,-8,-9,-25,-26,-27,-28,-29,-30,-15,-24,27,27,-12,-13,-14,27,27,27,27,27,27,-22,-23,]),'MODUL':([10,11,12,13,14,15,16,17,18,21,22,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,],[28,-6,-7,-8,-9,-25,-26,-27,-28,-29,-30,-15,-24,28,28,-12,-13,-14,28,28,28,28,28,28,-22,-23,]),'EQUAL':([10,11,12,13,14,15,16,17,18,21,22,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,],[29,-6,-7,-8,-9,-25,-26,-27,-28,-29,-30,-15,-24,-10,-11,-12,-13,-14,-16,-17,-18,-19,-20,-21,-22,-23,]),'DIFERENT':([10,11,12,13,14,15,16,17,18,21,22,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,],[30,-6,-7,-8,-9,-25,-26,-27,-28,-29,-30,-15,-24,-10,-11,-12,-13,-14,-16,-17,-18,-19,-20,-21,-22,-23,]),'MINOR':([10,11,12,13,14,15,16,17,18,21,22,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,],[31,-6,-7,-8,-9,-25,-26,-27,-28,-29,-30,-15,-24,-10,-11,-12,-13,-14,-16,-17,-18,-19,-20,-21,-22,-23,]),'MINOREQUAL':([10,11,12,13,14,15,16,17,18,21,22,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,],[32,-6,-7,-8,-9,-25,-26,-27,-28,-29,-30,-15,-24,-10,-11,-12,-13,-14,-16,-17,-18,-19,-20,-21,-22,-23,]),'GREATER':([10,11,12,13,14,15,16,17,18,21,22,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,],[33,-6,-7,-8,-9,-25,-26,-27,-28,-29,-30,-15,-24,-10,-11,-12,-13,-14,-16,-17,-18,-19,-20,-21,-22,-23,]),'GREATEREQUAL':([10,11,12,13,14,15,16,17,18,21,22,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,],[34,-6,-7,-8,-9,-25,-26,-27,-28,-29,-30,-15,-24,-10,-11,-12,-13,-14,-16,-17,-18,-19,-20,-21,-22,-23,]),'AND':([18,21,22,],[35,-29,-30,]),'OR':([18,21,22,],[36,-29,-30,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'start':([0,],[1,]),'instrucciones':([0,],[2,]),'instruccion':([0,2,],[3,6,]),'print':([0,2,],[4,4,]),'expression':([9,17,21,22,23,24,25,],[10,26,27,28,29,30,31,]),'primitivo':([9,17,21,22,23,24,25,],[11,11,11,11,11,11,11,]),'aritmetica':([9,17,21,22,23,24,25,],[12,12,12,12,12,12,12,]),'boolean':([9,17,21,22,23,24,25,],[16,16,16,16,16,16,16,]),}
+_lr_goto_items = {'start':([0,],[1,]),'instrucciones':([0,],[2,]),'instruccion':([0,2,],[3,6,]),'print':([0,2,],[4,4,]),'expression':([9,19,24,25,26,27,28,29,30,31,32,33,34,],[10,37,39,40,41,42,43,44,45,46,47,48,49,]),'primitivo':([9,19,24,25,26,27,28,29,30,31,32,33,34,],[11,11,11,11,11,11,11,11,11,11,11,11,11,]),'aritmetica':([9,19,24,25,26,27,28,29,30,31,32,33,34,],[12,12,12,12,12,12,12,12,12,12,12,12,12,]),'relacional':([9,19,24,25,26,27,28,29,30,31,32,33,34,],[13,13,13,13,13,13,13,13,13,13,13,13,13,]),'logica':([9,19,24,25,26,27,28,29,30,31,32,33,34,],[14,14,14,14,14,14,14,14,14,14,14,14,14,]),'boolean':([9,19,20,24,25,26,27,28,29,30,31,32,33,34,35,36,],[18,18,38,18,18,18,18,18,18,18,18,18,18,18,50,51,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,23 +27,34 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> start","S'",1,None,None,None),
-  ('start -> instrucciones','start',1,'p_start','grammar.py',90),
-  ('instrucciones -> instrucciones instruccion','instrucciones',2,'p_instrucciones','grammar.py',97),
-  ('instrucciones -> instruccion','instrucciones',1,'p_instrucciones','grammar.py',98),
-  ('instruccion -> print','instruccion',1,'p_instruccion','grammar.py',107),
-  ('print -> CONSOLE DOT LOG PARA expression PARC','print',6,'p_print','grammar.py',112),
-  ('expression -> primitivo','expression',1,'p_expression','grammar.py',118),
-  ('expression -> aritmetica','expression',1,'p_expression','grammar.py',119),
-  ('aritmetica -> expression PLUS expression','aritmetica',3,'p_aritmetica','grammar.py',124),
-  ('aritmetica -> expression LESS expression','aritmetica',3,'p_aritmetica','grammar.py',125),
-  ('aritmetica -> expression BY expression','aritmetica',3,'p_aritmetica','grammar.py',126),
-  ('aritmetica -> expression DIVIDED expression','aritmetica',3,'p_aritmetica','grammar.py',127),
-  ('aritmetica -> expression MODUL expression','aritmetica',3,'p_aritmetica','grammar.py',128),
-  ('aritmetica -> LESS expression','aritmetica',2,'p_aritmetica','grammar.py',129),
-  ('primitivo -> NUMBER','primitivo',1,'p_primitivo','grammar.py',149),
-  ('primitivo -> FLOAT','primitivo',1,'p_primitivo','grammar.py',150),
-  ('primitivo -> STRING','primitivo',1,'p_primitivo','grammar.py',151),
-  ('primitivo -> boolean','primitivo',1,'p_primitivo','grammar.py',152),
-  ('boolean -> TRUE','boolean',1,'p_boolean','grammar.py',169),
-  ('boolean -> FALSE','boolean',1,'p_boolean','grammar.py',170),
+  ('start -> instrucciones','start',1,'p_start','grammar.py',112),
+  ('instrucciones -> instrucciones instruccion','instrucciones',2,'p_instrucciones','grammar.py',119),
+  ('instrucciones -> instruccion','instrucciones',1,'p_instrucciones','grammar.py',120),
+  ('instruccion -> print','instruccion',1,'p_instruccion','grammar.py',129),
+  ('print -> CONSOLE DOT LOG PARA expression PARC','print',6,'p_print','grammar.py',134),
+  ('expression -> primitivo','expression',1,'p_expression','grammar.py',140),
+  ('expression -> aritmetica','expression',1,'p_expression','grammar.py',141),
+  ('expression -> relacional','expression',1,'p_expression','grammar.py',142),
+  ('expression -> logica','expression',1,'p_expression','grammar.py',143),
+  ('aritmetica -> expression PLUS expression','aritmetica',3,'p_aritmetica','grammar.py',148),
+  ('aritmetica -> expression LESS expression','aritmetica',3,'p_aritmetica','grammar.py',149),
+  ('aritmetica -> expression BY expression','aritmetica',3,'p_aritmetica','grammar.py',150),
+  ('aritmetica -> expression DIVIDED expression','aritmetica',3,'p_aritmetica','grammar.py',151),
+  ('aritmetica -> expression MODUL expression','aritmetica',3,'p_aritmetica','grammar.py',152),
+  ('aritmetica -> LESS expression','aritmetica',2,'p_aritmetica','grammar.py',153),
+  ('relacional -> expression EQUAL expression','relacional',3,'p_relacional','grammar.py',180),
+  ('relacional -> expression DIFERENT expression','relacional',3,'p_relacional','grammar.py',181),
+  ('relacional -> expression MINOR expression','relacional',3,'p_relacional','grammar.py',182),
+  ('relacional -> expression MINOREQUAL expression','relacional',3,'p_relacional','grammar.py',183),
+  ('relacional -> expression GREATER expression','relacional',3,'p_relacional','grammar.py',184),
+  ('relacional -> expression GREATEREQUAL expression','relacional',3,'p_relacional','grammar.py',185),
+  ('logica -> boolean AND boolean','logica',3,'p_logica','grammar.py',209),
+  ('logica -> boolean OR boolean','logica',3,'p_logica','grammar.py',210),
+  ('logica -> NOT boolean','logica',2,'p_logica','grammar.py',211),
+  ('primitivo -> NUMBER','primitivo',1,'p_primitivo','grammar.py',224),
+  ('primitivo -> FLOAT','primitivo',1,'p_primitivo','grammar.py',225),
+  ('primitivo -> STRING','primitivo',1,'p_primitivo','grammar.py',226),
+  ('primitivo -> boolean','primitivo',1,'p_primitivo','grammar.py',227),
+  ('boolean -> TRUE','boolean',1,'p_boolean','grammar.py',244),
+  ('boolean -> FALSE','boolean',1,'p_boolean','grammar.py',245),
 ]
