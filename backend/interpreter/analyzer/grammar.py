@@ -4,6 +4,7 @@ import ply.yacc as yacc
 from ..environment.types import ExpressionType
 from ..expression.primitive import Primitive
 from ..instruction.Print import Print
+from ..expression.aritmetic import Aritmetic
 
 
 #palabras reservadas
@@ -15,13 +16,22 @@ reserved = {
 }
 
 #lista de tokens
-tokens = ['PARA', 'PARC', 'DOT', 'NUMBER', 'FLOAT', 'STRING'] + list(reserved.values())
+tokens = ['PARA', 'PARC', 'DOT', 'NUMBER', 'FLOAT', 'STRING', 
+          'PLUS', 'LESS', 'BY', 'DIVIDED', 'MODUL'] + list(reserved.values())
 
 
 #-----------------------------------------------------definicion de tokens
 t_PARA = r'\('
 t_PARC = r'\)'
 t_DOT = r'\.'
+
+###Aritmetica
+t_PLUS = r'\+'
+t_LESS = r'\-'
+t_BY = r'\*'
+t_DIVIDED = r'\/'
+t_MODUL = r'\%'
+
 
 t_CONSOLE = r'console'
 t_LOG = r'log'
@@ -67,7 +77,15 @@ def t_error(t):
 
 
 #--------------------------------------------------definicion de la gramatica
+    
+##precedencia
+precedence = (  ('left', 'PLUS', 'LESS'), 
+                ('left', 'BY','DIVIDED', 'MODUL'), 
+                ('right', 'UMENOS'))
+    
 
+
+##definicion de la gramatica
 def p_start(p):
     '''start : instrucciones '''
     p[0] = p[1]
@@ -97,9 +115,43 @@ def p_print(p):
     
 
 def p_expression(p):
-    '''expression : primitivo '''
+    '''expression : primitivo 
+                  | aritmetica'''
 
     p[0] = p[1]
+
+def p_aritmetica(p):
+    '''aritmetica : expression PLUS expression
+                  | expression LESS expression
+                  | expression BY expression
+                  | expression DIVIDED expression
+                  | expression MODUL expression
+                  | LESS expression %prec UMENOS'''
+    
+    tmp = get_params(p)
+    if p.slice[1].type == 'LESS':
+        tmp2 = Primitive(tmp.line, tmp.column, 0, ExpressionType.INTEGER)
+        p[0] = Aritmetic(tmp.line, tmp.column, tmp2, p[2], p[1])
+
+    elif p.slice[2].type == 'PLUS':
+        p[0] = Aritmetic(tmp.line, tmp.column, p[1], p[3], p[2])
+
+
+    elif p.slice[2].type == 'LESS':
+        p[0] = Aritmetic(tmp.line, tmp.column, p[1], p[3], p[2])
+
+    elif p.slice[2].type == 'BY':
+        p[0] = Aritmetic(tmp.line, tmp.column, p[1], p[3], p[2])
+
+    elif p.slice[2].type == 'DIVIDED':
+        p[0] = Aritmetic(tmp.line, tmp.column, p[1], p[3], p[2])
+
+    elif p.slice[2].type == 'MODUL':
+        p[0] = Aritmetic(tmp.line, tmp.column, p[1], p[3], p[2])
+
+    elif p.slice[1].type == 'LESS':
+        p[0] = Aritmetic(tmp.line, tmp.column, p[2], 0, p[1])
+    
 
 def p_primitivo(p):
     '''primitivo : NUMBER
