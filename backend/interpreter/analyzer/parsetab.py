@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'BOOLEAN CHAR CONSOLE DOT FLOAT LOG NUMBER PARA PARC STRINGstart : instrucciones instrucciones : instrucciones instruccion\n                     | instruccion instruccion : print print : CONSOLE DOT LOG PARA EXPRESSION PARCEXPRESSION : PRIMITIVO PRIMITIVO : STRING \n                 | NUMBER \n                 | FLOAT\n                 | BOOLEAN\n                 | CHAR'
+_lr_signature = 'CONSOLE DOT FALSE FLOAT LOG NUMBER PARA PARC STRING TRUEstart : instrucciones instrucciones : instrucciones instruccion\n                     | instruccion instruccion : print print : CONSOLE DOT LOG PARA expression PARCexpression : primitivo primitivo : NUMBER\n                 | FLOAT\n                 | STRING\n                 | booleanboolean : TRUE\n               | FALSE'
     
-_lr_action_items = {'CONSOLE':([0,2,3,4,6,17,],[5,5,-3,-4,-2,-5,]),'$end':([1,2,3,4,6,17,],[0,-1,-3,-4,-2,-5,]),'DOT':([5,],[7,]),'LOG':([7,],[8,]),'PARA':([8,],[9,]),'STRING':([9,],[12,]),'NUMBER':([9,],[13,]),'FLOAT':([9,],[14,]),'BOOLEAN':([9,],[15,]),'CHAR':([9,],[16,]),'PARC':([10,11,12,13,14,15,16,],[17,-6,-7,-8,-9,-10,-11,]),}
+_lr_action_items = {'CONSOLE':([0,2,3,4,6,18,],[5,5,-3,-4,-2,-5,]),'$end':([1,2,3,4,6,18,],[0,-1,-3,-4,-2,-5,]),'DOT':([5,],[7,]),'LOG':([7,],[8,]),'PARA':([8,],[9,]),'NUMBER':([9,],[12,]),'FLOAT':([9,],[13,]),'STRING':([9,],[14,]),'TRUE':([9,],[16,]),'FALSE':([9,],[17,]),'PARC':([10,11,12,13,14,15,16,17,],[18,-6,-7,-8,-9,-10,-11,-12,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'start':([0,],[1,]),'instrucciones':([0,],[2,]),'instruccion':([0,2,],[3,6,]),'print':([0,2,],[4,4,]),'EXPRESSION':([9,],[10,]),'PRIMITIVO':([9,],[11,]),}
+_lr_goto_items = {'start':([0,],[1,]),'instrucciones':([0,],[2,]),'instruccion':([0,2,],[3,6,]),'print':([0,2,],[4,4,]),'expression':([9,],[10,]),'primitivo':([9,],[11,]),'boolean':([9,],[15,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,15 +27,16 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> start","S'",1,None,None,None),
-  ('start -> instrucciones','start',1,'p_start','grammar.py',82),
-  ('instrucciones -> instrucciones instruccion','instrucciones',2,'p_instrucciones','grammar.py',85),
-  ('instrucciones -> instruccion','instrucciones',1,'p_instrucciones','grammar.py',86),
-  ('instruccion -> print','instruccion',1,'p_instruccion','grammar.py',89),
-  ('print -> CONSOLE DOT LOG PARA EXPRESSION PARC','print',6,'p_print','grammar.py',92),
-  ('EXPRESSION -> PRIMITIVO','EXPRESSION',1,'p_expression','grammar.py',96),
-  ('PRIMITIVO -> STRING','PRIMITIVO',1,'p_primitivo','grammar.py',101),
-  ('PRIMITIVO -> NUMBER','PRIMITIVO',1,'p_primitivo','grammar.py',102),
-  ('PRIMITIVO -> FLOAT','PRIMITIVO',1,'p_primitivo','grammar.py',103),
-  ('PRIMITIVO -> BOOLEAN','PRIMITIVO',1,'p_primitivo','grammar.py',104),
-  ('PRIMITIVO -> CHAR','PRIMITIVO',1,'p_primitivo','grammar.py',105),
+  ('start -> instrucciones','start',1,'p_start','grammar.py',68),
+  ('instrucciones -> instrucciones instruccion','instrucciones',2,'p_instrucciones','grammar.py',71),
+  ('instrucciones -> instruccion','instrucciones',1,'p_instrucciones','grammar.py',72),
+  ('instruccion -> print','instruccion',1,'p_instruccion','grammar.py',75),
+  ('print -> CONSOLE DOT LOG PARA expression PARC','print',6,'p_print','grammar.py',78),
+  ('expression -> primitivo','expression',1,'p_expression','grammar.py',82),
+  ('primitivo -> NUMBER','primitivo',1,'p_primitivo','grammar.py',87),
+  ('primitivo -> FLOAT','primitivo',1,'p_primitivo','grammar.py',88),
+  ('primitivo -> STRING','primitivo',1,'p_primitivo','grammar.py',89),
+  ('primitivo -> boolean','primitivo',1,'p_primitivo','grammar.py',90),
+  ('boolean -> TRUE','boolean',1,'p_boolean','grammar.py',95),
+  ('boolean -> FALSE','boolean',1,'p_boolean','grammar.py',96),
 ]
