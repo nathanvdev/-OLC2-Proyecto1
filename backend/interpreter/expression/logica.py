@@ -1,5 +1,6 @@
 from ..abtract.expression import expression
-import copy
+from .primitive import Primitive
+from ..abtract.types import ExpressionType
 
 class Logica(expression):
     def __init__(self, line, column, left, right, operator):
@@ -12,8 +13,11 @@ class Logica(expression):
         left = self.left.Eject(env)
         right = self.right.Eject(env)
 
-        result = copy.deepcopy(left)
-        result.value = None
+        result = Primitive(self.line, self.column, None, ExpressionType.BOOLEAN)
+
+        if left.Type != ExpressionType.BOOLEAN or right.Type != ExpressionType.BOOLEAN:
+            print(f'Error: Type mismatch \n column: {self.column} line: {self.line}')
+            return result
 
         if self.operator == '&&':
             result.value = left.value and right.value

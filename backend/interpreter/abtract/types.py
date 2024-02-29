@@ -6,3 +6,4 @@ class ExpressionType(Enum):
     STRING = 2
     BOOLEAN = 3
     CHAR = 4
+    NULL = 5

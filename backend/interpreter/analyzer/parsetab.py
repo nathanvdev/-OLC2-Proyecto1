@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'leftORleftANDleftNOTleftEQUALDIFERENTMINORMINOREQUALGREATERGREATEREQUALleftPLUSLESSleftBYDIVIDEDMODULrightUMENOSAND BY CONSOLE DIFERENT DIVIDED DOT EQUAL FALSE FLOAT GREATER GREATEREQUAL LESS LOG MINOR MINOREQUAL MODUL NOT NUMBER OR PARA PARC PLUS STRING TRUEstart : instrucciones instrucciones : instrucciones instruccion\n                     | instruccion instruccion : print print : CONSOLE DOT LOG PARA expression PARCexpression : primitivo \n                  | aritmetica\n                  | relacional\n                  | logicaaritmetica : expression PLUS expression\n                  | expression LESS expression\n                  | expression BY expression\n                  | expression DIVIDED expression\n                  | expression MODUL expression\n                  | LESS expression %prec UMENOSrelacional : expression EQUAL expression\n                    | expression DIFERENT expression\n                    | expression MINOR expression\n                    | expression MINOREQUAL expression\n                    | expression GREATER expression\n                    | expression GREATEREQUAL expressionlogica : boolean AND boolean\n              | boolean OR boolean\n              | NOT booleanprimitivo : NUMBER\n                 | FLOAT\n                 | STRING\n                 | booleanboolean : TRUE\n               | FALSE'
+_lr_signature = 'leftORleftANDleftNOTleftDEQUALDIFERENTMINORMINOREQUALGREATERGREATEREQUALleftPLUSLESSleftBYDIVIDEDMODULrightUMENOSAND BY CONSOLE DEQUAL DIFERENT DIVIDED DOT DOUBLEDOT EQUAL FALSE FLOAT GREATER GREATEREQUAL ID LESS LOG MINOR MINOREQUAL MODUL NOT NUMBER OR PARA PARC PLUS RBOOLEAN RFLOAT RNUMBER RSTRING RVAR STRING TRUEstart    : instrucciones instrucciones    : instrucciones instruccion\n                        | instruccion instruccion  : print\n                    | declareprint    : CONSOLE DOT LOG PARA expression PARCdeclare  : RVAR ID DOUBLEDOT type EQUAL expression\n                | RVAR ID EQUAL expression\n                | RVAR ID DOUBLEDOT typeexpression   : primitivo \n                    | aritmetica\n                    | relacional\n                    | logicaaritmetica   : expression PLUS expression\n                    | expression BY expression\n                    | expression DIVIDED expression\n                    | expression LESS expression\n                    | expression MODUL expression\n                    | LESS expression %prec UMENOSrelacional   : expression DEQUAL expression\n                    | expression DIFERENT expression\n                    | expression MINOR expression\n                    | expression MINOREQUAL expression\n                    | expression GREATER expression\n                    | expression GREATEREQUAL expressionlogica   : boolean AND boolean\n                | boolean OR boolean\n                | NOT booleanprimitivo    : NUMBER\n                    | FLOAT\n                    | STRING\n                    | booleanboolean  : TRUE\n                | FALSEtype     : RNUMBER\n                | RFLOAT\n                | RSTRING\n                | RBOOLEAN'
     
-_lr_action_items = {'CONSOLE':([0,2,3,4,6,23,],[5,5,-3,-4,-2,-5,]),'$end':([1,2,3,4,6,23,],[0,-1,-3,-4,-2,-5,]),'DOT':([5,],[7,]),'LOG':([7,],[8,]),'PARA':([8,],[9,]),'NUMBER':([9,19,24,25,26,27,28,29,30,31,32,33,34,],[15,15,15,15,15,15,15,15,15,15,15,15,15,]),'FLOAT':([9,19,24,25,26,27,28,29,30,31,32,33,34,],[16,16,16,16,16,16,16,16,16,16,16,16,16,]),'STRING':([9,19,24,25,26,27,28,29,30,31,32,33,34,],[17,17,17,17,17,17,17,17,17,17,17,17,17,]),'LESS':([9,10,11,12,13,14,15,16,17,18,19,21,22,24,25,26,27,28,29,30,31,32,33,34,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,],[19,25,-6,-7,-8,-9,-25,-26,-27,-28,19,-29,-30,19,19,19,19,19,19,19,19,19,19,19,-15,-24,-10,-11,-12,-13,-14,25,25,25,25,25,25,-22,-23,]),'NOT':([9,19,24,25,26,27,28,29,30,31,32,33,34,],[20,20,20,20,20,20,20,20,20,20,20,20,20,]),'TRUE':([9,19,20,24,25,26,27,28,29,30,31,32,33,34,35,36,],[21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,]),'FALSE':([9,19,20,24,25,26,27,28,29,30,31,32,33,34,35,36,],[22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,]),'PARC':([10,11,12,13,14,15,16,17,18,21,22,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,],[23,-6,-7,-8,-9,-25,-26,-27,-28,-29,-30,-15,-24,-10,-11,-12,-13,-14,-16,-17,-18,-19,-20,-21,-22,-23,]),'PLUS':([10,11,12,13,14,15,16,17,18,21,22,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,],[24,-6,-7,-8,-9,-25,-26,-27,-28,-29,-30,-15,-24,-10,-11,-12,-13,-14,24,24,24,24,24,24,-22,-23,]),'BY':([10,11,12,13,14,15,16,17,18,21,22,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,],[26,-6,-7,-8,-9,-25,-26,-27,-28,-29,-30,-15,-24,26,26,-12,-13,-14,26,26,26,26,26,26,-22,-23,]),'DIVIDED':([10,11,12,13,14,15,16,17,18,21,22,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,],[27,-6,-7,-8,-9,-25,-26,-27,-28,-29,-30,-15,-24,27,27,-12,-13,-14,27,27,27,27,27,27,-22,-23,]),'MODUL':([10,11,12,13,14,15,16,17,18,21,22,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,],[28,-6,-7,-8,-9,-25,-26,-27,-28,-29,-30,-15,-24,28,28,-12,-13,-14,28,28,28,28,28,28,-22,-23,]),'EQUAL':([10,11,12,13,14,15,16,17,18,21,22,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,],[29,-6,-7,-8,-9,-25,-26,-27,-28,-29,-30,-15,-24,-10,-11,-12,-13,-14,-16,-17,-18,-19,-20,-21,-22,-23,]),'DIFERENT':([10,11,12,13,14,15,16,17,18,21,22,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,],[30,-6,-7,-8,-9,-25,-26,-27,-28,-29,-30,-15,-24,-10,-11,-12,-13,-14,-16,-17,-18,-19,-20,-21,-22,-23,]),'MINOR':([10,11,12,13,14,15,16,17,18,21,22,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,],[31,-6,-7,-8,-9,-25,-26,-27,-28,-29,-30,-15,-24,-10,-11,-12,-13,-14,-16,-17,-18,-19,-20,-21,-22,-23,]),'MINOREQUAL':([10,11,12,13,14,15,16,17,18,21,22,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,],[32,-6,-7,-8,-9,-25,-26,-27,-28,-29,-30,-15,-24,-10,-11,-12,-13,-14,-16,-17,-18,-19,-20,-21,-22,-23,]),'GREATER':([10,11,12,13,14,15,16,17,18,21,22,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,],[33,-6,-7,-8,-9,-25,-26,-27,-28,-29,-30,-15,-24,-10,-11,-12,-13,-14,-16,-17,-18,-19,-20,-21,-22,-23,]),'GREATEREQUAL':([10,11,12,13,14,15,16,17,18,21,22,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,],[34,-6,-7,-8,-9,-25,-26,-27,-28,-29,-30,-15,-24,-10,-11,-12,-13,-14,-16,-17,-18,-19,-20,-21,-22,-23,]),'AND':([18,21,22,],[35,-29,-30,]),'OR':([18,21,22,],[36,-29,-30,]),}
+_lr_action_items = {'CONSOLE':([0,2,3,4,5,8,15,16,17,18,19,20,21,22,23,24,25,26,27,28,31,32,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,],[6,6,-3,-4,-5,-2,-9,-35,-36,-37,-38,-8,-10,-11,-12,-13,-29,-30,-31,-32,-33,-34,-19,-28,-6,-7,-14,-15,-16,-17,-18,-20,-21,-22,-23,-24,-25,-26,-27,]),'RVAR':([0,2,3,4,5,8,15,16,17,18,19,20,21,22,23,24,25,26,27,28,31,32,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,],[7,7,-3,-4,-5,-2,-9,-35,-36,-37,-38,-8,-10,-11,-12,-13,-29,-30,-31,-32,-33,-34,-19,-28,-6,-7,-14,-15,-16,-17,-18,-20,-21,-22,-23,-24,-25,-26,-27,]),'$end':([1,2,3,4,5,8,15,16,17,18,19,20,21,22,23,24,25,26,27,28,31,32,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,],[0,-1,-3,-4,-5,-2,-9,-35,-36,-37,-38,-8,-10,-11,-12,-13,-29,-30,-31,-32,-33,-34,-19,-28,-6,-7,-14,-15,-16,-17,-18,-20,-21,-22,-23,-24,-25,-26,-27,]),'DOT':([6,],[9,]),'ID':([7,],[10,]),'LOG':([9,],[11,]),'DOUBLEDOT':([10,],[12,]),'EQUAL':([10,15,16,17,18,19,],[13,34,-35,-36,-37,-38,]),'PARA':([11,],[14,]),'RNUMBER':([12,],[16,]),'RFLOAT':([12,],[17,]),'RSTRING':([12,],[18,]),'RBOOLEAN':([12,],[19,]),'NUMBER':([13,14,29,34,35,36,37,38,39,40,41,42,43,44,45,],[25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,]),'FLOAT':([13,14,29,34,35,36,37,38,39,40,41,42,43,44,45,],[26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,]),'STRING':([13,14,29,34,35,36,37,38,39,40,41,42,43,44,45,],[27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,]),'LESS':([13,14,20,21,22,23,24,25,26,27,28,29,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,48,49,51,52,53,54,55,56,57,58,59,60,61,62,63,64,],[29,29,38,-10,-11,-12,-13,-29,-30,-31,-32,29,-33,-34,38,29,29,29,29,29,29,29,29,29,29,29,29,-19,-28,38,-14,-15,-16,-17,-18,38,38,38,38,38,38,-26,-27,]),'NOT':([13,14,29,34,35,36,37,38,39,40,41,42,43,44,45,],[30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,]),'TRUE':([13,14,29,30,34,35,36,37,38,39,40,41,42,43,44,45,46,47,],[31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,]),'FALSE':([13,14,29,30,34,35,36,37,38,39,40,41,42,43,44,45,46,47,],[32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,]),'PLUS':([20,21,22,23,24,25,26,27,28,31,32,33,48,49,51,52,53,54,55,56,57,58,59,60,61,62,63,64,],[35,-10,-11,-12,-13,-29,-30,-31,-32,-33,-34,35,-19,-28,35,-14,-15,-16,-17,-18,35,35,35,35,35,35,-26,-27,]),'BY':([20,21,22,23,24,25,26,27,28,31,32,33,48,49,51,52,53,54,55,56,57,58,59,60,61,62,63,64,],[36,-10,-11,-12,-13,-29,-30,-31,-32,-33,-34,36,-19,-28,36,36,-15,-16,36,-18,36,36,36,36,36,36,-26,-27,]),'DIVIDED':([20,21,22,23,24,25,26,27,28,31,32,33,48,49,51,52,53,54,55,56,57,58,59,60,61,62,63,64,],[37,-10,-11,-12,-13,-29,-30,-31,-32,-33,-34,37,-19,-28,37,37,-15,-16,37,-18,37,37,37,37,37,37,-26,-27,]),'MODUL':([20,21,22,23,24,25,26,27,28,31,32,33,48,49,51,52,53,54,55,56,57,58,59,60,61,62,63,64,],[39,-10,-11,-12,-13,-29,-30,-31,-32,-33,-34,39,-19,-28,39,39,-15,-16,39,-18,39,39,39,39,39,39,-26,-27,]),'DEQUAL':([20,21,22,23,24,25,26,27,28,31,32,33,48,49,51,52,53,54,55,56,57,58,59,60,61,62,63,64,],[40,-10,-11,-12,-13,-29,-30,-31,-32,-33,-34,40,-19,-28,40,-14,-15,-16,-17,-18,-20,-21,-22,-23,-24,-25,-26,-27,]),'DIFERENT':([20,21,22,23,24,25,26,27,28,31,32,33,48,49,51,52,53,54,55,56,57,58,59,60,61,62,63,64,],[41,-10,-11,-12,-13,-29,-30,-31,-32,-33,-34,41,-19,-28,41,-14,-15,-16,-17,-18,-20,-21,-22,-23,-24,-25,-26,-27,]),'MINOR':([20,21,22,23,24,25,26,27,28,31,32,33,48,49,51,52,53,54,55,56,57,58,59,60,61,62,63,64,],[42,-10,-11,-12,-13,-29,-30,-31,-32,-33,-34,42,-19,-28,42,-14,-15,-16,-17,-18,-20,-21,-22,-23,-24,-25,-26,-27,]),'MINOREQUAL':([20,21,22,23,24,25,26,27,28,31,32,33,48,49,51,52,53,54,55,56,57,58,59,60,61,62,63,64,],[43,-10,-11,-12,-13,-29,-30,-31,-32,-33,-34,43,-19,-28,43,-14,-15,-16,-17,-18,-20,-21,-22,-23,-24,-25,-26,-27,]),'GREATER':([20,21,22,23,24,25,26,27,28,31,32,33,48,49,51,52,53,54,55,56,57,58,59,60,61,62,63,64,],[44,-10,-11,-12,-13,-29,-30,-31,-32,-33,-34,44,-19,-28,44,-14,-15,-16,-17,-18,-20,-21,-22,-23,-24,-25,-26,-27,]),'GREATEREQUAL':([20,21,22,23,24,25,26,27,28,31,32,33,48,49,51,52,53,54,55,56,57,58,59,60,61,62,63,64,],[45,-10,-11,-12,-13,-29,-30,-31,-32,-33,-34,45,-19,-28,45,-14,-15,-16,-17,-18,-20,-21,-22,-23,-24,-25,-26,-27,]),'PARC':([21,22,23,24,25,26,27,28,31,32,33,48,49,52,53,54,55,56,57,58,59,60,61,62,63,64,],[-10,-11,-12,-13,-29,-30,-31,-32,-33,-34,50,-19,-28,-14,-15,-16,-17,-18,-20,-21,-22,-23,-24,-25,-26,-27,]),'AND':([28,31,32,],[46,-33,-34,]),'OR':([28,31,32,],[47,-33,-34,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'start':([0,],[1,]),'instrucciones':([0,],[2,]),'instruccion':([0,2,],[3,6,]),'print':([0,2,],[4,4,]),'expression':([9,19,24,25,26,27,28,29,30,31,32,33,34,],[10,37,39,40,41,42,43,44,45,46,47,48,49,]),'primitivo':([9,19,24,25,26,27,28,29,30,31,32,33,34,],[11,11,11,11,11,11,11,11,11,11,11,11,11,]),'aritmetica':([9,19,24,25,26,27,28,29,30,31,32,33,34,],[12,12,12,12,12,12,12,12,12,12,12,12,12,]),'relacional':([9,19,24,25,26,27,28,29,30,31,32,33,34,],[13,13,13,13,13,13,13,13,13,13,13,13,13,]),'logica':([9,19,24,25,26,27,28,29,30,31,32,33,34,],[14,14,14,14,14,14,14,14,14,14,14,14,14,]),'boolean':([9,19,20,24,25,26,27,28,29,30,31,32,33,34,35,36,],[18,18,38,18,18,18,18,18,18,18,18,18,18,18,50,51,]),}
+_lr_goto_items = {'start':([0,],[1,]),'instrucciones':([0,],[2,]),'instruccion':([0,2,],[3,8,]),'print':([0,2,],[4,4,]),'declare':([0,2,],[5,5,]),'type':([12,],[15,]),'expression':([13,14,29,34,35,36,37,38,39,40,41,42,43,44,45,],[20,33,48,51,52,53,54,55,56,57,58,59,60,61,62,]),'primitivo':([13,14,29,34,35,36,37,38,39,40,41,42,43,44,45,],[21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,]),'aritmetica':([13,14,29,34,35,36,37,38,39,40,41,42,43,44,45,],[22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,]),'relacional':([13,14,29,34,35,36,37,38,39,40,41,42,43,44,45,],[23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,]),'logica':([13,14,29,34,35,36,37,38,39,40,41,42,43,44,45,],[24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,]),'boolean':([13,14,29,30,34,35,36,37,38,39,40,41,42,43,44,45,46,47,],[28,28,28,49,28,28,28,28,28,28,28,28,28,28,28,28,63,64,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,34 +27,42 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> start","S'",1,None,None,None),
-  ('start -> instrucciones','start',1,'p_start','grammar.py',112),
-  ('instrucciones -> instrucciones instruccion','instrucciones',2,'p_instrucciones','grammar.py',119),
-  ('instrucciones -> instruccion','instrucciones',1,'p_instrucciones','grammar.py',120),
-  ('instruccion -> print','instruccion',1,'p_instruccion','grammar.py',129),
-  ('print -> CONSOLE DOT LOG PARA expression PARC','print',6,'p_print','grammar.py',134),
-  ('expression -> primitivo','expression',1,'p_expression','grammar.py',140),
-  ('expression -> aritmetica','expression',1,'p_expression','grammar.py',141),
-  ('expression -> relacional','expression',1,'p_expression','grammar.py',142),
-  ('expression -> logica','expression',1,'p_expression','grammar.py',143),
-  ('aritmetica -> expression PLUS expression','aritmetica',3,'p_aritmetica','grammar.py',148),
-  ('aritmetica -> expression LESS expression','aritmetica',3,'p_aritmetica','grammar.py',149),
-  ('aritmetica -> expression BY expression','aritmetica',3,'p_aritmetica','grammar.py',150),
-  ('aritmetica -> expression DIVIDED expression','aritmetica',3,'p_aritmetica','grammar.py',151),
-  ('aritmetica -> expression MODUL expression','aritmetica',3,'p_aritmetica','grammar.py',152),
-  ('aritmetica -> LESS expression','aritmetica',2,'p_aritmetica','grammar.py',153),
-  ('relacional -> expression EQUAL expression','relacional',3,'p_relacional','grammar.py',180),
-  ('relacional -> expression DIFERENT expression','relacional',3,'p_relacional','grammar.py',181),
-  ('relacional -> expression MINOR expression','relacional',3,'p_relacional','grammar.py',182),
-  ('relacional -> expression MINOREQUAL expression','relacional',3,'p_relacional','grammar.py',183),
-  ('relacional -> expression GREATER expression','relacional',3,'p_relacional','grammar.py',184),
-  ('relacional -> expression GREATEREQUAL expression','relacional',3,'p_relacional','grammar.py',185),
-  ('logica -> boolean AND boolean','logica',3,'p_logica','grammar.py',209),
-  ('logica -> boolean OR boolean','logica',3,'p_logica','grammar.py',210),
-  ('logica -> NOT boolean','logica',2,'p_logica','grammar.py',211),
-  ('primitivo -> NUMBER','primitivo',1,'p_primitivo','grammar.py',224),
-  ('primitivo -> FLOAT','primitivo',1,'p_primitivo','grammar.py',225),
-  ('primitivo -> STRING','primitivo',1,'p_primitivo','grammar.py',226),
-  ('primitivo -> boolean','primitivo',1,'p_primitivo','grammar.py',227),
-  ('boolean -> TRUE','boolean',1,'p_boolean','grammar.py',244),
-  ('boolean -> FALSE','boolean',1,'p_boolean','grammar.py',245),
+  ('start -> instrucciones','start',1,'p_start','grammar.py',127),
+  ('instrucciones -> instrucciones instruccion','instrucciones',2,'p_instrucciones','grammar.py',134),
+  ('instrucciones -> instruccion','instrucciones',1,'p_instrucciones','grammar.py',135),
+  ('instruccion -> print','instruccion',1,'p_instruccion','grammar.py',144),
+  ('instruccion -> declare','instruccion',1,'p_instruccion','grammar.py',145),
+  ('print -> CONSOLE DOT LOG PARA expression PARC','print',6,'p_print','grammar.py',150),
+  ('declare -> RVAR ID DOUBLEDOT type EQUAL expression','declare',6,'p_declare','grammar.py',155),
+  ('declare -> RVAR ID EQUAL expression','declare',4,'p_declare','grammar.py',156),
+  ('declare -> RVAR ID DOUBLEDOT type','declare',4,'p_declare','grammar.py',157),
+  ('expression -> primitivo','expression',1,'p_expression','grammar.py',172),
+  ('expression -> aritmetica','expression',1,'p_expression','grammar.py',173),
+  ('expression -> relacional','expression',1,'p_expression','grammar.py',174),
+  ('expression -> logica','expression',1,'p_expression','grammar.py',175),
+  ('aritmetica -> expression PLUS expression','aritmetica',3,'p_aritmetica','grammar.py',180),
+  ('aritmetica -> expression BY expression','aritmetica',3,'p_aritmetica','grammar.py',181),
+  ('aritmetica -> expression DIVIDED expression','aritmetica',3,'p_aritmetica','grammar.py',182),
+  ('aritmetica -> expression LESS expression','aritmetica',3,'p_aritmetica','grammar.py',183),
+  ('aritmetica -> expression MODUL expression','aritmetica',3,'p_aritmetica','grammar.py',184),
+  ('aritmetica -> LESS expression','aritmetica',2,'p_aritmetica','grammar.py',185),
+  ('relacional -> expression DEQUAL expression','relacional',3,'p_relacional','grammar.py',212),
+  ('relacional -> expression DIFERENT expression','relacional',3,'p_relacional','grammar.py',213),
+  ('relacional -> expression MINOR expression','relacional',3,'p_relacional','grammar.py',214),
+  ('relacional -> expression MINOREQUAL expression','relacional',3,'p_relacional','grammar.py',215),
+  ('relacional -> expression GREATER expression','relacional',3,'p_relacional','grammar.py',216),
+  ('relacional -> expression GREATEREQUAL expression','relacional',3,'p_relacional','grammar.py',217),
+  ('logica -> boolean AND boolean','logica',3,'p_logica','grammar.py',241),
+  ('logica -> boolean OR boolean','logica',3,'p_logica','grammar.py',242),
+  ('logica -> NOT boolean','logica',2,'p_logica','grammar.py',243),
+  ('primitivo -> NUMBER','primitivo',1,'p_primitivo','grammar.py',256),
+  ('primitivo -> FLOAT','primitivo',1,'p_primitivo','grammar.py',257),
+  ('primitivo -> STRING','primitivo',1,'p_primitivo','grammar.py',258),
+  ('primitivo -> boolean','primitivo',1,'p_primitivo','grammar.py',259),
+  ('boolean -> TRUE','boolean',1,'p_boolean','grammar.py',274),
+  ('boolean -> FALSE','boolean',1,'p_boolean','grammar.py',275),
+  ('type -> RNUMBER','type',1,'p_type','grammar.py',286),
+  ('type -> RFLOAT','type',1,'p_type','grammar.py',287),
+  ('type -> RSTRING','type',1,'p_type','grammar.py',288),
+  ('type -> RBOOLEAN','type',1,'p_type','grammar.py',289),
 ]

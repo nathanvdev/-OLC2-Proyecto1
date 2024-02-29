@@ -7,73 +7,91 @@ Rule 1     start -> instrucciones
 Rule 2     instrucciones -> instrucciones instruccion
 Rule 3     instrucciones -> instruccion
 Rule 4     instruccion -> print
-Rule 5     print -> CONSOLE DOT LOG PARA expression PARC
-Rule 6     expression -> primitivo
-Rule 7     expression -> aritmetica
-Rule 8     expression -> relacional
-Rule 9     expression -> logica
-Rule 10    aritmetica -> expression PLUS expression
-Rule 11    aritmetica -> expression LESS expression
-Rule 12    aritmetica -> expression BY expression
-Rule 13    aritmetica -> expression DIVIDED expression
-Rule 14    aritmetica -> expression MODUL expression
-Rule 15    aritmetica -> LESS expression
-Rule 16    relacional -> expression EQUAL expression
-Rule 17    relacional -> expression DIFERENT expression
-Rule 18    relacional -> expression MINOR expression
-Rule 19    relacional -> expression MINOREQUAL expression
-Rule 20    relacional -> expression GREATER expression
-Rule 21    relacional -> expression GREATEREQUAL expression
-Rule 22    logica -> boolean AND boolean
-Rule 23    logica -> boolean OR boolean
-Rule 24    logica -> NOT boolean
-Rule 25    primitivo -> NUMBER
-Rule 26    primitivo -> FLOAT
-Rule 27    primitivo -> STRING
-Rule 28    primitivo -> boolean
-Rule 29    boolean -> TRUE
-Rule 30    boolean -> FALSE
+Rule 5     instruccion -> declare
+Rule 6     print -> CONSOLE DOT LOG PARA expression PARC
+Rule 7     declare -> RVAR ID DOUBLEDOT type EQUAL expression
+Rule 8     declare -> RVAR ID EQUAL expression
+Rule 9     declare -> RVAR ID DOUBLEDOT type
+Rule 10    expression -> primitivo
+Rule 11    expression -> aritmetica
+Rule 12    expression -> relacional
+Rule 13    expression -> logica
+Rule 14    aritmetica -> expression PLUS expression
+Rule 15    aritmetica -> expression BY expression
+Rule 16    aritmetica -> expression DIVIDED expression
+Rule 17    aritmetica -> expression LESS expression
+Rule 18    aritmetica -> expression MODUL expression
+Rule 19    aritmetica -> LESS expression
+Rule 20    relacional -> expression DEQUAL expression
+Rule 21    relacional -> expression DIFERENT expression
+Rule 22    relacional -> expression MINOR expression
+Rule 23    relacional -> expression MINOREQUAL expression
+Rule 24    relacional -> expression GREATER expression
+Rule 25    relacional -> expression GREATEREQUAL expression
+Rule 26    logica -> boolean AND boolean
+Rule 27    logica -> boolean OR boolean
+Rule 28    logica -> NOT boolean
+Rule 29    primitivo -> NUMBER
+Rule 30    primitivo -> FLOAT
+Rule 31    primitivo -> STRING
+Rule 32    primitivo -> boolean
+Rule 33    boolean -> TRUE
+Rule 34    boolean -> FALSE
+Rule 35    type -> RNUMBER
+Rule 36    type -> RFLOAT
+Rule 37    type -> RSTRING
+Rule 38    type -> RBOOLEAN
 
 Terminals, with rules where they appear
 
-AND                  : 22
-BY                   : 12
-CONSOLE              : 5
-DIFERENT             : 17
-DIVIDED              : 13
-DOT                  : 5
-EQUAL                : 16
-FALSE                : 30
-FLOAT                : 26
-GREATER              : 20
-GREATEREQUAL         : 21
-LESS                 : 11 15
-LOG                  : 5
-MINOR                : 18
-MINOREQUAL           : 19
-MODUL                : 14
-NOT                  : 24
-NUMBER               : 25
-OR                   : 23
-PARA                 : 5
-PARC                 : 5
-PLUS                 : 10
-STRING               : 27
-TRUE                 : 29
+AND                  : 26
+BY                   : 15
+CONSOLE              : 6
+DEQUAL               : 20
+DIFERENT             : 21
+DIVIDED              : 16
+DOT                  : 6
+DOUBLEDOT            : 7 9
+EQUAL                : 7 8
+FALSE                : 34
+FLOAT                : 30
+GREATER              : 24
+GREATEREQUAL         : 25
+ID                   : 7 8 9
+LESS                 : 17 19
+LOG                  : 6
+MINOR                : 22
+MINOREQUAL           : 23
+MODUL                : 18
+NOT                  : 28
+NUMBER               : 29
+OR                   : 27
+PARA                 : 6
+PARC                 : 6
+PLUS                 : 14
+RBOOLEAN             : 38
+RFLOAT               : 36
+RNUMBER              : 35
+RSTRING              : 37
+RVAR                 : 7 8 9
+STRING               : 31
+TRUE                 : 33
 error                : 
 
 Nonterminals, with rules where they appear
 
-aritmetica           : 7
-boolean              : 22 22 23 23 24 28
-expression           : 5 10 10 11 11 12 12 13 13 14 14 15 16 16 17 17 18 18 19 19 20 20 21 21
+aritmetica           : 11
+boolean              : 26 26 27 27 28 32
+declare              : 5
+expression           : 6 7 8 14 14 15 15 16 16 17 17 18 18 19 20 20 21 21 22 22 23 23 24 24 25 25
 instruccion          : 2 3
 instrucciones        : 1 2
-logica               : 9
-primitivo            : 6
+logica               : 13
+primitivo            : 10
 print                : 4
-relacional           : 8
+relacional           : 12
 start                : 0
+type                 : 7 9
 
 Parsing method: LALR
 
@@ -84,14 +102,20 @@ state 0
     (2) instrucciones -> . instrucciones instruccion
     (3) instrucciones -> . instruccion
     (4) instruccion -> . print
-    (5) print -> . CONSOLE DOT LOG PARA expression PARC
+    (5) instruccion -> . declare
+    (6) print -> . CONSOLE DOT LOG PARA expression PARC
+    (7) declare -> . RVAR ID DOUBLEDOT type EQUAL expression
+    (8) declare -> . RVAR ID EQUAL expression
+    (9) declare -> . RVAR ID DOUBLEDOT type
 
-    CONSOLE         shift and go to state 5
+    CONSOLE         shift and go to state 6
+    RVAR            shift and go to state 7
 
     start                          shift and go to state 1
     instrucciones                  shift and go to state 2
     instruccion                    shift and go to state 3
     print                          shift and go to state 4
+    declare                        shift and go to state 5
 
 state 1
 
@@ -104,19 +128,26 @@ state 2
     (1) start -> instrucciones .
     (2) instrucciones -> instrucciones . instruccion
     (4) instruccion -> . print
-    (5) print -> . CONSOLE DOT LOG PARA expression PARC
+    (5) instruccion -> . declare
+    (6) print -> . CONSOLE DOT LOG PARA expression PARC
+    (7) declare -> . RVAR ID DOUBLEDOT type EQUAL expression
+    (8) declare -> . RVAR ID EQUAL expression
+    (9) declare -> . RVAR ID DOUBLEDOT type
 
     $end            reduce using rule 1 (start -> instrucciones .)
-    CONSOLE         shift and go to state 5
+    CONSOLE         shift and go to state 6
+    RVAR            shift and go to state 7
 
-    instruccion                    shift and go to state 6
+    instruccion                    shift and go to state 8
     print                          shift and go to state 4
+    declare                        shift and go to state 5
 
 state 3
 
     (3) instrucciones -> instruccion .
 
     CONSOLE         reduce using rule 3 (instrucciones -> instruccion .)
+    RVAR            reduce using rule 3 (instrucciones -> instruccion .)
     $end            reduce using rule 3 (instrucciones -> instruccion .)
 
 
@@ -125,1410 +156,1733 @@ state 4
     (4) instruccion -> print .
 
     CONSOLE         reduce using rule 4 (instruccion -> print .)
+    RVAR            reduce using rule 4 (instruccion -> print .)
     $end            reduce using rule 4 (instruccion -> print .)
 
 
 state 5
 
-    (5) print -> CONSOLE . DOT LOG PARA expression PARC
+    (5) instruccion -> declare .
 
-    DOT             shift and go to state 7
+    CONSOLE         reduce using rule 5 (instruccion -> declare .)
+    RVAR            reduce using rule 5 (instruccion -> declare .)
+    $end            reduce using rule 5 (instruccion -> declare .)
 
 
 state 6
 
-    (2) instrucciones -> instrucciones instruccion .
+    (6) print -> CONSOLE . DOT LOG PARA expression PARC
 
-    CONSOLE         reduce using rule 2 (instrucciones -> instrucciones instruccion .)
-    $end            reduce using rule 2 (instrucciones -> instrucciones instruccion .)
+    DOT             shift and go to state 9
 
 
 state 7
 
-    (5) print -> CONSOLE DOT . LOG PARA expression PARC
+    (7) declare -> RVAR . ID DOUBLEDOT type EQUAL expression
+    (8) declare -> RVAR . ID EQUAL expression
+    (9) declare -> RVAR . ID DOUBLEDOT type
 
-    LOG             shift and go to state 8
+    ID              shift and go to state 10
 
 
 state 8
 
-    (5) print -> CONSOLE DOT LOG . PARA expression PARC
+    (2) instrucciones -> instrucciones instruccion .
 
-    PARA            shift and go to state 9
+    CONSOLE         reduce using rule 2 (instrucciones -> instrucciones instruccion .)
+    RVAR            reduce using rule 2 (instrucciones -> instrucciones instruccion .)
+    $end            reduce using rule 2 (instrucciones -> instrucciones instruccion .)
 
 
 state 9
 
-    (5) print -> CONSOLE DOT LOG PARA . expression PARC
-    (6) expression -> . primitivo
-    (7) expression -> . aritmetica
-    (8) expression -> . relacional
-    (9) expression -> . logica
-    (25) primitivo -> . NUMBER
-    (26) primitivo -> . FLOAT
-    (27) primitivo -> . STRING
-    (28) primitivo -> . boolean
-    (10) aritmetica -> . expression PLUS expression
-    (11) aritmetica -> . expression LESS expression
-    (12) aritmetica -> . expression BY expression
-    (13) aritmetica -> . expression DIVIDED expression
-    (14) aritmetica -> . expression MODUL expression
-    (15) aritmetica -> . LESS expression
-    (16) relacional -> . expression EQUAL expression
-    (17) relacional -> . expression DIFERENT expression
-    (18) relacional -> . expression MINOR expression
-    (19) relacional -> . expression MINOREQUAL expression
-    (20) relacional -> . expression GREATER expression
-    (21) relacional -> . expression GREATEREQUAL expression
-    (22) logica -> . boolean AND boolean
-    (23) logica -> . boolean OR boolean
-    (24) logica -> . NOT boolean
-    (29) boolean -> . TRUE
-    (30) boolean -> . FALSE
+    (6) print -> CONSOLE DOT . LOG PARA expression PARC
 
-    NUMBER          shift and go to state 15
-    FLOAT           shift and go to state 16
-    STRING          shift and go to state 17
-    LESS            shift and go to state 19
-    NOT             shift and go to state 20
-    TRUE            shift and go to state 21
-    FALSE           shift and go to state 22
+    LOG             shift and go to state 11
 
-    expression                     shift and go to state 10
-    primitivo                      shift and go to state 11
-    aritmetica                     shift and go to state 12
-    relacional                     shift and go to state 13
-    logica                         shift and go to state 14
-    boolean                        shift and go to state 18
 
 state 10
 
-    (5) print -> CONSOLE DOT LOG PARA expression . PARC
-    (10) aritmetica -> expression . PLUS expression
-    (11) aritmetica -> expression . LESS expression
-    (12) aritmetica -> expression . BY expression
-    (13) aritmetica -> expression . DIVIDED expression
-    (14) aritmetica -> expression . MODUL expression
-    (16) relacional -> expression . EQUAL expression
-    (17) relacional -> expression . DIFERENT expression
-    (18) relacional -> expression . MINOR expression
-    (19) relacional -> expression . MINOREQUAL expression
-    (20) relacional -> expression . GREATER expression
-    (21) relacional -> expression . GREATEREQUAL expression
+    (7) declare -> RVAR ID . DOUBLEDOT type EQUAL expression
+    (8) declare -> RVAR ID . EQUAL expression
+    (9) declare -> RVAR ID . DOUBLEDOT type
 
-    PARC            shift and go to state 23
-    PLUS            shift and go to state 24
-    LESS            shift and go to state 25
-    BY              shift and go to state 26
-    DIVIDED         shift and go to state 27
-    MODUL           shift and go to state 28
-    EQUAL           shift and go to state 29
-    DIFERENT        shift and go to state 30
-    MINOR           shift and go to state 31
-    MINOREQUAL      shift and go to state 32
-    GREATER         shift and go to state 33
-    GREATEREQUAL    shift and go to state 34
+    DOUBLEDOT       shift and go to state 12
+    EQUAL           shift and go to state 13
 
 
 state 11
 
-    (6) expression -> primitivo .
+    (6) print -> CONSOLE DOT LOG . PARA expression PARC
 
-    PARC            reduce using rule 6 (expression -> primitivo .)
-    PLUS            reduce using rule 6 (expression -> primitivo .)
-    LESS            reduce using rule 6 (expression -> primitivo .)
-    BY              reduce using rule 6 (expression -> primitivo .)
-    DIVIDED         reduce using rule 6 (expression -> primitivo .)
-    MODUL           reduce using rule 6 (expression -> primitivo .)
-    EQUAL           reduce using rule 6 (expression -> primitivo .)
-    DIFERENT        reduce using rule 6 (expression -> primitivo .)
-    MINOR           reduce using rule 6 (expression -> primitivo .)
-    MINOREQUAL      reduce using rule 6 (expression -> primitivo .)
-    GREATER         reduce using rule 6 (expression -> primitivo .)
-    GREATEREQUAL    reduce using rule 6 (expression -> primitivo .)
+    PARA            shift and go to state 14
 
 
 state 12
 
-    (7) expression -> aritmetica .
+    (7) declare -> RVAR ID DOUBLEDOT . type EQUAL expression
+    (9) declare -> RVAR ID DOUBLEDOT . type
+    (35) type -> . RNUMBER
+    (36) type -> . RFLOAT
+    (37) type -> . RSTRING
+    (38) type -> . RBOOLEAN
 
-    PARC            reduce using rule 7 (expression -> aritmetica .)
-    PLUS            reduce using rule 7 (expression -> aritmetica .)
-    LESS            reduce using rule 7 (expression -> aritmetica .)
-    BY              reduce using rule 7 (expression -> aritmetica .)
-    DIVIDED         reduce using rule 7 (expression -> aritmetica .)
-    MODUL           reduce using rule 7 (expression -> aritmetica .)
-    EQUAL           reduce using rule 7 (expression -> aritmetica .)
-    DIFERENT        reduce using rule 7 (expression -> aritmetica .)
-    MINOR           reduce using rule 7 (expression -> aritmetica .)
-    MINOREQUAL      reduce using rule 7 (expression -> aritmetica .)
-    GREATER         reduce using rule 7 (expression -> aritmetica .)
-    GREATEREQUAL    reduce using rule 7 (expression -> aritmetica .)
+    RNUMBER         shift and go to state 16
+    RFLOAT          shift and go to state 17
+    RSTRING         shift and go to state 18
+    RBOOLEAN        shift and go to state 19
 
+    type                           shift and go to state 15
 
 state 13
 
-    (8) expression -> relacional .
+    (8) declare -> RVAR ID EQUAL . expression
+    (10) expression -> . primitivo
+    (11) expression -> . aritmetica
+    (12) expression -> . relacional
+    (13) expression -> . logica
+    (29) primitivo -> . NUMBER
+    (30) primitivo -> . FLOAT
+    (31) primitivo -> . STRING
+    (32) primitivo -> . boolean
+    (14) aritmetica -> . expression PLUS expression
+    (15) aritmetica -> . expression BY expression
+    (16) aritmetica -> . expression DIVIDED expression
+    (17) aritmetica -> . expression LESS expression
+    (18) aritmetica -> . expression MODUL expression
+    (19) aritmetica -> . LESS expression
+    (20) relacional -> . expression DEQUAL expression
+    (21) relacional -> . expression DIFERENT expression
+    (22) relacional -> . expression MINOR expression
+    (23) relacional -> . expression MINOREQUAL expression
+    (24) relacional -> . expression GREATER expression
+    (25) relacional -> . expression GREATEREQUAL expression
+    (26) logica -> . boolean AND boolean
+    (27) logica -> . boolean OR boolean
+    (28) logica -> . NOT boolean
+    (33) boolean -> . TRUE
+    (34) boolean -> . FALSE
 
-    PARC            reduce using rule 8 (expression -> relacional .)
-    PLUS            reduce using rule 8 (expression -> relacional .)
-    LESS            reduce using rule 8 (expression -> relacional .)
-    BY              reduce using rule 8 (expression -> relacional .)
-    DIVIDED         reduce using rule 8 (expression -> relacional .)
-    MODUL           reduce using rule 8 (expression -> relacional .)
-    EQUAL           reduce using rule 8 (expression -> relacional .)
-    DIFERENT        reduce using rule 8 (expression -> relacional .)
-    MINOR           reduce using rule 8 (expression -> relacional .)
-    MINOREQUAL      reduce using rule 8 (expression -> relacional .)
-    GREATER         reduce using rule 8 (expression -> relacional .)
-    GREATEREQUAL    reduce using rule 8 (expression -> relacional .)
+    NUMBER          shift and go to state 25
+    FLOAT           shift and go to state 26
+    STRING          shift and go to state 27
+    LESS            shift and go to state 29
+    NOT             shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
 
+    expression                     shift and go to state 20
+    primitivo                      shift and go to state 21
+    aritmetica                     shift and go to state 22
+    relacional                     shift and go to state 23
+    logica                         shift and go to state 24
+    boolean                        shift and go to state 28
 
 state 14
 
-    (9) expression -> logica .
+    (6) print -> CONSOLE DOT LOG PARA . expression PARC
+    (10) expression -> . primitivo
+    (11) expression -> . aritmetica
+    (12) expression -> . relacional
+    (13) expression -> . logica
+    (29) primitivo -> . NUMBER
+    (30) primitivo -> . FLOAT
+    (31) primitivo -> . STRING
+    (32) primitivo -> . boolean
+    (14) aritmetica -> . expression PLUS expression
+    (15) aritmetica -> . expression BY expression
+    (16) aritmetica -> . expression DIVIDED expression
+    (17) aritmetica -> . expression LESS expression
+    (18) aritmetica -> . expression MODUL expression
+    (19) aritmetica -> . LESS expression
+    (20) relacional -> . expression DEQUAL expression
+    (21) relacional -> . expression DIFERENT expression
+    (22) relacional -> . expression MINOR expression
+    (23) relacional -> . expression MINOREQUAL expression
+    (24) relacional -> . expression GREATER expression
+    (25) relacional -> . expression GREATEREQUAL expression
+    (26) logica -> . boolean AND boolean
+    (27) logica -> . boolean OR boolean
+    (28) logica -> . NOT boolean
+    (33) boolean -> . TRUE
+    (34) boolean -> . FALSE
 
-    PARC            reduce using rule 9 (expression -> logica .)
-    PLUS            reduce using rule 9 (expression -> logica .)
-    LESS            reduce using rule 9 (expression -> logica .)
-    BY              reduce using rule 9 (expression -> logica .)
-    DIVIDED         reduce using rule 9 (expression -> logica .)
-    MODUL           reduce using rule 9 (expression -> logica .)
-    EQUAL           reduce using rule 9 (expression -> logica .)
-    DIFERENT        reduce using rule 9 (expression -> logica .)
-    MINOR           reduce using rule 9 (expression -> logica .)
-    MINOREQUAL      reduce using rule 9 (expression -> logica .)
-    GREATER         reduce using rule 9 (expression -> logica .)
-    GREATEREQUAL    reduce using rule 9 (expression -> logica .)
+    NUMBER          shift and go to state 25
+    FLOAT           shift and go to state 26
+    STRING          shift and go to state 27
+    LESS            shift and go to state 29
+    NOT             shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
 
+    expression                     shift and go to state 33
+    primitivo                      shift and go to state 21
+    aritmetica                     shift and go to state 22
+    relacional                     shift and go to state 23
+    logica                         shift and go to state 24
+    boolean                        shift and go to state 28
 
 state 15
 
-    (25) primitivo -> NUMBER .
+    (7) declare -> RVAR ID DOUBLEDOT type . EQUAL expression
+    (9) declare -> RVAR ID DOUBLEDOT type .
 
-    PARC            reduce using rule 25 (primitivo -> NUMBER .)
-    PLUS            reduce using rule 25 (primitivo -> NUMBER .)
-    LESS            reduce using rule 25 (primitivo -> NUMBER .)
-    BY              reduce using rule 25 (primitivo -> NUMBER .)
-    DIVIDED         reduce using rule 25 (primitivo -> NUMBER .)
-    MODUL           reduce using rule 25 (primitivo -> NUMBER .)
-    EQUAL           reduce using rule 25 (primitivo -> NUMBER .)
-    DIFERENT        reduce using rule 25 (primitivo -> NUMBER .)
-    MINOR           reduce using rule 25 (primitivo -> NUMBER .)
-    MINOREQUAL      reduce using rule 25 (primitivo -> NUMBER .)
-    GREATER         reduce using rule 25 (primitivo -> NUMBER .)
-    GREATEREQUAL    reduce using rule 25 (primitivo -> NUMBER .)
+    EQUAL           shift and go to state 34
+    CONSOLE         reduce using rule 9 (declare -> RVAR ID DOUBLEDOT type .)
+    RVAR            reduce using rule 9 (declare -> RVAR ID DOUBLEDOT type .)
+    $end            reduce using rule 9 (declare -> RVAR ID DOUBLEDOT type .)
 
 
 state 16
 
-    (26) primitivo -> FLOAT .
+    (35) type -> RNUMBER .
 
-    PARC            reduce using rule 26 (primitivo -> FLOAT .)
-    PLUS            reduce using rule 26 (primitivo -> FLOAT .)
-    LESS            reduce using rule 26 (primitivo -> FLOAT .)
-    BY              reduce using rule 26 (primitivo -> FLOAT .)
-    DIVIDED         reduce using rule 26 (primitivo -> FLOAT .)
-    MODUL           reduce using rule 26 (primitivo -> FLOAT .)
-    EQUAL           reduce using rule 26 (primitivo -> FLOAT .)
-    DIFERENT        reduce using rule 26 (primitivo -> FLOAT .)
-    MINOR           reduce using rule 26 (primitivo -> FLOAT .)
-    MINOREQUAL      reduce using rule 26 (primitivo -> FLOAT .)
-    GREATER         reduce using rule 26 (primitivo -> FLOAT .)
-    GREATEREQUAL    reduce using rule 26 (primitivo -> FLOAT .)
+    EQUAL           reduce using rule 35 (type -> RNUMBER .)
+    CONSOLE         reduce using rule 35 (type -> RNUMBER .)
+    RVAR            reduce using rule 35 (type -> RNUMBER .)
+    $end            reduce using rule 35 (type -> RNUMBER .)
 
 
 state 17
 
-    (27) primitivo -> STRING .
+    (36) type -> RFLOAT .
 
-    PARC            reduce using rule 27 (primitivo -> STRING .)
-    PLUS            reduce using rule 27 (primitivo -> STRING .)
-    LESS            reduce using rule 27 (primitivo -> STRING .)
-    BY              reduce using rule 27 (primitivo -> STRING .)
-    DIVIDED         reduce using rule 27 (primitivo -> STRING .)
-    MODUL           reduce using rule 27 (primitivo -> STRING .)
-    EQUAL           reduce using rule 27 (primitivo -> STRING .)
-    DIFERENT        reduce using rule 27 (primitivo -> STRING .)
-    MINOR           reduce using rule 27 (primitivo -> STRING .)
-    MINOREQUAL      reduce using rule 27 (primitivo -> STRING .)
-    GREATER         reduce using rule 27 (primitivo -> STRING .)
-    GREATEREQUAL    reduce using rule 27 (primitivo -> STRING .)
+    EQUAL           reduce using rule 36 (type -> RFLOAT .)
+    CONSOLE         reduce using rule 36 (type -> RFLOAT .)
+    RVAR            reduce using rule 36 (type -> RFLOAT .)
+    $end            reduce using rule 36 (type -> RFLOAT .)
 
 
 state 18
 
-    (28) primitivo -> boolean .
-    (22) logica -> boolean . AND boolean
-    (23) logica -> boolean . OR boolean
+    (37) type -> RSTRING .
 
-    PARC            reduce using rule 28 (primitivo -> boolean .)
-    PLUS            reduce using rule 28 (primitivo -> boolean .)
-    LESS            reduce using rule 28 (primitivo -> boolean .)
-    BY              reduce using rule 28 (primitivo -> boolean .)
-    DIVIDED         reduce using rule 28 (primitivo -> boolean .)
-    MODUL           reduce using rule 28 (primitivo -> boolean .)
-    EQUAL           reduce using rule 28 (primitivo -> boolean .)
-    DIFERENT        reduce using rule 28 (primitivo -> boolean .)
-    MINOR           reduce using rule 28 (primitivo -> boolean .)
-    MINOREQUAL      reduce using rule 28 (primitivo -> boolean .)
-    GREATER         reduce using rule 28 (primitivo -> boolean .)
-    GREATEREQUAL    reduce using rule 28 (primitivo -> boolean .)
-    AND             shift and go to state 35
-    OR              shift and go to state 36
+    EQUAL           reduce using rule 37 (type -> RSTRING .)
+    CONSOLE         reduce using rule 37 (type -> RSTRING .)
+    RVAR            reduce using rule 37 (type -> RSTRING .)
+    $end            reduce using rule 37 (type -> RSTRING .)
 
 
 state 19
 
-    (15) aritmetica -> LESS . expression
-    (6) expression -> . primitivo
-    (7) expression -> . aritmetica
-    (8) expression -> . relacional
-    (9) expression -> . logica
-    (25) primitivo -> . NUMBER
-    (26) primitivo -> . FLOAT
-    (27) primitivo -> . STRING
-    (28) primitivo -> . boolean
-    (10) aritmetica -> . expression PLUS expression
-    (11) aritmetica -> . expression LESS expression
-    (12) aritmetica -> . expression BY expression
-    (13) aritmetica -> . expression DIVIDED expression
-    (14) aritmetica -> . expression MODUL expression
-    (15) aritmetica -> . LESS expression
-    (16) relacional -> . expression EQUAL expression
-    (17) relacional -> . expression DIFERENT expression
-    (18) relacional -> . expression MINOR expression
-    (19) relacional -> . expression MINOREQUAL expression
-    (20) relacional -> . expression GREATER expression
-    (21) relacional -> . expression GREATEREQUAL expression
-    (22) logica -> . boolean AND boolean
-    (23) logica -> . boolean OR boolean
-    (24) logica -> . NOT boolean
-    (29) boolean -> . TRUE
-    (30) boolean -> . FALSE
+    (38) type -> RBOOLEAN .
 
-    NUMBER          shift and go to state 15
-    FLOAT           shift and go to state 16
-    STRING          shift and go to state 17
-    LESS            shift and go to state 19
-    NOT             shift and go to state 20
-    TRUE            shift and go to state 21
-    FALSE           shift and go to state 22
+    EQUAL           reduce using rule 38 (type -> RBOOLEAN .)
+    CONSOLE         reduce using rule 38 (type -> RBOOLEAN .)
+    RVAR            reduce using rule 38 (type -> RBOOLEAN .)
+    $end            reduce using rule 38 (type -> RBOOLEAN .)
 
-    expression                     shift and go to state 37
-    primitivo                      shift and go to state 11
-    aritmetica                     shift and go to state 12
-    relacional                     shift and go to state 13
-    logica                         shift and go to state 14
-    boolean                        shift and go to state 18
 
 state 20
 
-    (24) logica -> NOT . boolean
-    (29) boolean -> . TRUE
-    (30) boolean -> . FALSE
+    (8) declare -> RVAR ID EQUAL expression .
+    (14) aritmetica -> expression . PLUS expression
+    (15) aritmetica -> expression . BY expression
+    (16) aritmetica -> expression . DIVIDED expression
+    (17) aritmetica -> expression . LESS expression
+    (18) aritmetica -> expression . MODUL expression
+    (20) relacional -> expression . DEQUAL expression
+    (21) relacional -> expression . DIFERENT expression
+    (22) relacional -> expression . MINOR expression
+    (23) relacional -> expression . MINOREQUAL expression
+    (24) relacional -> expression . GREATER expression
+    (25) relacional -> expression . GREATEREQUAL expression
 
-    TRUE            shift and go to state 21
-    FALSE           shift and go to state 22
+    CONSOLE         reduce using rule 8 (declare -> RVAR ID EQUAL expression .)
+    RVAR            reduce using rule 8 (declare -> RVAR ID EQUAL expression .)
+    $end            reduce using rule 8 (declare -> RVAR ID EQUAL expression .)
+    PLUS            shift and go to state 35
+    BY              shift and go to state 36
+    DIVIDED         shift and go to state 37
+    LESS            shift and go to state 38
+    MODUL           shift and go to state 39
+    DEQUAL          shift and go to state 40
+    DIFERENT        shift and go to state 41
+    MINOR           shift and go to state 42
+    MINOREQUAL      shift and go to state 43
+    GREATER         shift and go to state 44
+    GREATEREQUAL    shift and go to state 45
 
-    boolean                        shift and go to state 38
 
 state 21
 
-    (29) boolean -> TRUE .
+    (10) expression -> primitivo .
 
-    AND             reduce using rule 29 (boolean -> TRUE .)
-    OR              reduce using rule 29 (boolean -> TRUE .)
-    PARC            reduce using rule 29 (boolean -> TRUE .)
-    PLUS            reduce using rule 29 (boolean -> TRUE .)
-    LESS            reduce using rule 29 (boolean -> TRUE .)
-    BY              reduce using rule 29 (boolean -> TRUE .)
-    DIVIDED         reduce using rule 29 (boolean -> TRUE .)
-    MODUL           reduce using rule 29 (boolean -> TRUE .)
-    EQUAL           reduce using rule 29 (boolean -> TRUE .)
-    DIFERENT        reduce using rule 29 (boolean -> TRUE .)
-    MINOR           reduce using rule 29 (boolean -> TRUE .)
-    MINOREQUAL      reduce using rule 29 (boolean -> TRUE .)
-    GREATER         reduce using rule 29 (boolean -> TRUE .)
-    GREATEREQUAL    reduce using rule 29 (boolean -> TRUE .)
+    PLUS            reduce using rule 10 (expression -> primitivo .)
+    BY              reduce using rule 10 (expression -> primitivo .)
+    DIVIDED         reduce using rule 10 (expression -> primitivo .)
+    LESS            reduce using rule 10 (expression -> primitivo .)
+    MODUL           reduce using rule 10 (expression -> primitivo .)
+    DEQUAL          reduce using rule 10 (expression -> primitivo .)
+    DIFERENT        reduce using rule 10 (expression -> primitivo .)
+    MINOR           reduce using rule 10 (expression -> primitivo .)
+    MINOREQUAL      reduce using rule 10 (expression -> primitivo .)
+    GREATER         reduce using rule 10 (expression -> primitivo .)
+    GREATEREQUAL    reduce using rule 10 (expression -> primitivo .)
+    CONSOLE         reduce using rule 10 (expression -> primitivo .)
+    RVAR            reduce using rule 10 (expression -> primitivo .)
+    $end            reduce using rule 10 (expression -> primitivo .)
+    PARC            reduce using rule 10 (expression -> primitivo .)
 
 
 state 22
 
-    (30) boolean -> FALSE .
+    (11) expression -> aritmetica .
 
-    AND             reduce using rule 30 (boolean -> FALSE .)
-    OR              reduce using rule 30 (boolean -> FALSE .)
-    PARC            reduce using rule 30 (boolean -> FALSE .)
-    PLUS            reduce using rule 30 (boolean -> FALSE .)
-    LESS            reduce using rule 30 (boolean -> FALSE .)
-    BY              reduce using rule 30 (boolean -> FALSE .)
-    DIVIDED         reduce using rule 30 (boolean -> FALSE .)
-    MODUL           reduce using rule 30 (boolean -> FALSE .)
-    EQUAL           reduce using rule 30 (boolean -> FALSE .)
-    DIFERENT        reduce using rule 30 (boolean -> FALSE .)
-    MINOR           reduce using rule 30 (boolean -> FALSE .)
-    MINOREQUAL      reduce using rule 30 (boolean -> FALSE .)
-    GREATER         reduce using rule 30 (boolean -> FALSE .)
-    GREATEREQUAL    reduce using rule 30 (boolean -> FALSE .)
+    PLUS            reduce using rule 11 (expression -> aritmetica .)
+    BY              reduce using rule 11 (expression -> aritmetica .)
+    DIVIDED         reduce using rule 11 (expression -> aritmetica .)
+    LESS            reduce using rule 11 (expression -> aritmetica .)
+    MODUL           reduce using rule 11 (expression -> aritmetica .)
+    DEQUAL          reduce using rule 11 (expression -> aritmetica .)
+    DIFERENT        reduce using rule 11 (expression -> aritmetica .)
+    MINOR           reduce using rule 11 (expression -> aritmetica .)
+    MINOREQUAL      reduce using rule 11 (expression -> aritmetica .)
+    GREATER         reduce using rule 11 (expression -> aritmetica .)
+    GREATEREQUAL    reduce using rule 11 (expression -> aritmetica .)
+    CONSOLE         reduce using rule 11 (expression -> aritmetica .)
+    RVAR            reduce using rule 11 (expression -> aritmetica .)
+    $end            reduce using rule 11 (expression -> aritmetica .)
+    PARC            reduce using rule 11 (expression -> aritmetica .)
 
 
 state 23
 
-    (5) print -> CONSOLE DOT LOG PARA expression PARC .
+    (12) expression -> relacional .
 
-    CONSOLE         reduce using rule 5 (print -> CONSOLE DOT LOG PARA expression PARC .)
-    $end            reduce using rule 5 (print -> CONSOLE DOT LOG PARA expression PARC .)
+    PLUS            reduce using rule 12 (expression -> relacional .)
+    BY              reduce using rule 12 (expression -> relacional .)
+    DIVIDED         reduce using rule 12 (expression -> relacional .)
+    LESS            reduce using rule 12 (expression -> relacional .)
+    MODUL           reduce using rule 12 (expression -> relacional .)
+    DEQUAL          reduce using rule 12 (expression -> relacional .)
+    DIFERENT        reduce using rule 12 (expression -> relacional .)
+    MINOR           reduce using rule 12 (expression -> relacional .)
+    MINOREQUAL      reduce using rule 12 (expression -> relacional .)
+    GREATER         reduce using rule 12 (expression -> relacional .)
+    GREATEREQUAL    reduce using rule 12 (expression -> relacional .)
+    CONSOLE         reduce using rule 12 (expression -> relacional .)
+    RVAR            reduce using rule 12 (expression -> relacional .)
+    $end            reduce using rule 12 (expression -> relacional .)
+    PARC            reduce using rule 12 (expression -> relacional .)
 
 
 state 24
 
-    (10) aritmetica -> expression PLUS . expression
-    (6) expression -> . primitivo
-    (7) expression -> . aritmetica
-    (8) expression -> . relacional
-    (9) expression -> . logica
-    (25) primitivo -> . NUMBER
-    (26) primitivo -> . FLOAT
-    (27) primitivo -> . STRING
-    (28) primitivo -> . boolean
-    (10) aritmetica -> . expression PLUS expression
-    (11) aritmetica -> . expression LESS expression
-    (12) aritmetica -> . expression BY expression
-    (13) aritmetica -> . expression DIVIDED expression
-    (14) aritmetica -> . expression MODUL expression
-    (15) aritmetica -> . LESS expression
-    (16) relacional -> . expression EQUAL expression
-    (17) relacional -> . expression DIFERENT expression
-    (18) relacional -> . expression MINOR expression
-    (19) relacional -> . expression MINOREQUAL expression
-    (20) relacional -> . expression GREATER expression
-    (21) relacional -> . expression GREATEREQUAL expression
-    (22) logica -> . boolean AND boolean
-    (23) logica -> . boolean OR boolean
-    (24) logica -> . NOT boolean
-    (29) boolean -> . TRUE
-    (30) boolean -> . FALSE
+    (13) expression -> logica .
 
-    NUMBER          shift and go to state 15
-    FLOAT           shift and go to state 16
-    STRING          shift and go to state 17
-    LESS            shift and go to state 19
-    NOT             shift and go to state 20
-    TRUE            shift and go to state 21
-    FALSE           shift and go to state 22
+    PLUS            reduce using rule 13 (expression -> logica .)
+    BY              reduce using rule 13 (expression -> logica .)
+    DIVIDED         reduce using rule 13 (expression -> logica .)
+    LESS            reduce using rule 13 (expression -> logica .)
+    MODUL           reduce using rule 13 (expression -> logica .)
+    DEQUAL          reduce using rule 13 (expression -> logica .)
+    DIFERENT        reduce using rule 13 (expression -> logica .)
+    MINOR           reduce using rule 13 (expression -> logica .)
+    MINOREQUAL      reduce using rule 13 (expression -> logica .)
+    GREATER         reduce using rule 13 (expression -> logica .)
+    GREATEREQUAL    reduce using rule 13 (expression -> logica .)
+    CONSOLE         reduce using rule 13 (expression -> logica .)
+    RVAR            reduce using rule 13 (expression -> logica .)
+    $end            reduce using rule 13 (expression -> logica .)
+    PARC            reduce using rule 13 (expression -> logica .)
 
-    expression                     shift and go to state 39
-    primitivo                      shift and go to state 11
-    aritmetica                     shift and go to state 12
-    relacional                     shift and go to state 13
-    logica                         shift and go to state 14
-    boolean                        shift and go to state 18
 
 state 25
 
-    (11) aritmetica -> expression LESS . expression
-    (6) expression -> . primitivo
-    (7) expression -> . aritmetica
-    (8) expression -> . relacional
-    (9) expression -> . logica
-    (25) primitivo -> . NUMBER
-    (26) primitivo -> . FLOAT
-    (27) primitivo -> . STRING
-    (28) primitivo -> . boolean
-    (10) aritmetica -> . expression PLUS expression
-    (11) aritmetica -> . expression LESS expression
-    (12) aritmetica -> . expression BY expression
-    (13) aritmetica -> . expression DIVIDED expression
-    (14) aritmetica -> . expression MODUL expression
-    (15) aritmetica -> . LESS expression
-    (16) relacional -> . expression EQUAL expression
-    (17) relacional -> . expression DIFERENT expression
-    (18) relacional -> . expression MINOR expression
-    (19) relacional -> . expression MINOREQUAL expression
-    (20) relacional -> . expression GREATER expression
-    (21) relacional -> . expression GREATEREQUAL expression
-    (22) logica -> . boolean AND boolean
-    (23) logica -> . boolean OR boolean
-    (24) logica -> . NOT boolean
-    (29) boolean -> . TRUE
-    (30) boolean -> . FALSE
+    (29) primitivo -> NUMBER .
 
-    NUMBER          shift and go to state 15
-    FLOAT           shift and go to state 16
-    STRING          shift and go to state 17
-    LESS            shift and go to state 19
-    NOT             shift and go to state 20
-    TRUE            shift and go to state 21
-    FALSE           shift and go to state 22
+    PLUS            reduce using rule 29 (primitivo -> NUMBER .)
+    BY              reduce using rule 29 (primitivo -> NUMBER .)
+    DIVIDED         reduce using rule 29 (primitivo -> NUMBER .)
+    LESS            reduce using rule 29 (primitivo -> NUMBER .)
+    MODUL           reduce using rule 29 (primitivo -> NUMBER .)
+    DEQUAL          reduce using rule 29 (primitivo -> NUMBER .)
+    DIFERENT        reduce using rule 29 (primitivo -> NUMBER .)
+    MINOR           reduce using rule 29 (primitivo -> NUMBER .)
+    MINOREQUAL      reduce using rule 29 (primitivo -> NUMBER .)
+    GREATER         reduce using rule 29 (primitivo -> NUMBER .)
+    GREATEREQUAL    reduce using rule 29 (primitivo -> NUMBER .)
+    CONSOLE         reduce using rule 29 (primitivo -> NUMBER .)
+    RVAR            reduce using rule 29 (primitivo -> NUMBER .)
+    $end            reduce using rule 29 (primitivo -> NUMBER .)
+    PARC            reduce using rule 29 (primitivo -> NUMBER .)
 
-    expression                     shift and go to state 40
-    primitivo                      shift and go to state 11
-    aritmetica                     shift and go to state 12
-    relacional                     shift and go to state 13
-    logica                         shift and go to state 14
-    boolean                        shift and go to state 18
 
 state 26
 
-    (12) aritmetica -> expression BY . expression
-    (6) expression -> . primitivo
-    (7) expression -> . aritmetica
-    (8) expression -> . relacional
-    (9) expression -> . logica
-    (25) primitivo -> . NUMBER
-    (26) primitivo -> . FLOAT
-    (27) primitivo -> . STRING
-    (28) primitivo -> . boolean
-    (10) aritmetica -> . expression PLUS expression
-    (11) aritmetica -> . expression LESS expression
-    (12) aritmetica -> . expression BY expression
-    (13) aritmetica -> . expression DIVIDED expression
-    (14) aritmetica -> . expression MODUL expression
-    (15) aritmetica -> . LESS expression
-    (16) relacional -> . expression EQUAL expression
-    (17) relacional -> . expression DIFERENT expression
-    (18) relacional -> . expression MINOR expression
-    (19) relacional -> . expression MINOREQUAL expression
-    (20) relacional -> . expression GREATER expression
-    (21) relacional -> . expression GREATEREQUAL expression
-    (22) logica -> . boolean AND boolean
-    (23) logica -> . boolean OR boolean
-    (24) logica -> . NOT boolean
-    (29) boolean -> . TRUE
-    (30) boolean -> . FALSE
+    (30) primitivo -> FLOAT .
 
-    NUMBER          shift and go to state 15
-    FLOAT           shift and go to state 16
-    STRING          shift and go to state 17
-    LESS            shift and go to state 19
-    NOT             shift and go to state 20
-    TRUE            shift and go to state 21
-    FALSE           shift and go to state 22
+    PLUS            reduce using rule 30 (primitivo -> FLOAT .)
+    BY              reduce using rule 30 (primitivo -> FLOAT .)
+    DIVIDED         reduce using rule 30 (primitivo -> FLOAT .)
+    LESS            reduce using rule 30 (primitivo -> FLOAT .)
+    MODUL           reduce using rule 30 (primitivo -> FLOAT .)
+    DEQUAL          reduce using rule 30 (primitivo -> FLOAT .)
+    DIFERENT        reduce using rule 30 (primitivo -> FLOAT .)
+    MINOR           reduce using rule 30 (primitivo -> FLOAT .)
+    MINOREQUAL      reduce using rule 30 (primitivo -> FLOAT .)
+    GREATER         reduce using rule 30 (primitivo -> FLOAT .)
+    GREATEREQUAL    reduce using rule 30 (primitivo -> FLOAT .)
+    CONSOLE         reduce using rule 30 (primitivo -> FLOAT .)
+    RVAR            reduce using rule 30 (primitivo -> FLOAT .)
+    $end            reduce using rule 30 (primitivo -> FLOAT .)
+    PARC            reduce using rule 30 (primitivo -> FLOAT .)
 
-    expression                     shift and go to state 41
-    primitivo                      shift and go to state 11
-    aritmetica                     shift and go to state 12
-    relacional                     shift and go to state 13
-    logica                         shift and go to state 14
-    boolean                        shift and go to state 18
 
 state 27
 
-    (13) aritmetica -> expression DIVIDED . expression
-    (6) expression -> . primitivo
-    (7) expression -> . aritmetica
-    (8) expression -> . relacional
-    (9) expression -> . logica
-    (25) primitivo -> . NUMBER
-    (26) primitivo -> . FLOAT
-    (27) primitivo -> . STRING
-    (28) primitivo -> . boolean
-    (10) aritmetica -> . expression PLUS expression
-    (11) aritmetica -> . expression LESS expression
-    (12) aritmetica -> . expression BY expression
-    (13) aritmetica -> . expression DIVIDED expression
-    (14) aritmetica -> . expression MODUL expression
-    (15) aritmetica -> . LESS expression
-    (16) relacional -> . expression EQUAL expression
-    (17) relacional -> . expression DIFERENT expression
-    (18) relacional -> . expression MINOR expression
-    (19) relacional -> . expression MINOREQUAL expression
-    (20) relacional -> . expression GREATER expression
-    (21) relacional -> . expression GREATEREQUAL expression
-    (22) logica -> . boolean AND boolean
-    (23) logica -> . boolean OR boolean
-    (24) logica -> . NOT boolean
-    (29) boolean -> . TRUE
-    (30) boolean -> . FALSE
+    (31) primitivo -> STRING .
 
-    NUMBER          shift and go to state 15
-    FLOAT           shift and go to state 16
-    STRING          shift and go to state 17
-    LESS            shift and go to state 19
-    NOT             shift and go to state 20
-    TRUE            shift and go to state 21
-    FALSE           shift and go to state 22
+    PLUS            reduce using rule 31 (primitivo -> STRING .)
+    BY              reduce using rule 31 (primitivo -> STRING .)
+    DIVIDED         reduce using rule 31 (primitivo -> STRING .)
+    LESS            reduce using rule 31 (primitivo -> STRING .)
+    MODUL           reduce using rule 31 (primitivo -> STRING .)
+    DEQUAL          reduce using rule 31 (primitivo -> STRING .)
+    DIFERENT        reduce using rule 31 (primitivo -> STRING .)
+    MINOR           reduce using rule 31 (primitivo -> STRING .)
+    MINOREQUAL      reduce using rule 31 (primitivo -> STRING .)
+    GREATER         reduce using rule 31 (primitivo -> STRING .)
+    GREATEREQUAL    reduce using rule 31 (primitivo -> STRING .)
+    CONSOLE         reduce using rule 31 (primitivo -> STRING .)
+    RVAR            reduce using rule 31 (primitivo -> STRING .)
+    $end            reduce using rule 31 (primitivo -> STRING .)
+    PARC            reduce using rule 31 (primitivo -> STRING .)
 
-    expression                     shift and go to state 42
-    primitivo                      shift and go to state 11
-    aritmetica                     shift and go to state 12
-    relacional                     shift and go to state 13
-    logica                         shift and go to state 14
-    boolean                        shift and go to state 18
 
 state 28
 
-    (14) aritmetica -> expression MODUL . expression
-    (6) expression -> . primitivo
-    (7) expression -> . aritmetica
-    (8) expression -> . relacional
-    (9) expression -> . logica
-    (25) primitivo -> . NUMBER
-    (26) primitivo -> . FLOAT
-    (27) primitivo -> . STRING
-    (28) primitivo -> . boolean
-    (10) aritmetica -> . expression PLUS expression
-    (11) aritmetica -> . expression LESS expression
-    (12) aritmetica -> . expression BY expression
-    (13) aritmetica -> . expression DIVIDED expression
-    (14) aritmetica -> . expression MODUL expression
-    (15) aritmetica -> . LESS expression
-    (16) relacional -> . expression EQUAL expression
-    (17) relacional -> . expression DIFERENT expression
-    (18) relacional -> . expression MINOR expression
-    (19) relacional -> . expression MINOREQUAL expression
-    (20) relacional -> . expression GREATER expression
-    (21) relacional -> . expression GREATEREQUAL expression
-    (22) logica -> . boolean AND boolean
-    (23) logica -> . boolean OR boolean
-    (24) logica -> . NOT boolean
-    (29) boolean -> . TRUE
-    (30) boolean -> . FALSE
+    (32) primitivo -> boolean .
+    (26) logica -> boolean . AND boolean
+    (27) logica -> boolean . OR boolean
 
-    NUMBER          shift and go to state 15
-    FLOAT           shift and go to state 16
-    STRING          shift and go to state 17
-    LESS            shift and go to state 19
-    NOT             shift and go to state 20
-    TRUE            shift and go to state 21
-    FALSE           shift and go to state 22
+    PLUS            reduce using rule 32 (primitivo -> boolean .)
+    BY              reduce using rule 32 (primitivo -> boolean .)
+    DIVIDED         reduce using rule 32 (primitivo -> boolean .)
+    LESS            reduce using rule 32 (primitivo -> boolean .)
+    MODUL           reduce using rule 32 (primitivo -> boolean .)
+    DEQUAL          reduce using rule 32 (primitivo -> boolean .)
+    DIFERENT        reduce using rule 32 (primitivo -> boolean .)
+    MINOR           reduce using rule 32 (primitivo -> boolean .)
+    MINOREQUAL      reduce using rule 32 (primitivo -> boolean .)
+    GREATER         reduce using rule 32 (primitivo -> boolean .)
+    GREATEREQUAL    reduce using rule 32 (primitivo -> boolean .)
+    CONSOLE         reduce using rule 32 (primitivo -> boolean .)
+    RVAR            reduce using rule 32 (primitivo -> boolean .)
+    $end            reduce using rule 32 (primitivo -> boolean .)
+    PARC            reduce using rule 32 (primitivo -> boolean .)
+    AND             shift and go to state 46
+    OR              shift and go to state 47
 
-    expression                     shift and go to state 43
-    primitivo                      shift and go to state 11
-    aritmetica                     shift and go to state 12
-    relacional                     shift and go to state 13
-    logica                         shift and go to state 14
-    boolean                        shift and go to state 18
 
 state 29
 
-    (16) relacional -> expression EQUAL . expression
-    (6) expression -> . primitivo
-    (7) expression -> . aritmetica
-    (8) expression -> . relacional
-    (9) expression -> . logica
-    (25) primitivo -> . NUMBER
-    (26) primitivo -> . FLOAT
-    (27) primitivo -> . STRING
-    (28) primitivo -> . boolean
-    (10) aritmetica -> . expression PLUS expression
-    (11) aritmetica -> . expression LESS expression
-    (12) aritmetica -> . expression BY expression
-    (13) aritmetica -> . expression DIVIDED expression
-    (14) aritmetica -> . expression MODUL expression
-    (15) aritmetica -> . LESS expression
-    (16) relacional -> . expression EQUAL expression
-    (17) relacional -> . expression DIFERENT expression
-    (18) relacional -> . expression MINOR expression
-    (19) relacional -> . expression MINOREQUAL expression
-    (20) relacional -> . expression GREATER expression
-    (21) relacional -> . expression GREATEREQUAL expression
-    (22) logica -> . boolean AND boolean
-    (23) logica -> . boolean OR boolean
-    (24) logica -> . NOT boolean
-    (29) boolean -> . TRUE
-    (30) boolean -> . FALSE
+    (19) aritmetica -> LESS . expression
+    (10) expression -> . primitivo
+    (11) expression -> . aritmetica
+    (12) expression -> . relacional
+    (13) expression -> . logica
+    (29) primitivo -> . NUMBER
+    (30) primitivo -> . FLOAT
+    (31) primitivo -> . STRING
+    (32) primitivo -> . boolean
+    (14) aritmetica -> . expression PLUS expression
+    (15) aritmetica -> . expression BY expression
+    (16) aritmetica -> . expression DIVIDED expression
+    (17) aritmetica -> . expression LESS expression
+    (18) aritmetica -> . expression MODUL expression
+    (19) aritmetica -> . LESS expression
+    (20) relacional -> . expression DEQUAL expression
+    (21) relacional -> . expression DIFERENT expression
+    (22) relacional -> . expression MINOR expression
+    (23) relacional -> . expression MINOREQUAL expression
+    (24) relacional -> . expression GREATER expression
+    (25) relacional -> . expression GREATEREQUAL expression
+    (26) logica -> . boolean AND boolean
+    (27) logica -> . boolean OR boolean
+    (28) logica -> . NOT boolean
+    (33) boolean -> . TRUE
+    (34) boolean -> . FALSE
 
-    NUMBER          shift and go to state 15
-    FLOAT           shift and go to state 16
-    STRING          shift and go to state 17
-    LESS            shift and go to state 19
-    NOT             shift and go to state 20
-    TRUE            shift and go to state 21
-    FALSE           shift and go to state 22
+    NUMBER          shift and go to state 25
+    FLOAT           shift and go to state 26
+    STRING          shift and go to state 27
+    LESS            shift and go to state 29
+    NOT             shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
 
-    expression                     shift and go to state 44
-    primitivo                      shift and go to state 11
-    aritmetica                     shift and go to state 12
-    relacional                     shift and go to state 13
-    logica                         shift and go to state 14
-    boolean                        shift and go to state 18
+    expression                     shift and go to state 48
+    primitivo                      shift and go to state 21
+    aritmetica                     shift and go to state 22
+    relacional                     shift and go to state 23
+    logica                         shift and go to state 24
+    boolean                        shift and go to state 28
 
 state 30
 
-    (17) relacional -> expression DIFERENT . expression
-    (6) expression -> . primitivo
-    (7) expression -> . aritmetica
-    (8) expression -> . relacional
-    (9) expression -> . logica
-    (25) primitivo -> . NUMBER
-    (26) primitivo -> . FLOAT
-    (27) primitivo -> . STRING
-    (28) primitivo -> . boolean
-    (10) aritmetica -> . expression PLUS expression
-    (11) aritmetica -> . expression LESS expression
-    (12) aritmetica -> . expression BY expression
-    (13) aritmetica -> . expression DIVIDED expression
-    (14) aritmetica -> . expression MODUL expression
-    (15) aritmetica -> . LESS expression
-    (16) relacional -> . expression EQUAL expression
-    (17) relacional -> . expression DIFERENT expression
-    (18) relacional -> . expression MINOR expression
-    (19) relacional -> . expression MINOREQUAL expression
-    (20) relacional -> . expression GREATER expression
-    (21) relacional -> . expression GREATEREQUAL expression
-    (22) logica -> . boolean AND boolean
-    (23) logica -> . boolean OR boolean
-    (24) logica -> . NOT boolean
-    (29) boolean -> . TRUE
-    (30) boolean -> . FALSE
+    (28) logica -> NOT . boolean
+    (33) boolean -> . TRUE
+    (34) boolean -> . FALSE
 
-    NUMBER          shift and go to state 15
-    FLOAT           shift and go to state 16
-    STRING          shift and go to state 17
-    LESS            shift and go to state 19
-    NOT             shift and go to state 20
-    TRUE            shift and go to state 21
-    FALSE           shift and go to state 22
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
 
-    expression                     shift and go to state 45
-    primitivo                      shift and go to state 11
-    aritmetica                     shift and go to state 12
-    relacional                     shift and go to state 13
-    logica                         shift and go to state 14
-    boolean                        shift and go to state 18
+    boolean                        shift and go to state 49
 
 state 31
 
-    (18) relacional -> expression MINOR . expression
-    (6) expression -> . primitivo
-    (7) expression -> . aritmetica
-    (8) expression -> . relacional
-    (9) expression -> . logica
-    (25) primitivo -> . NUMBER
-    (26) primitivo -> . FLOAT
-    (27) primitivo -> . STRING
-    (28) primitivo -> . boolean
-    (10) aritmetica -> . expression PLUS expression
-    (11) aritmetica -> . expression LESS expression
-    (12) aritmetica -> . expression BY expression
-    (13) aritmetica -> . expression DIVIDED expression
-    (14) aritmetica -> . expression MODUL expression
-    (15) aritmetica -> . LESS expression
-    (16) relacional -> . expression EQUAL expression
-    (17) relacional -> . expression DIFERENT expression
-    (18) relacional -> . expression MINOR expression
-    (19) relacional -> . expression MINOREQUAL expression
-    (20) relacional -> . expression GREATER expression
-    (21) relacional -> . expression GREATEREQUAL expression
-    (22) logica -> . boolean AND boolean
-    (23) logica -> . boolean OR boolean
-    (24) logica -> . NOT boolean
-    (29) boolean -> . TRUE
-    (30) boolean -> . FALSE
+    (33) boolean -> TRUE .
 
-    NUMBER          shift and go to state 15
-    FLOAT           shift and go to state 16
-    STRING          shift and go to state 17
-    LESS            shift and go to state 19
-    NOT             shift and go to state 20
-    TRUE            shift and go to state 21
-    FALSE           shift and go to state 22
+    AND             reduce using rule 33 (boolean -> TRUE .)
+    OR              reduce using rule 33 (boolean -> TRUE .)
+    PLUS            reduce using rule 33 (boolean -> TRUE .)
+    BY              reduce using rule 33 (boolean -> TRUE .)
+    DIVIDED         reduce using rule 33 (boolean -> TRUE .)
+    LESS            reduce using rule 33 (boolean -> TRUE .)
+    MODUL           reduce using rule 33 (boolean -> TRUE .)
+    DEQUAL          reduce using rule 33 (boolean -> TRUE .)
+    DIFERENT        reduce using rule 33 (boolean -> TRUE .)
+    MINOR           reduce using rule 33 (boolean -> TRUE .)
+    MINOREQUAL      reduce using rule 33 (boolean -> TRUE .)
+    GREATER         reduce using rule 33 (boolean -> TRUE .)
+    GREATEREQUAL    reduce using rule 33 (boolean -> TRUE .)
+    CONSOLE         reduce using rule 33 (boolean -> TRUE .)
+    RVAR            reduce using rule 33 (boolean -> TRUE .)
+    $end            reduce using rule 33 (boolean -> TRUE .)
+    PARC            reduce using rule 33 (boolean -> TRUE .)
 
-    expression                     shift and go to state 46
-    primitivo                      shift and go to state 11
-    aritmetica                     shift and go to state 12
-    relacional                     shift and go to state 13
-    logica                         shift and go to state 14
-    boolean                        shift and go to state 18
 
 state 32
 
-    (19) relacional -> expression MINOREQUAL . expression
-    (6) expression -> . primitivo
-    (7) expression -> . aritmetica
-    (8) expression -> . relacional
-    (9) expression -> . logica
-    (25) primitivo -> . NUMBER
-    (26) primitivo -> . FLOAT
-    (27) primitivo -> . STRING
-    (28) primitivo -> . boolean
-    (10) aritmetica -> . expression PLUS expression
-    (11) aritmetica -> . expression LESS expression
-    (12) aritmetica -> . expression BY expression
-    (13) aritmetica -> . expression DIVIDED expression
-    (14) aritmetica -> . expression MODUL expression
-    (15) aritmetica -> . LESS expression
-    (16) relacional -> . expression EQUAL expression
-    (17) relacional -> . expression DIFERENT expression
-    (18) relacional -> . expression MINOR expression
-    (19) relacional -> . expression MINOREQUAL expression
-    (20) relacional -> . expression GREATER expression
-    (21) relacional -> . expression GREATEREQUAL expression
-    (22) logica -> . boolean AND boolean
-    (23) logica -> . boolean OR boolean
-    (24) logica -> . NOT boolean
-    (29) boolean -> . TRUE
-    (30) boolean -> . FALSE
+    (34) boolean -> FALSE .
 
-    NUMBER          shift and go to state 15
-    FLOAT           shift and go to state 16
-    STRING          shift and go to state 17
-    LESS            shift and go to state 19
-    NOT             shift and go to state 20
-    TRUE            shift and go to state 21
-    FALSE           shift and go to state 22
+    AND             reduce using rule 34 (boolean -> FALSE .)
+    OR              reduce using rule 34 (boolean -> FALSE .)
+    PLUS            reduce using rule 34 (boolean -> FALSE .)
+    BY              reduce using rule 34 (boolean -> FALSE .)
+    DIVIDED         reduce using rule 34 (boolean -> FALSE .)
+    LESS            reduce using rule 34 (boolean -> FALSE .)
+    MODUL           reduce using rule 34 (boolean -> FALSE .)
+    DEQUAL          reduce using rule 34 (boolean -> FALSE .)
+    DIFERENT        reduce using rule 34 (boolean -> FALSE .)
+    MINOR           reduce using rule 34 (boolean -> FALSE .)
+    MINOREQUAL      reduce using rule 34 (boolean -> FALSE .)
+    GREATER         reduce using rule 34 (boolean -> FALSE .)
+    GREATEREQUAL    reduce using rule 34 (boolean -> FALSE .)
+    CONSOLE         reduce using rule 34 (boolean -> FALSE .)
+    RVAR            reduce using rule 34 (boolean -> FALSE .)
+    $end            reduce using rule 34 (boolean -> FALSE .)
+    PARC            reduce using rule 34 (boolean -> FALSE .)
 
-    expression                     shift and go to state 47
-    primitivo                      shift and go to state 11
-    aritmetica                     shift and go to state 12
-    relacional                     shift and go to state 13
-    logica                         shift and go to state 14
-    boolean                        shift and go to state 18
 
 state 33
 
-    (20) relacional -> expression GREATER . expression
-    (6) expression -> . primitivo
-    (7) expression -> . aritmetica
-    (8) expression -> . relacional
-    (9) expression -> . logica
-    (25) primitivo -> . NUMBER
-    (26) primitivo -> . FLOAT
-    (27) primitivo -> . STRING
-    (28) primitivo -> . boolean
-    (10) aritmetica -> . expression PLUS expression
-    (11) aritmetica -> . expression LESS expression
-    (12) aritmetica -> . expression BY expression
-    (13) aritmetica -> . expression DIVIDED expression
-    (14) aritmetica -> . expression MODUL expression
-    (15) aritmetica -> . LESS expression
-    (16) relacional -> . expression EQUAL expression
-    (17) relacional -> . expression DIFERENT expression
-    (18) relacional -> . expression MINOR expression
-    (19) relacional -> . expression MINOREQUAL expression
-    (20) relacional -> . expression GREATER expression
-    (21) relacional -> . expression GREATEREQUAL expression
-    (22) logica -> . boolean AND boolean
-    (23) logica -> . boolean OR boolean
-    (24) logica -> . NOT boolean
-    (29) boolean -> . TRUE
-    (30) boolean -> . FALSE
+    (6) print -> CONSOLE DOT LOG PARA expression . PARC
+    (14) aritmetica -> expression . PLUS expression
+    (15) aritmetica -> expression . BY expression
+    (16) aritmetica -> expression . DIVIDED expression
+    (17) aritmetica -> expression . LESS expression
+    (18) aritmetica -> expression . MODUL expression
+    (20) relacional -> expression . DEQUAL expression
+    (21) relacional -> expression . DIFERENT expression
+    (22) relacional -> expression . MINOR expression
+    (23) relacional -> expression . MINOREQUAL expression
+    (24) relacional -> expression . GREATER expression
+    (25) relacional -> expression . GREATEREQUAL expression
 
-    NUMBER          shift and go to state 15
-    FLOAT           shift and go to state 16
-    STRING          shift and go to state 17
-    LESS            shift and go to state 19
-    NOT             shift and go to state 20
-    TRUE            shift and go to state 21
-    FALSE           shift and go to state 22
+    PARC            shift and go to state 50
+    PLUS            shift and go to state 35
+    BY              shift and go to state 36
+    DIVIDED         shift and go to state 37
+    LESS            shift and go to state 38
+    MODUL           shift and go to state 39
+    DEQUAL          shift and go to state 40
+    DIFERENT        shift and go to state 41
+    MINOR           shift and go to state 42
+    MINOREQUAL      shift and go to state 43
+    GREATER         shift and go to state 44
+    GREATEREQUAL    shift and go to state 45
 
-    expression                     shift and go to state 48
-    primitivo                      shift and go to state 11
-    aritmetica                     shift and go to state 12
-    relacional                     shift and go to state 13
-    logica                         shift and go to state 14
-    boolean                        shift and go to state 18
 
 state 34
 
-    (21) relacional -> expression GREATEREQUAL . expression
-    (6) expression -> . primitivo
-    (7) expression -> . aritmetica
-    (8) expression -> . relacional
-    (9) expression -> . logica
-    (25) primitivo -> . NUMBER
-    (26) primitivo -> . FLOAT
-    (27) primitivo -> . STRING
-    (28) primitivo -> . boolean
-    (10) aritmetica -> . expression PLUS expression
-    (11) aritmetica -> . expression LESS expression
-    (12) aritmetica -> . expression BY expression
-    (13) aritmetica -> . expression DIVIDED expression
-    (14) aritmetica -> . expression MODUL expression
-    (15) aritmetica -> . LESS expression
-    (16) relacional -> . expression EQUAL expression
-    (17) relacional -> . expression DIFERENT expression
-    (18) relacional -> . expression MINOR expression
-    (19) relacional -> . expression MINOREQUAL expression
-    (20) relacional -> . expression GREATER expression
-    (21) relacional -> . expression GREATEREQUAL expression
-    (22) logica -> . boolean AND boolean
-    (23) logica -> . boolean OR boolean
-    (24) logica -> . NOT boolean
-    (29) boolean -> . TRUE
-    (30) boolean -> . FALSE
+    (7) declare -> RVAR ID DOUBLEDOT type EQUAL . expression
+    (10) expression -> . primitivo
+    (11) expression -> . aritmetica
+    (12) expression -> . relacional
+    (13) expression -> . logica
+    (29) primitivo -> . NUMBER
+    (30) primitivo -> . FLOAT
+    (31) primitivo -> . STRING
+    (32) primitivo -> . boolean
+    (14) aritmetica -> . expression PLUS expression
+    (15) aritmetica -> . expression BY expression
+    (16) aritmetica -> . expression DIVIDED expression
+    (17) aritmetica -> . expression LESS expression
+    (18) aritmetica -> . expression MODUL expression
+    (19) aritmetica -> . LESS expression
+    (20) relacional -> . expression DEQUAL expression
+    (21) relacional -> . expression DIFERENT expression
+    (22) relacional -> . expression MINOR expression
+    (23) relacional -> . expression MINOREQUAL expression
+    (24) relacional -> . expression GREATER expression
+    (25) relacional -> . expression GREATEREQUAL expression
+    (26) logica -> . boolean AND boolean
+    (27) logica -> . boolean OR boolean
+    (28) logica -> . NOT boolean
+    (33) boolean -> . TRUE
+    (34) boolean -> . FALSE
 
-    NUMBER          shift and go to state 15
-    FLOAT           shift and go to state 16
-    STRING          shift and go to state 17
-    LESS            shift and go to state 19
-    NOT             shift and go to state 20
-    TRUE            shift and go to state 21
-    FALSE           shift and go to state 22
+    NUMBER          shift and go to state 25
+    FLOAT           shift and go to state 26
+    STRING          shift and go to state 27
+    LESS            shift and go to state 29
+    NOT             shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
 
-    expression                     shift and go to state 49
-    primitivo                      shift and go to state 11
-    aritmetica                     shift and go to state 12
-    relacional                     shift and go to state 13
-    logica                         shift and go to state 14
-    boolean                        shift and go to state 18
+    expression                     shift and go to state 51
+    primitivo                      shift and go to state 21
+    aritmetica                     shift and go to state 22
+    relacional                     shift and go to state 23
+    logica                         shift and go to state 24
+    boolean                        shift and go to state 28
 
 state 35
 
-    (22) logica -> boolean AND . boolean
-    (29) boolean -> . TRUE
-    (30) boolean -> . FALSE
+    (14) aritmetica -> expression PLUS . expression
+    (10) expression -> . primitivo
+    (11) expression -> . aritmetica
+    (12) expression -> . relacional
+    (13) expression -> . logica
+    (29) primitivo -> . NUMBER
+    (30) primitivo -> . FLOAT
+    (31) primitivo -> . STRING
+    (32) primitivo -> . boolean
+    (14) aritmetica -> . expression PLUS expression
+    (15) aritmetica -> . expression BY expression
+    (16) aritmetica -> . expression DIVIDED expression
+    (17) aritmetica -> . expression LESS expression
+    (18) aritmetica -> . expression MODUL expression
+    (19) aritmetica -> . LESS expression
+    (20) relacional -> . expression DEQUAL expression
+    (21) relacional -> . expression DIFERENT expression
+    (22) relacional -> . expression MINOR expression
+    (23) relacional -> . expression MINOREQUAL expression
+    (24) relacional -> . expression GREATER expression
+    (25) relacional -> . expression GREATEREQUAL expression
+    (26) logica -> . boolean AND boolean
+    (27) logica -> . boolean OR boolean
+    (28) logica -> . NOT boolean
+    (33) boolean -> . TRUE
+    (34) boolean -> . FALSE
 
-    TRUE            shift and go to state 21
-    FALSE           shift and go to state 22
+    NUMBER          shift and go to state 25
+    FLOAT           shift and go to state 26
+    STRING          shift and go to state 27
+    LESS            shift and go to state 29
+    NOT             shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
 
-    boolean                        shift and go to state 50
+    expression                     shift and go to state 52
+    primitivo                      shift and go to state 21
+    aritmetica                     shift and go to state 22
+    relacional                     shift and go to state 23
+    logica                         shift and go to state 24
+    boolean                        shift and go to state 28
 
 state 36
 
-    (23) logica -> boolean OR . boolean
-    (29) boolean -> . TRUE
-    (30) boolean -> . FALSE
+    (15) aritmetica -> expression BY . expression
+    (10) expression -> . primitivo
+    (11) expression -> . aritmetica
+    (12) expression -> . relacional
+    (13) expression -> . logica
+    (29) primitivo -> . NUMBER
+    (30) primitivo -> . FLOAT
+    (31) primitivo -> . STRING
+    (32) primitivo -> . boolean
+    (14) aritmetica -> . expression PLUS expression
+    (15) aritmetica -> . expression BY expression
+    (16) aritmetica -> . expression DIVIDED expression
+    (17) aritmetica -> . expression LESS expression
+    (18) aritmetica -> . expression MODUL expression
+    (19) aritmetica -> . LESS expression
+    (20) relacional -> . expression DEQUAL expression
+    (21) relacional -> . expression DIFERENT expression
+    (22) relacional -> . expression MINOR expression
+    (23) relacional -> . expression MINOREQUAL expression
+    (24) relacional -> . expression GREATER expression
+    (25) relacional -> . expression GREATEREQUAL expression
+    (26) logica -> . boolean AND boolean
+    (27) logica -> . boolean OR boolean
+    (28) logica -> . NOT boolean
+    (33) boolean -> . TRUE
+    (34) boolean -> . FALSE
 
-    TRUE            shift and go to state 21
-    FALSE           shift and go to state 22
+    NUMBER          shift and go to state 25
+    FLOAT           shift and go to state 26
+    STRING          shift and go to state 27
+    LESS            shift and go to state 29
+    NOT             shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
 
-    boolean                        shift and go to state 51
+    expression                     shift and go to state 53
+    primitivo                      shift and go to state 21
+    aritmetica                     shift and go to state 22
+    relacional                     shift and go to state 23
+    logica                         shift and go to state 24
+    boolean                        shift and go to state 28
 
 state 37
 
-    (15) aritmetica -> LESS expression .
-    (10) aritmetica -> expression . PLUS expression
-    (11) aritmetica -> expression . LESS expression
-    (12) aritmetica -> expression . BY expression
-    (13) aritmetica -> expression . DIVIDED expression
-    (14) aritmetica -> expression . MODUL expression
-    (16) relacional -> expression . EQUAL expression
-    (17) relacional -> expression . DIFERENT expression
-    (18) relacional -> expression . MINOR expression
-    (19) relacional -> expression . MINOREQUAL expression
-    (20) relacional -> expression . GREATER expression
-    (21) relacional -> expression . GREATEREQUAL expression
+    (16) aritmetica -> expression DIVIDED . expression
+    (10) expression -> . primitivo
+    (11) expression -> . aritmetica
+    (12) expression -> . relacional
+    (13) expression -> . logica
+    (29) primitivo -> . NUMBER
+    (30) primitivo -> . FLOAT
+    (31) primitivo -> . STRING
+    (32) primitivo -> . boolean
+    (14) aritmetica -> . expression PLUS expression
+    (15) aritmetica -> . expression BY expression
+    (16) aritmetica -> . expression DIVIDED expression
+    (17) aritmetica -> . expression LESS expression
+    (18) aritmetica -> . expression MODUL expression
+    (19) aritmetica -> . LESS expression
+    (20) relacional -> . expression DEQUAL expression
+    (21) relacional -> . expression DIFERENT expression
+    (22) relacional -> . expression MINOR expression
+    (23) relacional -> . expression MINOREQUAL expression
+    (24) relacional -> . expression GREATER expression
+    (25) relacional -> . expression GREATEREQUAL expression
+    (26) logica -> . boolean AND boolean
+    (27) logica -> . boolean OR boolean
+    (28) logica -> . NOT boolean
+    (33) boolean -> . TRUE
+    (34) boolean -> . FALSE
 
-    PARC            reduce using rule 15 (aritmetica -> LESS expression .)
-    PLUS            reduce using rule 15 (aritmetica -> LESS expression .)
-    LESS            reduce using rule 15 (aritmetica -> LESS expression .)
-    BY              reduce using rule 15 (aritmetica -> LESS expression .)
-    DIVIDED         reduce using rule 15 (aritmetica -> LESS expression .)
-    MODUL           reduce using rule 15 (aritmetica -> LESS expression .)
-    EQUAL           reduce using rule 15 (aritmetica -> LESS expression .)
-    DIFERENT        reduce using rule 15 (aritmetica -> LESS expression .)
-    MINOR           reduce using rule 15 (aritmetica -> LESS expression .)
-    MINOREQUAL      reduce using rule 15 (aritmetica -> LESS expression .)
-    GREATER         reduce using rule 15 (aritmetica -> LESS expression .)
-    GREATEREQUAL    reduce using rule 15 (aritmetica -> LESS expression .)
+    NUMBER          shift and go to state 25
+    FLOAT           shift and go to state 26
+    STRING          shift and go to state 27
+    LESS            shift and go to state 29
+    NOT             shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
 
-  ! PLUS            [ shift and go to state 24 ]
-  ! LESS            [ shift and go to state 25 ]
-  ! BY              [ shift and go to state 26 ]
-  ! DIVIDED         [ shift and go to state 27 ]
-  ! MODUL           [ shift and go to state 28 ]
-  ! EQUAL           [ shift and go to state 29 ]
-  ! DIFERENT        [ shift and go to state 30 ]
-  ! MINOR           [ shift and go to state 31 ]
-  ! MINOREQUAL      [ shift and go to state 32 ]
-  ! GREATER         [ shift and go to state 33 ]
-  ! GREATEREQUAL    [ shift and go to state 34 ]
-
+    expression                     shift and go to state 54
+    primitivo                      shift and go to state 21
+    aritmetica                     shift and go to state 22
+    relacional                     shift and go to state 23
+    logica                         shift and go to state 24
+    boolean                        shift and go to state 28
 
 state 38
 
-    (24) logica -> NOT boolean .
+    (17) aritmetica -> expression LESS . expression
+    (10) expression -> . primitivo
+    (11) expression -> . aritmetica
+    (12) expression -> . relacional
+    (13) expression -> . logica
+    (29) primitivo -> . NUMBER
+    (30) primitivo -> . FLOAT
+    (31) primitivo -> . STRING
+    (32) primitivo -> . boolean
+    (14) aritmetica -> . expression PLUS expression
+    (15) aritmetica -> . expression BY expression
+    (16) aritmetica -> . expression DIVIDED expression
+    (17) aritmetica -> . expression LESS expression
+    (18) aritmetica -> . expression MODUL expression
+    (19) aritmetica -> . LESS expression
+    (20) relacional -> . expression DEQUAL expression
+    (21) relacional -> . expression DIFERENT expression
+    (22) relacional -> . expression MINOR expression
+    (23) relacional -> . expression MINOREQUAL expression
+    (24) relacional -> . expression GREATER expression
+    (25) relacional -> . expression GREATEREQUAL expression
+    (26) logica -> . boolean AND boolean
+    (27) logica -> . boolean OR boolean
+    (28) logica -> . NOT boolean
+    (33) boolean -> . TRUE
+    (34) boolean -> . FALSE
 
-    PARC            reduce using rule 24 (logica -> NOT boolean .)
-    PLUS            reduce using rule 24 (logica -> NOT boolean .)
-    LESS            reduce using rule 24 (logica -> NOT boolean .)
-    BY              reduce using rule 24 (logica -> NOT boolean .)
-    DIVIDED         reduce using rule 24 (logica -> NOT boolean .)
-    MODUL           reduce using rule 24 (logica -> NOT boolean .)
-    EQUAL           reduce using rule 24 (logica -> NOT boolean .)
-    DIFERENT        reduce using rule 24 (logica -> NOT boolean .)
-    MINOR           reduce using rule 24 (logica -> NOT boolean .)
-    MINOREQUAL      reduce using rule 24 (logica -> NOT boolean .)
-    GREATER         reduce using rule 24 (logica -> NOT boolean .)
-    GREATEREQUAL    reduce using rule 24 (logica -> NOT boolean .)
+    NUMBER          shift and go to state 25
+    FLOAT           shift and go to state 26
+    STRING          shift and go to state 27
+    LESS            shift and go to state 29
+    NOT             shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
 
+    expression                     shift and go to state 55
+    primitivo                      shift and go to state 21
+    aritmetica                     shift and go to state 22
+    relacional                     shift and go to state 23
+    logica                         shift and go to state 24
+    boolean                        shift and go to state 28
 
 state 39
 
-    (10) aritmetica -> expression PLUS expression .
-    (10) aritmetica -> expression . PLUS expression
-    (11) aritmetica -> expression . LESS expression
-    (12) aritmetica -> expression . BY expression
-    (13) aritmetica -> expression . DIVIDED expression
-    (14) aritmetica -> expression . MODUL expression
-    (16) relacional -> expression . EQUAL expression
-    (17) relacional -> expression . DIFERENT expression
-    (18) relacional -> expression . MINOR expression
-    (19) relacional -> expression . MINOREQUAL expression
-    (20) relacional -> expression . GREATER expression
-    (21) relacional -> expression . GREATEREQUAL expression
+    (18) aritmetica -> expression MODUL . expression
+    (10) expression -> . primitivo
+    (11) expression -> . aritmetica
+    (12) expression -> . relacional
+    (13) expression -> . logica
+    (29) primitivo -> . NUMBER
+    (30) primitivo -> . FLOAT
+    (31) primitivo -> . STRING
+    (32) primitivo -> . boolean
+    (14) aritmetica -> . expression PLUS expression
+    (15) aritmetica -> . expression BY expression
+    (16) aritmetica -> . expression DIVIDED expression
+    (17) aritmetica -> . expression LESS expression
+    (18) aritmetica -> . expression MODUL expression
+    (19) aritmetica -> . LESS expression
+    (20) relacional -> . expression DEQUAL expression
+    (21) relacional -> . expression DIFERENT expression
+    (22) relacional -> . expression MINOR expression
+    (23) relacional -> . expression MINOREQUAL expression
+    (24) relacional -> . expression GREATER expression
+    (25) relacional -> . expression GREATEREQUAL expression
+    (26) logica -> . boolean AND boolean
+    (27) logica -> . boolean OR boolean
+    (28) logica -> . NOT boolean
+    (33) boolean -> . TRUE
+    (34) boolean -> . FALSE
 
-    PARC            reduce using rule 10 (aritmetica -> expression PLUS expression .)
-    PLUS            reduce using rule 10 (aritmetica -> expression PLUS expression .)
-    LESS            reduce using rule 10 (aritmetica -> expression PLUS expression .)
-    EQUAL           reduce using rule 10 (aritmetica -> expression PLUS expression .)
-    DIFERENT        reduce using rule 10 (aritmetica -> expression PLUS expression .)
-    MINOR           reduce using rule 10 (aritmetica -> expression PLUS expression .)
-    MINOREQUAL      reduce using rule 10 (aritmetica -> expression PLUS expression .)
-    GREATER         reduce using rule 10 (aritmetica -> expression PLUS expression .)
-    GREATEREQUAL    reduce using rule 10 (aritmetica -> expression PLUS expression .)
-    BY              shift and go to state 26
-    DIVIDED         shift and go to state 27
-    MODUL           shift and go to state 28
+    NUMBER          shift and go to state 25
+    FLOAT           shift and go to state 26
+    STRING          shift and go to state 27
+    LESS            shift and go to state 29
+    NOT             shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
 
-  ! BY              [ reduce using rule 10 (aritmetica -> expression PLUS expression .) ]
-  ! DIVIDED         [ reduce using rule 10 (aritmetica -> expression PLUS expression .) ]
-  ! MODUL           [ reduce using rule 10 (aritmetica -> expression PLUS expression .) ]
-  ! PLUS            [ shift and go to state 24 ]
-  ! LESS            [ shift and go to state 25 ]
-  ! EQUAL           [ shift and go to state 29 ]
-  ! DIFERENT        [ shift and go to state 30 ]
-  ! MINOR           [ shift and go to state 31 ]
-  ! MINOREQUAL      [ shift and go to state 32 ]
-  ! GREATER         [ shift and go to state 33 ]
-  ! GREATEREQUAL    [ shift and go to state 34 ]
-
+    expression                     shift and go to state 56
+    primitivo                      shift and go to state 21
+    aritmetica                     shift and go to state 22
+    relacional                     shift and go to state 23
+    logica                         shift and go to state 24
+    boolean                        shift and go to state 28
 
 state 40
 
-    (11) aritmetica -> expression LESS expression .
-    (10) aritmetica -> expression . PLUS expression
-    (11) aritmetica -> expression . LESS expression
-    (12) aritmetica -> expression . BY expression
-    (13) aritmetica -> expression . DIVIDED expression
-    (14) aritmetica -> expression . MODUL expression
-    (16) relacional -> expression . EQUAL expression
-    (17) relacional -> expression . DIFERENT expression
-    (18) relacional -> expression . MINOR expression
-    (19) relacional -> expression . MINOREQUAL expression
-    (20) relacional -> expression . GREATER expression
-    (21) relacional -> expression . GREATEREQUAL expression
+    (20) relacional -> expression DEQUAL . expression
+    (10) expression -> . primitivo
+    (11) expression -> . aritmetica
+    (12) expression -> . relacional
+    (13) expression -> . logica
+    (29) primitivo -> . NUMBER
+    (30) primitivo -> . FLOAT
+    (31) primitivo -> . STRING
+    (32) primitivo -> . boolean
+    (14) aritmetica -> . expression PLUS expression
+    (15) aritmetica -> . expression BY expression
+    (16) aritmetica -> . expression DIVIDED expression
+    (17) aritmetica -> . expression LESS expression
+    (18) aritmetica -> . expression MODUL expression
+    (19) aritmetica -> . LESS expression
+    (20) relacional -> . expression DEQUAL expression
+    (21) relacional -> . expression DIFERENT expression
+    (22) relacional -> . expression MINOR expression
+    (23) relacional -> . expression MINOREQUAL expression
+    (24) relacional -> . expression GREATER expression
+    (25) relacional -> . expression GREATEREQUAL expression
+    (26) logica -> . boolean AND boolean
+    (27) logica -> . boolean OR boolean
+    (28) logica -> . NOT boolean
+    (33) boolean -> . TRUE
+    (34) boolean -> . FALSE
 
-    PARC            reduce using rule 11 (aritmetica -> expression LESS expression .)
-    PLUS            reduce using rule 11 (aritmetica -> expression LESS expression .)
-    LESS            reduce using rule 11 (aritmetica -> expression LESS expression .)
-    EQUAL           reduce using rule 11 (aritmetica -> expression LESS expression .)
-    DIFERENT        reduce using rule 11 (aritmetica -> expression LESS expression .)
-    MINOR           reduce using rule 11 (aritmetica -> expression LESS expression .)
-    MINOREQUAL      reduce using rule 11 (aritmetica -> expression LESS expression .)
-    GREATER         reduce using rule 11 (aritmetica -> expression LESS expression .)
-    GREATEREQUAL    reduce using rule 11 (aritmetica -> expression LESS expression .)
-    BY              shift and go to state 26
-    DIVIDED         shift and go to state 27
-    MODUL           shift and go to state 28
+    NUMBER          shift and go to state 25
+    FLOAT           shift and go to state 26
+    STRING          shift and go to state 27
+    LESS            shift and go to state 29
+    NOT             shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
 
-  ! BY              [ reduce using rule 11 (aritmetica -> expression LESS expression .) ]
-  ! DIVIDED         [ reduce using rule 11 (aritmetica -> expression LESS expression .) ]
-  ! MODUL           [ reduce using rule 11 (aritmetica -> expression LESS expression .) ]
-  ! PLUS            [ shift and go to state 24 ]
-  ! LESS            [ shift and go to state 25 ]
-  ! EQUAL           [ shift and go to state 29 ]
-  ! DIFERENT        [ shift and go to state 30 ]
-  ! MINOR           [ shift and go to state 31 ]
-  ! MINOREQUAL      [ shift and go to state 32 ]
-  ! GREATER         [ shift and go to state 33 ]
-  ! GREATEREQUAL    [ shift and go to state 34 ]
-
+    expression                     shift and go to state 57
+    primitivo                      shift and go to state 21
+    aritmetica                     shift and go to state 22
+    relacional                     shift and go to state 23
+    logica                         shift and go to state 24
+    boolean                        shift and go to state 28
 
 state 41
 
-    (12) aritmetica -> expression BY expression .
-    (10) aritmetica -> expression . PLUS expression
-    (11) aritmetica -> expression . LESS expression
-    (12) aritmetica -> expression . BY expression
-    (13) aritmetica -> expression . DIVIDED expression
-    (14) aritmetica -> expression . MODUL expression
-    (16) relacional -> expression . EQUAL expression
-    (17) relacional -> expression . DIFERENT expression
-    (18) relacional -> expression . MINOR expression
-    (19) relacional -> expression . MINOREQUAL expression
-    (20) relacional -> expression . GREATER expression
-    (21) relacional -> expression . GREATEREQUAL expression
+    (21) relacional -> expression DIFERENT . expression
+    (10) expression -> . primitivo
+    (11) expression -> . aritmetica
+    (12) expression -> . relacional
+    (13) expression -> . logica
+    (29) primitivo -> . NUMBER
+    (30) primitivo -> . FLOAT
+    (31) primitivo -> . STRING
+    (32) primitivo -> . boolean
+    (14) aritmetica -> . expression PLUS expression
+    (15) aritmetica -> . expression BY expression
+    (16) aritmetica -> . expression DIVIDED expression
+    (17) aritmetica -> . expression LESS expression
+    (18) aritmetica -> . expression MODUL expression
+    (19) aritmetica -> . LESS expression
+    (20) relacional -> . expression DEQUAL expression
+    (21) relacional -> . expression DIFERENT expression
+    (22) relacional -> . expression MINOR expression
+    (23) relacional -> . expression MINOREQUAL expression
+    (24) relacional -> . expression GREATER expression
+    (25) relacional -> . expression GREATEREQUAL expression
+    (26) logica -> . boolean AND boolean
+    (27) logica -> . boolean OR boolean
+    (28) logica -> . NOT boolean
+    (33) boolean -> . TRUE
+    (34) boolean -> . FALSE
 
-    PARC            reduce using rule 12 (aritmetica -> expression BY expression .)
-    PLUS            reduce using rule 12 (aritmetica -> expression BY expression .)
-    LESS            reduce using rule 12 (aritmetica -> expression BY expression .)
-    BY              reduce using rule 12 (aritmetica -> expression BY expression .)
-    DIVIDED         reduce using rule 12 (aritmetica -> expression BY expression .)
-    MODUL           reduce using rule 12 (aritmetica -> expression BY expression .)
-    EQUAL           reduce using rule 12 (aritmetica -> expression BY expression .)
-    DIFERENT        reduce using rule 12 (aritmetica -> expression BY expression .)
-    MINOR           reduce using rule 12 (aritmetica -> expression BY expression .)
-    MINOREQUAL      reduce using rule 12 (aritmetica -> expression BY expression .)
-    GREATER         reduce using rule 12 (aritmetica -> expression BY expression .)
-    GREATEREQUAL    reduce using rule 12 (aritmetica -> expression BY expression .)
+    NUMBER          shift and go to state 25
+    FLOAT           shift and go to state 26
+    STRING          shift and go to state 27
+    LESS            shift and go to state 29
+    NOT             shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
 
-  ! PLUS            [ shift and go to state 24 ]
-  ! LESS            [ shift and go to state 25 ]
-  ! BY              [ shift and go to state 26 ]
-  ! DIVIDED         [ shift and go to state 27 ]
-  ! MODUL           [ shift and go to state 28 ]
-  ! EQUAL           [ shift and go to state 29 ]
-  ! DIFERENT        [ shift and go to state 30 ]
-  ! MINOR           [ shift and go to state 31 ]
-  ! MINOREQUAL      [ shift and go to state 32 ]
-  ! GREATER         [ shift and go to state 33 ]
-  ! GREATEREQUAL    [ shift and go to state 34 ]
-
+    expression                     shift and go to state 58
+    primitivo                      shift and go to state 21
+    aritmetica                     shift and go to state 22
+    relacional                     shift and go to state 23
+    logica                         shift and go to state 24
+    boolean                        shift and go to state 28
 
 state 42
 
-    (13) aritmetica -> expression DIVIDED expression .
-    (10) aritmetica -> expression . PLUS expression
-    (11) aritmetica -> expression . LESS expression
-    (12) aritmetica -> expression . BY expression
-    (13) aritmetica -> expression . DIVIDED expression
-    (14) aritmetica -> expression . MODUL expression
-    (16) relacional -> expression . EQUAL expression
-    (17) relacional -> expression . DIFERENT expression
-    (18) relacional -> expression . MINOR expression
-    (19) relacional -> expression . MINOREQUAL expression
-    (20) relacional -> expression . GREATER expression
-    (21) relacional -> expression . GREATEREQUAL expression
+    (22) relacional -> expression MINOR . expression
+    (10) expression -> . primitivo
+    (11) expression -> . aritmetica
+    (12) expression -> . relacional
+    (13) expression -> . logica
+    (29) primitivo -> . NUMBER
+    (30) primitivo -> . FLOAT
+    (31) primitivo -> . STRING
+    (32) primitivo -> . boolean
+    (14) aritmetica -> . expression PLUS expression
+    (15) aritmetica -> . expression BY expression
+    (16) aritmetica -> . expression DIVIDED expression
+    (17) aritmetica -> . expression LESS expression
+    (18) aritmetica -> . expression MODUL expression
+    (19) aritmetica -> . LESS expression
+    (20) relacional -> . expression DEQUAL expression
+    (21) relacional -> . expression DIFERENT expression
+    (22) relacional -> . expression MINOR expression
+    (23) relacional -> . expression MINOREQUAL expression
+    (24) relacional -> . expression GREATER expression
+    (25) relacional -> . expression GREATEREQUAL expression
+    (26) logica -> . boolean AND boolean
+    (27) logica -> . boolean OR boolean
+    (28) logica -> . NOT boolean
+    (33) boolean -> . TRUE
+    (34) boolean -> . FALSE
 
-    PARC            reduce using rule 13 (aritmetica -> expression DIVIDED expression .)
-    PLUS            reduce using rule 13 (aritmetica -> expression DIVIDED expression .)
-    LESS            reduce using rule 13 (aritmetica -> expression DIVIDED expression .)
-    BY              reduce using rule 13 (aritmetica -> expression DIVIDED expression .)
-    DIVIDED         reduce using rule 13 (aritmetica -> expression DIVIDED expression .)
-    MODUL           reduce using rule 13 (aritmetica -> expression DIVIDED expression .)
-    EQUAL           reduce using rule 13 (aritmetica -> expression DIVIDED expression .)
-    DIFERENT        reduce using rule 13 (aritmetica -> expression DIVIDED expression .)
-    MINOR           reduce using rule 13 (aritmetica -> expression DIVIDED expression .)
-    MINOREQUAL      reduce using rule 13 (aritmetica -> expression DIVIDED expression .)
-    GREATER         reduce using rule 13 (aritmetica -> expression DIVIDED expression .)
-    GREATEREQUAL    reduce using rule 13 (aritmetica -> expression DIVIDED expression .)
+    NUMBER          shift and go to state 25
+    FLOAT           shift and go to state 26
+    STRING          shift and go to state 27
+    LESS            shift and go to state 29
+    NOT             shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
 
-  ! PLUS            [ shift and go to state 24 ]
-  ! LESS            [ shift and go to state 25 ]
-  ! BY              [ shift and go to state 26 ]
-  ! DIVIDED         [ shift and go to state 27 ]
-  ! MODUL           [ shift and go to state 28 ]
-  ! EQUAL           [ shift and go to state 29 ]
-  ! DIFERENT        [ shift and go to state 30 ]
-  ! MINOR           [ shift and go to state 31 ]
-  ! MINOREQUAL      [ shift and go to state 32 ]
-  ! GREATER         [ shift and go to state 33 ]
-  ! GREATEREQUAL    [ shift and go to state 34 ]
-
+    expression                     shift and go to state 59
+    primitivo                      shift and go to state 21
+    aritmetica                     shift and go to state 22
+    relacional                     shift and go to state 23
+    logica                         shift and go to state 24
+    boolean                        shift and go to state 28
 
 state 43
 
-    (14) aritmetica -> expression MODUL expression .
-    (10) aritmetica -> expression . PLUS expression
-    (11) aritmetica -> expression . LESS expression
-    (12) aritmetica -> expression . BY expression
-    (13) aritmetica -> expression . DIVIDED expression
-    (14) aritmetica -> expression . MODUL expression
-    (16) relacional -> expression . EQUAL expression
-    (17) relacional -> expression . DIFERENT expression
-    (18) relacional -> expression . MINOR expression
-    (19) relacional -> expression . MINOREQUAL expression
-    (20) relacional -> expression . GREATER expression
-    (21) relacional -> expression . GREATEREQUAL expression
+    (23) relacional -> expression MINOREQUAL . expression
+    (10) expression -> . primitivo
+    (11) expression -> . aritmetica
+    (12) expression -> . relacional
+    (13) expression -> . logica
+    (29) primitivo -> . NUMBER
+    (30) primitivo -> . FLOAT
+    (31) primitivo -> . STRING
+    (32) primitivo -> . boolean
+    (14) aritmetica -> . expression PLUS expression
+    (15) aritmetica -> . expression BY expression
+    (16) aritmetica -> . expression DIVIDED expression
+    (17) aritmetica -> . expression LESS expression
+    (18) aritmetica -> . expression MODUL expression
+    (19) aritmetica -> . LESS expression
+    (20) relacional -> . expression DEQUAL expression
+    (21) relacional -> . expression DIFERENT expression
+    (22) relacional -> . expression MINOR expression
+    (23) relacional -> . expression MINOREQUAL expression
+    (24) relacional -> . expression GREATER expression
+    (25) relacional -> . expression GREATEREQUAL expression
+    (26) logica -> . boolean AND boolean
+    (27) logica -> . boolean OR boolean
+    (28) logica -> . NOT boolean
+    (33) boolean -> . TRUE
+    (34) boolean -> . FALSE
 
-    PARC            reduce using rule 14 (aritmetica -> expression MODUL expression .)
-    PLUS            reduce using rule 14 (aritmetica -> expression MODUL expression .)
-    LESS            reduce using rule 14 (aritmetica -> expression MODUL expression .)
-    BY              reduce using rule 14 (aritmetica -> expression MODUL expression .)
-    DIVIDED         reduce using rule 14 (aritmetica -> expression MODUL expression .)
-    MODUL           reduce using rule 14 (aritmetica -> expression MODUL expression .)
-    EQUAL           reduce using rule 14 (aritmetica -> expression MODUL expression .)
-    DIFERENT        reduce using rule 14 (aritmetica -> expression MODUL expression .)
-    MINOR           reduce using rule 14 (aritmetica -> expression MODUL expression .)
-    MINOREQUAL      reduce using rule 14 (aritmetica -> expression MODUL expression .)
-    GREATER         reduce using rule 14 (aritmetica -> expression MODUL expression .)
-    GREATEREQUAL    reduce using rule 14 (aritmetica -> expression MODUL expression .)
+    NUMBER          shift and go to state 25
+    FLOAT           shift and go to state 26
+    STRING          shift and go to state 27
+    LESS            shift and go to state 29
+    NOT             shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
 
-  ! PLUS            [ shift and go to state 24 ]
-  ! LESS            [ shift and go to state 25 ]
-  ! BY              [ shift and go to state 26 ]
-  ! DIVIDED         [ shift and go to state 27 ]
-  ! MODUL           [ shift and go to state 28 ]
-  ! EQUAL           [ shift and go to state 29 ]
-  ! DIFERENT        [ shift and go to state 30 ]
-  ! MINOR           [ shift and go to state 31 ]
-  ! MINOREQUAL      [ shift and go to state 32 ]
-  ! GREATER         [ shift and go to state 33 ]
-  ! GREATEREQUAL    [ shift and go to state 34 ]
-
+    expression                     shift and go to state 60
+    primitivo                      shift and go to state 21
+    aritmetica                     shift and go to state 22
+    relacional                     shift and go to state 23
+    logica                         shift and go to state 24
+    boolean                        shift and go to state 28
 
 state 44
 
-    (16) relacional -> expression EQUAL expression .
-    (10) aritmetica -> expression . PLUS expression
-    (11) aritmetica -> expression . LESS expression
-    (12) aritmetica -> expression . BY expression
-    (13) aritmetica -> expression . DIVIDED expression
-    (14) aritmetica -> expression . MODUL expression
-    (16) relacional -> expression . EQUAL expression
-    (17) relacional -> expression . DIFERENT expression
-    (18) relacional -> expression . MINOR expression
-    (19) relacional -> expression . MINOREQUAL expression
-    (20) relacional -> expression . GREATER expression
-    (21) relacional -> expression . GREATEREQUAL expression
+    (24) relacional -> expression GREATER . expression
+    (10) expression -> . primitivo
+    (11) expression -> . aritmetica
+    (12) expression -> . relacional
+    (13) expression -> . logica
+    (29) primitivo -> . NUMBER
+    (30) primitivo -> . FLOAT
+    (31) primitivo -> . STRING
+    (32) primitivo -> . boolean
+    (14) aritmetica -> . expression PLUS expression
+    (15) aritmetica -> . expression BY expression
+    (16) aritmetica -> . expression DIVIDED expression
+    (17) aritmetica -> . expression LESS expression
+    (18) aritmetica -> . expression MODUL expression
+    (19) aritmetica -> . LESS expression
+    (20) relacional -> . expression DEQUAL expression
+    (21) relacional -> . expression DIFERENT expression
+    (22) relacional -> . expression MINOR expression
+    (23) relacional -> . expression MINOREQUAL expression
+    (24) relacional -> . expression GREATER expression
+    (25) relacional -> . expression GREATEREQUAL expression
+    (26) logica -> . boolean AND boolean
+    (27) logica -> . boolean OR boolean
+    (28) logica -> . NOT boolean
+    (33) boolean -> . TRUE
+    (34) boolean -> . FALSE
 
-    PARC            reduce using rule 16 (relacional -> expression EQUAL expression .)
-    EQUAL           reduce using rule 16 (relacional -> expression EQUAL expression .)
-    DIFERENT        reduce using rule 16 (relacional -> expression EQUAL expression .)
-    MINOR           reduce using rule 16 (relacional -> expression EQUAL expression .)
-    MINOREQUAL      reduce using rule 16 (relacional -> expression EQUAL expression .)
-    GREATER         reduce using rule 16 (relacional -> expression EQUAL expression .)
-    GREATEREQUAL    reduce using rule 16 (relacional -> expression EQUAL expression .)
-    PLUS            shift and go to state 24
-    LESS            shift and go to state 25
-    BY              shift and go to state 26
-    DIVIDED         shift and go to state 27
-    MODUL           shift and go to state 28
+    NUMBER          shift and go to state 25
+    FLOAT           shift and go to state 26
+    STRING          shift and go to state 27
+    LESS            shift and go to state 29
+    NOT             shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
 
-  ! PLUS            [ reduce using rule 16 (relacional -> expression EQUAL expression .) ]
-  ! LESS            [ reduce using rule 16 (relacional -> expression EQUAL expression .) ]
-  ! BY              [ reduce using rule 16 (relacional -> expression EQUAL expression .) ]
-  ! DIVIDED         [ reduce using rule 16 (relacional -> expression EQUAL expression .) ]
-  ! MODUL           [ reduce using rule 16 (relacional -> expression EQUAL expression .) ]
-  ! EQUAL           [ shift and go to state 29 ]
-  ! DIFERENT        [ shift and go to state 30 ]
-  ! MINOR           [ shift and go to state 31 ]
-  ! MINOREQUAL      [ shift and go to state 32 ]
-  ! GREATER         [ shift and go to state 33 ]
-  ! GREATEREQUAL    [ shift and go to state 34 ]
-
+    expression                     shift and go to state 61
+    primitivo                      shift and go to state 21
+    aritmetica                     shift and go to state 22
+    relacional                     shift and go to state 23
+    logica                         shift and go to state 24
+    boolean                        shift and go to state 28
 
 state 45
 
-    (17) relacional -> expression DIFERENT expression .
-    (10) aritmetica -> expression . PLUS expression
-    (11) aritmetica -> expression . LESS expression
-    (12) aritmetica -> expression . BY expression
-    (13) aritmetica -> expression . DIVIDED expression
-    (14) aritmetica -> expression . MODUL expression
-    (16) relacional -> expression . EQUAL expression
-    (17) relacional -> expression . DIFERENT expression
-    (18) relacional -> expression . MINOR expression
-    (19) relacional -> expression . MINOREQUAL expression
-    (20) relacional -> expression . GREATER expression
-    (21) relacional -> expression . GREATEREQUAL expression
+    (25) relacional -> expression GREATEREQUAL . expression
+    (10) expression -> . primitivo
+    (11) expression -> . aritmetica
+    (12) expression -> . relacional
+    (13) expression -> . logica
+    (29) primitivo -> . NUMBER
+    (30) primitivo -> . FLOAT
+    (31) primitivo -> . STRING
+    (32) primitivo -> . boolean
+    (14) aritmetica -> . expression PLUS expression
+    (15) aritmetica -> . expression BY expression
+    (16) aritmetica -> . expression DIVIDED expression
+    (17) aritmetica -> . expression LESS expression
+    (18) aritmetica -> . expression MODUL expression
+    (19) aritmetica -> . LESS expression
+    (20) relacional -> . expression DEQUAL expression
+    (21) relacional -> . expression DIFERENT expression
+    (22) relacional -> . expression MINOR expression
+    (23) relacional -> . expression MINOREQUAL expression
+    (24) relacional -> . expression GREATER expression
+    (25) relacional -> . expression GREATEREQUAL expression
+    (26) logica -> . boolean AND boolean
+    (27) logica -> . boolean OR boolean
+    (28) logica -> . NOT boolean
+    (33) boolean -> . TRUE
+    (34) boolean -> . FALSE
 
-    PARC            reduce using rule 17 (relacional -> expression DIFERENT expression .)
-    EQUAL           reduce using rule 17 (relacional -> expression DIFERENT expression .)
-    DIFERENT        reduce using rule 17 (relacional -> expression DIFERENT expression .)
-    MINOR           reduce using rule 17 (relacional -> expression DIFERENT expression .)
-    MINOREQUAL      reduce using rule 17 (relacional -> expression DIFERENT expression .)
-    GREATER         reduce using rule 17 (relacional -> expression DIFERENT expression .)
-    GREATEREQUAL    reduce using rule 17 (relacional -> expression DIFERENT expression .)
-    PLUS            shift and go to state 24
-    LESS            shift and go to state 25
-    BY              shift and go to state 26
-    DIVIDED         shift and go to state 27
-    MODUL           shift and go to state 28
+    NUMBER          shift and go to state 25
+    FLOAT           shift and go to state 26
+    STRING          shift and go to state 27
+    LESS            shift and go to state 29
+    NOT             shift and go to state 30
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
 
-  ! PLUS            [ reduce using rule 17 (relacional -> expression DIFERENT expression .) ]
-  ! LESS            [ reduce using rule 17 (relacional -> expression DIFERENT expression .) ]
-  ! BY              [ reduce using rule 17 (relacional -> expression DIFERENT expression .) ]
-  ! DIVIDED         [ reduce using rule 17 (relacional -> expression DIFERENT expression .) ]
-  ! MODUL           [ reduce using rule 17 (relacional -> expression DIFERENT expression .) ]
-  ! EQUAL           [ shift and go to state 29 ]
-  ! DIFERENT        [ shift and go to state 30 ]
-  ! MINOR           [ shift and go to state 31 ]
-  ! MINOREQUAL      [ shift and go to state 32 ]
-  ! GREATER         [ shift and go to state 33 ]
-  ! GREATEREQUAL    [ shift and go to state 34 ]
-
+    expression                     shift and go to state 62
+    primitivo                      shift and go to state 21
+    aritmetica                     shift and go to state 22
+    relacional                     shift and go to state 23
+    logica                         shift and go to state 24
+    boolean                        shift and go to state 28
 
 state 46
 
-    (18) relacional -> expression MINOR expression .
-    (10) aritmetica -> expression . PLUS expression
-    (11) aritmetica -> expression . LESS expression
-    (12) aritmetica -> expression . BY expression
-    (13) aritmetica -> expression . DIVIDED expression
-    (14) aritmetica -> expression . MODUL expression
-    (16) relacional -> expression . EQUAL expression
-    (17) relacional -> expression . DIFERENT expression
-    (18) relacional -> expression . MINOR expression
-    (19) relacional -> expression . MINOREQUAL expression
-    (20) relacional -> expression . GREATER expression
-    (21) relacional -> expression . GREATEREQUAL expression
+    (26) logica -> boolean AND . boolean
+    (33) boolean -> . TRUE
+    (34) boolean -> . FALSE
 
-    PARC            reduce using rule 18 (relacional -> expression MINOR expression .)
-    EQUAL           reduce using rule 18 (relacional -> expression MINOR expression .)
-    DIFERENT        reduce using rule 18 (relacional -> expression MINOR expression .)
-    MINOR           reduce using rule 18 (relacional -> expression MINOR expression .)
-    MINOREQUAL      reduce using rule 18 (relacional -> expression MINOR expression .)
-    GREATER         reduce using rule 18 (relacional -> expression MINOR expression .)
-    GREATEREQUAL    reduce using rule 18 (relacional -> expression MINOR expression .)
-    PLUS            shift and go to state 24
-    LESS            shift and go to state 25
-    BY              shift and go to state 26
-    DIVIDED         shift and go to state 27
-    MODUL           shift and go to state 28
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
 
-  ! PLUS            [ reduce using rule 18 (relacional -> expression MINOR expression .) ]
-  ! LESS            [ reduce using rule 18 (relacional -> expression MINOR expression .) ]
-  ! BY              [ reduce using rule 18 (relacional -> expression MINOR expression .) ]
-  ! DIVIDED         [ reduce using rule 18 (relacional -> expression MINOR expression .) ]
-  ! MODUL           [ reduce using rule 18 (relacional -> expression MINOR expression .) ]
-  ! EQUAL           [ shift and go to state 29 ]
-  ! DIFERENT        [ shift and go to state 30 ]
-  ! MINOR           [ shift and go to state 31 ]
-  ! MINOREQUAL      [ shift and go to state 32 ]
-  ! GREATER         [ shift and go to state 33 ]
-  ! GREATEREQUAL    [ shift and go to state 34 ]
-
+    boolean                        shift and go to state 63
 
 state 47
 
-    (19) relacional -> expression MINOREQUAL expression .
-    (10) aritmetica -> expression . PLUS expression
-    (11) aritmetica -> expression . LESS expression
-    (12) aritmetica -> expression . BY expression
-    (13) aritmetica -> expression . DIVIDED expression
-    (14) aritmetica -> expression . MODUL expression
-    (16) relacional -> expression . EQUAL expression
-    (17) relacional -> expression . DIFERENT expression
-    (18) relacional -> expression . MINOR expression
-    (19) relacional -> expression . MINOREQUAL expression
-    (20) relacional -> expression . GREATER expression
-    (21) relacional -> expression . GREATEREQUAL expression
+    (27) logica -> boolean OR . boolean
+    (33) boolean -> . TRUE
+    (34) boolean -> . FALSE
 
-    PARC            reduce using rule 19 (relacional -> expression MINOREQUAL expression .)
-    EQUAL           reduce using rule 19 (relacional -> expression MINOREQUAL expression .)
-    DIFERENT        reduce using rule 19 (relacional -> expression MINOREQUAL expression .)
-    MINOR           reduce using rule 19 (relacional -> expression MINOREQUAL expression .)
-    MINOREQUAL      reduce using rule 19 (relacional -> expression MINOREQUAL expression .)
-    GREATER         reduce using rule 19 (relacional -> expression MINOREQUAL expression .)
-    GREATEREQUAL    reduce using rule 19 (relacional -> expression MINOREQUAL expression .)
-    PLUS            shift and go to state 24
-    LESS            shift and go to state 25
-    BY              shift and go to state 26
-    DIVIDED         shift and go to state 27
-    MODUL           shift and go to state 28
+    TRUE            shift and go to state 31
+    FALSE           shift and go to state 32
 
-  ! PLUS            [ reduce using rule 19 (relacional -> expression MINOREQUAL expression .) ]
-  ! LESS            [ reduce using rule 19 (relacional -> expression MINOREQUAL expression .) ]
-  ! BY              [ reduce using rule 19 (relacional -> expression MINOREQUAL expression .) ]
-  ! DIVIDED         [ reduce using rule 19 (relacional -> expression MINOREQUAL expression .) ]
-  ! MODUL           [ reduce using rule 19 (relacional -> expression MINOREQUAL expression .) ]
-  ! EQUAL           [ shift and go to state 29 ]
-  ! DIFERENT        [ shift and go to state 30 ]
-  ! MINOR           [ shift and go to state 31 ]
-  ! MINOREQUAL      [ shift and go to state 32 ]
-  ! GREATER         [ shift and go to state 33 ]
-  ! GREATEREQUAL    [ shift and go to state 34 ]
-
+    boolean                        shift and go to state 64
 
 state 48
 
-    (20) relacional -> expression GREATER expression .
-    (10) aritmetica -> expression . PLUS expression
-    (11) aritmetica -> expression . LESS expression
-    (12) aritmetica -> expression . BY expression
-    (13) aritmetica -> expression . DIVIDED expression
-    (14) aritmetica -> expression . MODUL expression
-    (16) relacional -> expression . EQUAL expression
-    (17) relacional -> expression . DIFERENT expression
-    (18) relacional -> expression . MINOR expression
-    (19) relacional -> expression . MINOREQUAL expression
-    (20) relacional -> expression . GREATER expression
-    (21) relacional -> expression . GREATEREQUAL expression
+    (19) aritmetica -> LESS expression .
+    (14) aritmetica -> expression . PLUS expression
+    (15) aritmetica -> expression . BY expression
+    (16) aritmetica -> expression . DIVIDED expression
+    (17) aritmetica -> expression . LESS expression
+    (18) aritmetica -> expression . MODUL expression
+    (20) relacional -> expression . DEQUAL expression
+    (21) relacional -> expression . DIFERENT expression
+    (22) relacional -> expression . MINOR expression
+    (23) relacional -> expression . MINOREQUAL expression
+    (24) relacional -> expression . GREATER expression
+    (25) relacional -> expression . GREATEREQUAL expression
 
-    PARC            reduce using rule 20 (relacional -> expression GREATER expression .)
-    EQUAL           reduce using rule 20 (relacional -> expression GREATER expression .)
-    DIFERENT        reduce using rule 20 (relacional -> expression GREATER expression .)
-    MINOR           reduce using rule 20 (relacional -> expression GREATER expression .)
-    MINOREQUAL      reduce using rule 20 (relacional -> expression GREATER expression .)
-    GREATER         reduce using rule 20 (relacional -> expression GREATER expression .)
-    GREATEREQUAL    reduce using rule 20 (relacional -> expression GREATER expression .)
-    PLUS            shift and go to state 24
-    LESS            shift and go to state 25
-    BY              shift and go to state 26
-    DIVIDED         shift and go to state 27
-    MODUL           shift and go to state 28
+    PLUS            reduce using rule 19 (aritmetica -> LESS expression .)
+    BY              reduce using rule 19 (aritmetica -> LESS expression .)
+    DIVIDED         reduce using rule 19 (aritmetica -> LESS expression .)
+    LESS            reduce using rule 19 (aritmetica -> LESS expression .)
+    MODUL           reduce using rule 19 (aritmetica -> LESS expression .)
+    DEQUAL          reduce using rule 19 (aritmetica -> LESS expression .)
+    DIFERENT        reduce using rule 19 (aritmetica -> LESS expression .)
+    MINOR           reduce using rule 19 (aritmetica -> LESS expression .)
+    MINOREQUAL      reduce using rule 19 (aritmetica -> LESS expression .)
+    GREATER         reduce using rule 19 (aritmetica -> LESS expression .)
+    GREATEREQUAL    reduce using rule 19 (aritmetica -> LESS expression .)
+    CONSOLE         reduce using rule 19 (aritmetica -> LESS expression .)
+    RVAR            reduce using rule 19 (aritmetica -> LESS expression .)
+    $end            reduce using rule 19 (aritmetica -> LESS expression .)
+    PARC            reduce using rule 19 (aritmetica -> LESS expression .)
 
-  ! PLUS            [ reduce using rule 20 (relacional -> expression GREATER expression .) ]
-  ! LESS            [ reduce using rule 20 (relacional -> expression GREATER expression .) ]
-  ! BY              [ reduce using rule 20 (relacional -> expression GREATER expression .) ]
-  ! DIVIDED         [ reduce using rule 20 (relacional -> expression GREATER expression .) ]
-  ! MODUL           [ reduce using rule 20 (relacional -> expression GREATER expression .) ]
-  ! EQUAL           [ shift and go to state 29 ]
-  ! DIFERENT        [ shift and go to state 30 ]
-  ! MINOR           [ shift and go to state 31 ]
-  ! MINOREQUAL      [ shift and go to state 32 ]
-  ! GREATER         [ shift and go to state 33 ]
-  ! GREATEREQUAL    [ shift and go to state 34 ]
+  ! PLUS            [ shift and go to state 35 ]
+  ! BY              [ shift and go to state 36 ]
+  ! DIVIDED         [ shift and go to state 37 ]
+  ! LESS            [ shift and go to state 38 ]
+  ! MODUL           [ shift and go to state 39 ]
+  ! DEQUAL          [ shift and go to state 40 ]
+  ! DIFERENT        [ shift and go to state 41 ]
+  ! MINOR           [ shift and go to state 42 ]
+  ! MINOREQUAL      [ shift and go to state 43 ]
+  ! GREATER         [ shift and go to state 44 ]
+  ! GREATEREQUAL    [ shift and go to state 45 ]
 
 
 state 49
 
-    (21) relacional -> expression GREATEREQUAL expression .
-    (10) aritmetica -> expression . PLUS expression
-    (11) aritmetica -> expression . LESS expression
-    (12) aritmetica -> expression . BY expression
-    (13) aritmetica -> expression . DIVIDED expression
-    (14) aritmetica -> expression . MODUL expression
-    (16) relacional -> expression . EQUAL expression
-    (17) relacional -> expression . DIFERENT expression
-    (18) relacional -> expression . MINOR expression
-    (19) relacional -> expression . MINOREQUAL expression
-    (20) relacional -> expression . GREATER expression
-    (21) relacional -> expression . GREATEREQUAL expression
+    (28) logica -> NOT boolean .
 
-    PARC            reduce using rule 21 (relacional -> expression GREATEREQUAL expression .)
-    EQUAL           reduce using rule 21 (relacional -> expression GREATEREQUAL expression .)
-    DIFERENT        reduce using rule 21 (relacional -> expression GREATEREQUAL expression .)
-    MINOR           reduce using rule 21 (relacional -> expression GREATEREQUAL expression .)
-    MINOREQUAL      reduce using rule 21 (relacional -> expression GREATEREQUAL expression .)
-    GREATER         reduce using rule 21 (relacional -> expression GREATEREQUAL expression .)
-    GREATEREQUAL    reduce using rule 21 (relacional -> expression GREATEREQUAL expression .)
-    PLUS            shift and go to state 24
-    LESS            shift and go to state 25
-    BY              shift and go to state 26
-    DIVIDED         shift and go to state 27
-    MODUL           shift and go to state 28
-
-  ! PLUS            [ reduce using rule 21 (relacional -> expression GREATEREQUAL expression .) ]
-  ! LESS            [ reduce using rule 21 (relacional -> expression GREATEREQUAL expression .) ]
-  ! BY              [ reduce using rule 21 (relacional -> expression GREATEREQUAL expression .) ]
-  ! DIVIDED         [ reduce using rule 21 (relacional -> expression GREATEREQUAL expression .) ]
-  ! MODUL           [ reduce using rule 21 (relacional -> expression GREATEREQUAL expression .) ]
-  ! EQUAL           [ shift and go to state 29 ]
-  ! DIFERENT        [ shift and go to state 30 ]
-  ! MINOR           [ shift and go to state 31 ]
-  ! MINOREQUAL      [ shift and go to state 32 ]
-  ! GREATER         [ shift and go to state 33 ]
-  ! GREATEREQUAL    [ shift and go to state 34 ]
+    PLUS            reduce using rule 28 (logica -> NOT boolean .)
+    BY              reduce using rule 28 (logica -> NOT boolean .)
+    DIVIDED         reduce using rule 28 (logica -> NOT boolean .)
+    LESS            reduce using rule 28 (logica -> NOT boolean .)
+    MODUL           reduce using rule 28 (logica -> NOT boolean .)
+    DEQUAL          reduce using rule 28 (logica -> NOT boolean .)
+    DIFERENT        reduce using rule 28 (logica -> NOT boolean .)
+    MINOR           reduce using rule 28 (logica -> NOT boolean .)
+    MINOREQUAL      reduce using rule 28 (logica -> NOT boolean .)
+    GREATER         reduce using rule 28 (logica -> NOT boolean .)
+    GREATEREQUAL    reduce using rule 28 (logica -> NOT boolean .)
+    CONSOLE         reduce using rule 28 (logica -> NOT boolean .)
+    RVAR            reduce using rule 28 (logica -> NOT boolean .)
+    $end            reduce using rule 28 (logica -> NOT boolean .)
+    PARC            reduce using rule 28 (logica -> NOT boolean .)
 
 
 state 50
 
-    (22) logica -> boolean AND boolean .
+    (6) print -> CONSOLE DOT LOG PARA expression PARC .
 
-    PARC            reduce using rule 22 (logica -> boolean AND boolean .)
-    PLUS            reduce using rule 22 (logica -> boolean AND boolean .)
-    LESS            reduce using rule 22 (logica -> boolean AND boolean .)
-    BY              reduce using rule 22 (logica -> boolean AND boolean .)
-    DIVIDED         reduce using rule 22 (logica -> boolean AND boolean .)
-    MODUL           reduce using rule 22 (logica -> boolean AND boolean .)
-    EQUAL           reduce using rule 22 (logica -> boolean AND boolean .)
-    DIFERENT        reduce using rule 22 (logica -> boolean AND boolean .)
-    MINOR           reduce using rule 22 (logica -> boolean AND boolean .)
-    MINOREQUAL      reduce using rule 22 (logica -> boolean AND boolean .)
-    GREATER         reduce using rule 22 (logica -> boolean AND boolean .)
-    GREATEREQUAL    reduce using rule 22 (logica -> boolean AND boolean .)
+    CONSOLE         reduce using rule 6 (print -> CONSOLE DOT LOG PARA expression PARC .)
+    RVAR            reduce using rule 6 (print -> CONSOLE DOT LOG PARA expression PARC .)
+    $end            reduce using rule 6 (print -> CONSOLE DOT LOG PARA expression PARC .)
 
 
 state 51
 
-    (23) logica -> boolean OR boolean .
+    (7) declare -> RVAR ID DOUBLEDOT type EQUAL expression .
+    (14) aritmetica -> expression . PLUS expression
+    (15) aritmetica -> expression . BY expression
+    (16) aritmetica -> expression . DIVIDED expression
+    (17) aritmetica -> expression . LESS expression
+    (18) aritmetica -> expression . MODUL expression
+    (20) relacional -> expression . DEQUAL expression
+    (21) relacional -> expression . DIFERENT expression
+    (22) relacional -> expression . MINOR expression
+    (23) relacional -> expression . MINOREQUAL expression
+    (24) relacional -> expression . GREATER expression
+    (25) relacional -> expression . GREATEREQUAL expression
 
-    PARC            reduce using rule 23 (logica -> boolean OR boolean .)
-    PLUS            reduce using rule 23 (logica -> boolean OR boolean .)
-    LESS            reduce using rule 23 (logica -> boolean OR boolean .)
-    BY              reduce using rule 23 (logica -> boolean OR boolean .)
-    DIVIDED         reduce using rule 23 (logica -> boolean OR boolean .)
-    MODUL           reduce using rule 23 (logica -> boolean OR boolean .)
-    EQUAL           reduce using rule 23 (logica -> boolean OR boolean .)
-    DIFERENT        reduce using rule 23 (logica -> boolean OR boolean .)
-    MINOR           reduce using rule 23 (logica -> boolean OR boolean .)
-    MINOREQUAL      reduce using rule 23 (logica -> boolean OR boolean .)
-    GREATER         reduce using rule 23 (logica -> boolean OR boolean .)
-    GREATEREQUAL    reduce using rule 23 (logica -> boolean OR boolean .)
+    CONSOLE         reduce using rule 7 (declare -> RVAR ID DOUBLEDOT type EQUAL expression .)
+    RVAR            reduce using rule 7 (declare -> RVAR ID DOUBLEDOT type EQUAL expression .)
+    $end            reduce using rule 7 (declare -> RVAR ID DOUBLEDOT type EQUAL expression .)
+    PLUS            shift and go to state 35
+    BY              shift and go to state 36
+    DIVIDED         shift and go to state 37
+    LESS            shift and go to state 38
+    MODUL           shift and go to state 39
+    DEQUAL          shift and go to state 40
+    DIFERENT        shift and go to state 41
+    MINOR           shift and go to state 42
+    MINOREQUAL      shift and go to state 43
+    GREATER         shift and go to state 44
+    GREATEREQUAL    shift and go to state 45
+
+
+state 52
+
+    (14) aritmetica -> expression PLUS expression .
+    (14) aritmetica -> expression . PLUS expression
+    (15) aritmetica -> expression . BY expression
+    (16) aritmetica -> expression . DIVIDED expression
+    (17) aritmetica -> expression . LESS expression
+    (18) aritmetica -> expression . MODUL expression
+    (20) relacional -> expression . DEQUAL expression
+    (21) relacional -> expression . DIFERENT expression
+    (22) relacional -> expression . MINOR expression
+    (23) relacional -> expression . MINOREQUAL expression
+    (24) relacional -> expression . GREATER expression
+    (25) relacional -> expression . GREATEREQUAL expression
+
+    PLUS            reduce using rule 14 (aritmetica -> expression PLUS expression .)
+    LESS            reduce using rule 14 (aritmetica -> expression PLUS expression .)
+    DEQUAL          reduce using rule 14 (aritmetica -> expression PLUS expression .)
+    DIFERENT        reduce using rule 14 (aritmetica -> expression PLUS expression .)
+    MINOR           reduce using rule 14 (aritmetica -> expression PLUS expression .)
+    MINOREQUAL      reduce using rule 14 (aritmetica -> expression PLUS expression .)
+    GREATER         reduce using rule 14 (aritmetica -> expression PLUS expression .)
+    GREATEREQUAL    reduce using rule 14 (aritmetica -> expression PLUS expression .)
+    CONSOLE         reduce using rule 14 (aritmetica -> expression PLUS expression .)
+    RVAR            reduce using rule 14 (aritmetica -> expression PLUS expression .)
+    $end            reduce using rule 14 (aritmetica -> expression PLUS expression .)
+    PARC            reduce using rule 14 (aritmetica -> expression PLUS expression .)
+    BY              shift and go to state 36
+    DIVIDED         shift and go to state 37
+    MODUL           shift and go to state 39
+
+  ! BY              [ reduce using rule 14 (aritmetica -> expression PLUS expression .) ]
+  ! DIVIDED         [ reduce using rule 14 (aritmetica -> expression PLUS expression .) ]
+  ! MODUL           [ reduce using rule 14 (aritmetica -> expression PLUS expression .) ]
+  ! PLUS            [ shift and go to state 35 ]
+  ! LESS            [ shift and go to state 38 ]
+  ! DEQUAL          [ shift and go to state 40 ]
+  ! DIFERENT        [ shift and go to state 41 ]
+  ! MINOR           [ shift and go to state 42 ]
+  ! MINOREQUAL      [ shift and go to state 43 ]
+  ! GREATER         [ shift and go to state 44 ]
+  ! GREATEREQUAL    [ shift and go to state 45 ]
+
+
+state 53
+
+    (15) aritmetica -> expression BY expression .
+    (14) aritmetica -> expression . PLUS expression
+    (15) aritmetica -> expression . BY expression
+    (16) aritmetica -> expression . DIVIDED expression
+    (17) aritmetica -> expression . LESS expression
+    (18) aritmetica -> expression . MODUL expression
+    (20) relacional -> expression . DEQUAL expression
+    (21) relacional -> expression . DIFERENT expression
+    (22) relacional -> expression . MINOR expression
+    (23) relacional -> expression . MINOREQUAL expression
+    (24) relacional -> expression . GREATER expression
+    (25) relacional -> expression . GREATEREQUAL expression
+
+    PLUS            reduce using rule 15 (aritmetica -> expression BY expression .)
+    BY              reduce using rule 15 (aritmetica -> expression BY expression .)
+    DIVIDED         reduce using rule 15 (aritmetica -> expression BY expression .)
+    LESS            reduce using rule 15 (aritmetica -> expression BY expression .)
+    MODUL           reduce using rule 15 (aritmetica -> expression BY expression .)
+    DEQUAL          reduce using rule 15 (aritmetica -> expression BY expression .)
+    DIFERENT        reduce using rule 15 (aritmetica -> expression BY expression .)
+    MINOR           reduce using rule 15 (aritmetica -> expression BY expression .)
+    MINOREQUAL      reduce using rule 15 (aritmetica -> expression BY expression .)
+    GREATER         reduce using rule 15 (aritmetica -> expression BY expression .)
+    GREATEREQUAL    reduce using rule 15 (aritmetica -> expression BY expression .)
+    CONSOLE         reduce using rule 15 (aritmetica -> expression BY expression .)
+    RVAR            reduce using rule 15 (aritmetica -> expression BY expression .)
+    $end            reduce using rule 15 (aritmetica -> expression BY expression .)
+    PARC            reduce using rule 15 (aritmetica -> expression BY expression .)
+
+  ! PLUS            [ shift and go to state 35 ]
+  ! BY              [ shift and go to state 36 ]
+  ! DIVIDED         [ shift and go to state 37 ]
+  ! LESS            [ shift and go to state 38 ]
+  ! MODUL           [ shift and go to state 39 ]
+  ! DEQUAL          [ shift and go to state 40 ]
+  ! DIFERENT        [ shift and go to state 41 ]
+  ! MINOR           [ shift and go to state 42 ]
+  ! MINOREQUAL      [ shift and go to state 43 ]
+  ! GREATER         [ shift and go to state 44 ]
+  ! GREATEREQUAL    [ shift and go to state 45 ]
+
+
+state 54
+
+    (16) aritmetica -> expression DIVIDED expression .
+    (14) aritmetica -> expression . PLUS expression
+    (15) aritmetica -> expression . BY expression
+    (16) aritmetica -> expression . DIVIDED expression
+    (17) aritmetica -> expression . LESS expression
+    (18) aritmetica -> expression . MODUL expression
+    (20) relacional -> expression . DEQUAL expression
+    (21) relacional -> expression . DIFERENT expression
+    (22) relacional -> expression . MINOR expression
+    (23) relacional -> expression . MINOREQUAL expression
+    (24) relacional -> expression . GREATER expression
+    (25) relacional -> expression . GREATEREQUAL expression
+
+    PLUS            reduce using rule 16 (aritmetica -> expression DIVIDED expression .)
+    BY              reduce using rule 16 (aritmetica -> expression DIVIDED expression .)
+    DIVIDED         reduce using rule 16 (aritmetica -> expression DIVIDED expression .)
+    LESS            reduce using rule 16 (aritmetica -> expression DIVIDED expression .)
+    MODUL           reduce using rule 16 (aritmetica -> expression DIVIDED expression .)
+    DEQUAL          reduce using rule 16 (aritmetica -> expression DIVIDED expression .)
+    DIFERENT        reduce using rule 16 (aritmetica -> expression DIVIDED expression .)
+    MINOR           reduce using rule 16 (aritmetica -> expression DIVIDED expression .)
+    MINOREQUAL      reduce using rule 16 (aritmetica -> expression DIVIDED expression .)
+    GREATER         reduce using rule 16 (aritmetica -> expression DIVIDED expression .)
+    GREATEREQUAL    reduce using rule 16 (aritmetica -> expression DIVIDED expression .)
+    CONSOLE         reduce using rule 16 (aritmetica -> expression DIVIDED expression .)
+    RVAR            reduce using rule 16 (aritmetica -> expression DIVIDED expression .)
+    $end            reduce using rule 16 (aritmetica -> expression DIVIDED expression .)
+    PARC            reduce using rule 16 (aritmetica -> expression DIVIDED expression .)
+
+  ! PLUS            [ shift and go to state 35 ]
+  ! BY              [ shift and go to state 36 ]
+  ! DIVIDED         [ shift and go to state 37 ]
+  ! LESS            [ shift and go to state 38 ]
+  ! MODUL           [ shift and go to state 39 ]
+  ! DEQUAL          [ shift and go to state 40 ]
+  ! DIFERENT        [ shift and go to state 41 ]
+  ! MINOR           [ shift and go to state 42 ]
+  ! MINOREQUAL      [ shift and go to state 43 ]
+  ! GREATER         [ shift and go to state 44 ]
+  ! GREATEREQUAL    [ shift and go to state 45 ]
+
+
+state 55
+
+    (17) aritmetica -> expression LESS expression .
+    (14) aritmetica -> expression . PLUS expression
+    (15) aritmetica -> expression . BY expression
+    (16) aritmetica -> expression . DIVIDED expression
+    (17) aritmetica -> expression . LESS expression
+    (18) aritmetica -> expression . MODUL expression
+    (20) relacional -> expression . DEQUAL expression
+    (21) relacional -> expression . DIFERENT expression
+    (22) relacional -> expression . MINOR expression
+    (23) relacional -> expression . MINOREQUAL expression
+    (24) relacional -> expression . GREATER expression
+    (25) relacional -> expression . GREATEREQUAL expression
+
+    PLUS            reduce using rule 17 (aritmetica -> expression LESS expression .)
+    LESS            reduce using rule 17 (aritmetica -> expression LESS expression .)
+    DEQUAL          reduce using rule 17 (aritmetica -> expression LESS expression .)
+    DIFERENT        reduce using rule 17 (aritmetica -> expression LESS expression .)
+    MINOR           reduce using rule 17 (aritmetica -> expression LESS expression .)
+    MINOREQUAL      reduce using rule 17 (aritmetica -> expression LESS expression .)
+    GREATER         reduce using rule 17 (aritmetica -> expression LESS expression .)
+    GREATEREQUAL    reduce using rule 17 (aritmetica -> expression LESS expression .)
+    CONSOLE         reduce using rule 17 (aritmetica -> expression LESS expression .)
+    RVAR            reduce using rule 17 (aritmetica -> expression LESS expression .)
+    $end            reduce using rule 17 (aritmetica -> expression LESS expression .)
+    PARC            reduce using rule 17 (aritmetica -> expression LESS expression .)
+    BY              shift and go to state 36
+    DIVIDED         shift and go to state 37
+    MODUL           shift and go to state 39
+
+  ! BY              [ reduce using rule 17 (aritmetica -> expression LESS expression .) ]
+  ! DIVIDED         [ reduce using rule 17 (aritmetica -> expression LESS expression .) ]
+  ! MODUL           [ reduce using rule 17 (aritmetica -> expression LESS expression .) ]
+  ! PLUS            [ shift and go to state 35 ]
+  ! LESS            [ shift and go to state 38 ]
+  ! DEQUAL          [ shift and go to state 40 ]
+  ! DIFERENT        [ shift and go to state 41 ]
+  ! MINOR           [ shift and go to state 42 ]
+  ! MINOREQUAL      [ shift and go to state 43 ]
+  ! GREATER         [ shift and go to state 44 ]
+  ! GREATEREQUAL    [ shift and go to state 45 ]
+
+
+state 56
+
+    (18) aritmetica -> expression MODUL expression .
+    (14) aritmetica -> expression . PLUS expression
+    (15) aritmetica -> expression . BY expression
+    (16) aritmetica -> expression . DIVIDED expression
+    (17) aritmetica -> expression . LESS expression
+    (18) aritmetica -> expression . MODUL expression
+    (20) relacional -> expression . DEQUAL expression
+    (21) relacional -> expression . DIFERENT expression
+    (22) relacional -> expression . MINOR expression
+    (23) relacional -> expression . MINOREQUAL expression
+    (24) relacional -> expression . GREATER expression
+    (25) relacional -> expression . GREATEREQUAL expression
+
+    PLUS            reduce using rule 18 (aritmetica -> expression MODUL expression .)
+    BY              reduce using rule 18 (aritmetica -> expression MODUL expression .)
+    DIVIDED         reduce using rule 18 (aritmetica -> expression MODUL expression .)
+    LESS            reduce using rule 18 (aritmetica -> expression MODUL expression .)
+    MODUL           reduce using rule 18 (aritmetica -> expression MODUL expression .)
+    DEQUAL          reduce using rule 18 (aritmetica -> expression MODUL expression .)
+    DIFERENT        reduce using rule 18 (aritmetica -> expression MODUL expression .)
+    MINOR           reduce using rule 18 (aritmetica -> expression MODUL expression .)
+    MINOREQUAL      reduce using rule 18 (aritmetica -> expression MODUL expression .)
+    GREATER         reduce using rule 18 (aritmetica -> expression MODUL expression .)
+    GREATEREQUAL    reduce using rule 18 (aritmetica -> expression MODUL expression .)
+    CONSOLE         reduce using rule 18 (aritmetica -> expression MODUL expression .)
+    RVAR            reduce using rule 18 (aritmetica -> expression MODUL expression .)
+    $end            reduce using rule 18 (aritmetica -> expression MODUL expression .)
+    PARC            reduce using rule 18 (aritmetica -> expression MODUL expression .)
+
+  ! PLUS            [ shift and go to state 35 ]
+  ! BY              [ shift and go to state 36 ]
+  ! DIVIDED         [ shift and go to state 37 ]
+  ! LESS            [ shift and go to state 38 ]
+  ! MODUL           [ shift and go to state 39 ]
+  ! DEQUAL          [ shift and go to state 40 ]
+  ! DIFERENT        [ shift and go to state 41 ]
+  ! MINOR           [ shift and go to state 42 ]
+  ! MINOREQUAL      [ shift and go to state 43 ]
+  ! GREATER         [ shift and go to state 44 ]
+  ! GREATEREQUAL    [ shift and go to state 45 ]
+
+
+state 57
+
+    (20) relacional -> expression DEQUAL expression .
+    (14) aritmetica -> expression . PLUS expression
+    (15) aritmetica -> expression . BY expression
+    (16) aritmetica -> expression . DIVIDED expression
+    (17) aritmetica -> expression . LESS expression
+    (18) aritmetica -> expression . MODUL expression
+    (20) relacional -> expression . DEQUAL expression
+    (21) relacional -> expression . DIFERENT expression
+    (22) relacional -> expression . MINOR expression
+    (23) relacional -> expression . MINOREQUAL expression
+    (24) relacional -> expression . GREATER expression
+    (25) relacional -> expression . GREATEREQUAL expression
+
+    DEQUAL          reduce using rule 20 (relacional -> expression DEQUAL expression .)
+    DIFERENT        reduce using rule 20 (relacional -> expression DEQUAL expression .)
+    MINOR           reduce using rule 20 (relacional -> expression DEQUAL expression .)
+    MINOREQUAL      reduce using rule 20 (relacional -> expression DEQUAL expression .)
+    GREATER         reduce using rule 20 (relacional -> expression DEQUAL expression .)
+    GREATEREQUAL    reduce using rule 20 (relacional -> expression DEQUAL expression .)
+    CONSOLE         reduce using rule 20 (relacional -> expression DEQUAL expression .)
+    RVAR            reduce using rule 20 (relacional -> expression DEQUAL expression .)
+    $end            reduce using rule 20 (relacional -> expression DEQUAL expression .)
+    PARC            reduce using rule 20 (relacional -> expression DEQUAL expression .)
+    PLUS            shift and go to state 35
+    BY              shift and go to state 36
+    DIVIDED         shift and go to state 37
+    LESS            shift and go to state 38
+    MODUL           shift and go to state 39
+
+  ! PLUS            [ reduce using rule 20 (relacional -> expression DEQUAL expression .) ]
+  ! BY              [ reduce using rule 20 (relacional -> expression DEQUAL expression .) ]
+  ! DIVIDED         [ reduce using rule 20 (relacional -> expression DEQUAL expression .) ]
+  ! LESS            [ reduce using rule 20 (relacional -> expression DEQUAL expression .) ]
+  ! MODUL           [ reduce using rule 20 (relacional -> expression DEQUAL expression .) ]
+  ! DEQUAL          [ shift and go to state 40 ]
+  ! DIFERENT        [ shift and go to state 41 ]
+  ! MINOR           [ shift and go to state 42 ]
+  ! MINOREQUAL      [ shift and go to state 43 ]
+  ! GREATER         [ shift and go to state 44 ]
+  ! GREATEREQUAL    [ shift and go to state 45 ]
+
+
+state 58
+
+    (21) relacional -> expression DIFERENT expression .
+    (14) aritmetica -> expression . PLUS expression
+    (15) aritmetica -> expression . BY expression
+    (16) aritmetica -> expression . DIVIDED expression
+    (17) aritmetica -> expression . LESS expression
+    (18) aritmetica -> expression . MODUL expression
+    (20) relacional -> expression . DEQUAL expression
+    (21) relacional -> expression . DIFERENT expression
+    (22) relacional -> expression . MINOR expression
+    (23) relacional -> expression . MINOREQUAL expression
+    (24) relacional -> expression . GREATER expression
+    (25) relacional -> expression . GREATEREQUAL expression
+
+    DEQUAL          reduce using rule 21 (relacional -> expression DIFERENT expression .)
+    DIFERENT        reduce using rule 21 (relacional -> expression DIFERENT expression .)
+    MINOR           reduce using rule 21 (relacional -> expression DIFERENT expression .)
+    MINOREQUAL      reduce using rule 21 (relacional -> expression DIFERENT expression .)
+    GREATER         reduce using rule 21 (relacional -> expression DIFERENT expression .)
+    GREATEREQUAL    reduce using rule 21 (relacional -> expression DIFERENT expression .)
+    CONSOLE         reduce using rule 21 (relacional -> expression DIFERENT expression .)
+    RVAR            reduce using rule 21 (relacional -> expression DIFERENT expression .)
+    $end            reduce using rule 21 (relacional -> expression DIFERENT expression .)
+    PARC            reduce using rule 21 (relacional -> expression DIFERENT expression .)
+    PLUS            shift and go to state 35
+    BY              shift and go to state 36
+    DIVIDED         shift and go to state 37
+    LESS            shift and go to state 38
+    MODUL           shift and go to state 39
+
+  ! PLUS            [ reduce using rule 21 (relacional -> expression DIFERENT expression .) ]
+  ! BY              [ reduce using rule 21 (relacional -> expression DIFERENT expression .) ]
+  ! DIVIDED         [ reduce using rule 21 (relacional -> expression DIFERENT expression .) ]
+  ! LESS            [ reduce using rule 21 (relacional -> expression DIFERENT expression .) ]
+  ! MODUL           [ reduce using rule 21 (relacional -> expression DIFERENT expression .) ]
+  ! DEQUAL          [ shift and go to state 40 ]
+  ! DIFERENT        [ shift and go to state 41 ]
+  ! MINOR           [ shift and go to state 42 ]
+  ! MINOREQUAL      [ shift and go to state 43 ]
+  ! GREATER         [ shift and go to state 44 ]
+  ! GREATEREQUAL    [ shift and go to state 45 ]
+
+
+state 59
+
+    (22) relacional -> expression MINOR expression .
+    (14) aritmetica -> expression . PLUS expression
+    (15) aritmetica -> expression . BY expression
+    (16) aritmetica -> expression . DIVIDED expression
+    (17) aritmetica -> expression . LESS expression
+    (18) aritmetica -> expression . MODUL expression
+    (20) relacional -> expression . DEQUAL expression
+    (21) relacional -> expression . DIFERENT expression
+    (22) relacional -> expression . MINOR expression
+    (23) relacional -> expression . MINOREQUAL expression
+    (24) relacional -> expression . GREATER expression
+    (25) relacional -> expression . GREATEREQUAL expression
+
+    DEQUAL          reduce using rule 22 (relacional -> expression MINOR expression .)
+    DIFERENT        reduce using rule 22 (relacional -> expression MINOR expression .)
+    MINOR           reduce using rule 22 (relacional -> expression MINOR expression .)
+    MINOREQUAL      reduce using rule 22 (relacional -> expression MINOR expression .)
+    GREATER         reduce using rule 22 (relacional -> expression MINOR expression .)
+    GREATEREQUAL    reduce using rule 22 (relacional -> expression MINOR expression .)
+    CONSOLE         reduce using rule 22 (relacional -> expression MINOR expression .)
+    RVAR            reduce using rule 22 (relacional -> expression MINOR expression .)
+    $end            reduce using rule 22 (relacional -> expression MINOR expression .)
+    PARC            reduce using rule 22 (relacional -> expression MINOR expression .)
+    PLUS            shift and go to state 35
+    BY              shift and go to state 36
+    DIVIDED         shift and go to state 37
+    LESS            shift and go to state 38
+    MODUL           shift and go to state 39
+
+  ! PLUS            [ reduce using rule 22 (relacional -> expression MINOR expression .) ]
+  ! BY              [ reduce using rule 22 (relacional -> expression MINOR expression .) ]
+  ! DIVIDED         [ reduce using rule 22 (relacional -> expression MINOR expression .) ]
+  ! LESS            [ reduce using rule 22 (relacional -> expression MINOR expression .) ]
+  ! MODUL           [ reduce using rule 22 (relacional -> expression MINOR expression .) ]
+  ! DEQUAL          [ shift and go to state 40 ]
+  ! DIFERENT        [ shift and go to state 41 ]
+  ! MINOR           [ shift and go to state 42 ]
+  ! MINOREQUAL      [ shift and go to state 43 ]
+  ! GREATER         [ shift and go to state 44 ]
+  ! GREATEREQUAL    [ shift and go to state 45 ]
+
+
+state 60
+
+    (23) relacional -> expression MINOREQUAL expression .
+    (14) aritmetica -> expression . PLUS expression
+    (15) aritmetica -> expression . BY expression
+    (16) aritmetica -> expression . DIVIDED expression
+    (17) aritmetica -> expression . LESS expression
+    (18) aritmetica -> expression . MODUL expression
+    (20) relacional -> expression . DEQUAL expression
+    (21) relacional -> expression . DIFERENT expression
+    (22) relacional -> expression . MINOR expression
+    (23) relacional -> expression . MINOREQUAL expression
+    (24) relacional -> expression . GREATER expression
+    (25) relacional -> expression . GREATEREQUAL expression
+
+    DEQUAL          reduce using rule 23 (relacional -> expression MINOREQUAL expression .)
+    DIFERENT        reduce using rule 23 (relacional -> expression MINOREQUAL expression .)
+    MINOR           reduce using rule 23 (relacional -> expression MINOREQUAL expression .)
+    MINOREQUAL      reduce using rule 23 (relacional -> expression MINOREQUAL expression .)
+    GREATER         reduce using rule 23 (relacional -> expression MINOREQUAL expression .)
+    GREATEREQUAL    reduce using rule 23 (relacional -> expression MINOREQUAL expression .)
+    CONSOLE         reduce using rule 23 (relacional -> expression MINOREQUAL expression .)
+    RVAR            reduce using rule 23 (relacional -> expression MINOREQUAL expression .)
+    $end            reduce using rule 23 (relacional -> expression MINOREQUAL expression .)
+    PARC            reduce using rule 23 (relacional -> expression MINOREQUAL expression .)
+    PLUS            shift and go to state 35
+    BY              shift and go to state 36
+    DIVIDED         shift and go to state 37
+    LESS            shift and go to state 38
+    MODUL           shift and go to state 39
+
+  ! PLUS            [ reduce using rule 23 (relacional -> expression MINOREQUAL expression .) ]
+  ! BY              [ reduce using rule 23 (relacional -> expression MINOREQUAL expression .) ]
+  ! DIVIDED         [ reduce using rule 23 (relacional -> expression MINOREQUAL expression .) ]
+  ! LESS            [ reduce using rule 23 (relacional -> expression MINOREQUAL expression .) ]
+  ! MODUL           [ reduce using rule 23 (relacional -> expression MINOREQUAL expression .) ]
+  ! DEQUAL          [ shift and go to state 40 ]
+  ! DIFERENT        [ shift and go to state 41 ]
+  ! MINOR           [ shift and go to state 42 ]
+  ! MINOREQUAL      [ shift and go to state 43 ]
+  ! GREATER         [ shift and go to state 44 ]
+  ! GREATEREQUAL    [ shift and go to state 45 ]
+
+
+state 61
+
+    (24) relacional -> expression GREATER expression .
+    (14) aritmetica -> expression . PLUS expression
+    (15) aritmetica -> expression . BY expression
+    (16) aritmetica -> expression . DIVIDED expression
+    (17) aritmetica -> expression . LESS expression
+    (18) aritmetica -> expression . MODUL expression
+    (20) relacional -> expression . DEQUAL expression
+    (21) relacional -> expression . DIFERENT expression
+    (22) relacional -> expression . MINOR expression
+    (23) relacional -> expression . MINOREQUAL expression
+    (24) relacional -> expression . GREATER expression
+    (25) relacional -> expression . GREATEREQUAL expression
+
+    DEQUAL          reduce using rule 24 (relacional -> expression GREATER expression .)
+    DIFERENT        reduce using rule 24 (relacional -> expression GREATER expression .)
+    MINOR           reduce using rule 24 (relacional -> expression GREATER expression .)
+    MINOREQUAL      reduce using rule 24 (relacional -> expression GREATER expression .)
+    GREATER         reduce using rule 24 (relacional -> expression GREATER expression .)
+    GREATEREQUAL    reduce using rule 24 (relacional -> expression GREATER expression .)
+    CONSOLE         reduce using rule 24 (relacional -> expression GREATER expression .)
+    RVAR            reduce using rule 24 (relacional -> expression GREATER expression .)
+    $end            reduce using rule 24 (relacional -> expression GREATER expression .)
+    PARC            reduce using rule 24 (relacional -> expression GREATER expression .)
+    PLUS            shift and go to state 35
+    BY              shift and go to state 36
+    DIVIDED         shift and go to state 37
+    LESS            shift and go to state 38
+    MODUL           shift and go to state 39
+
+  ! PLUS            [ reduce using rule 24 (relacional -> expression GREATER expression .) ]
+  ! BY              [ reduce using rule 24 (relacional -> expression GREATER expression .) ]
+  ! DIVIDED         [ reduce using rule 24 (relacional -> expression GREATER expression .) ]
+  ! LESS            [ reduce using rule 24 (relacional -> expression GREATER expression .) ]
+  ! MODUL           [ reduce using rule 24 (relacional -> expression GREATER expression .) ]
+  ! DEQUAL          [ shift and go to state 40 ]
+  ! DIFERENT        [ shift and go to state 41 ]
+  ! MINOR           [ shift and go to state 42 ]
+  ! MINOREQUAL      [ shift and go to state 43 ]
+  ! GREATER         [ shift and go to state 44 ]
+  ! GREATEREQUAL    [ shift and go to state 45 ]
+
+
+state 62
+
+    (25) relacional -> expression GREATEREQUAL expression .
+    (14) aritmetica -> expression . PLUS expression
+    (15) aritmetica -> expression . BY expression
+    (16) aritmetica -> expression . DIVIDED expression
+    (17) aritmetica -> expression . LESS expression
+    (18) aritmetica -> expression . MODUL expression
+    (20) relacional -> expression . DEQUAL expression
+    (21) relacional -> expression . DIFERENT expression
+    (22) relacional -> expression . MINOR expression
+    (23) relacional -> expression . MINOREQUAL expression
+    (24) relacional -> expression . GREATER expression
+    (25) relacional -> expression . GREATEREQUAL expression
+
+    DEQUAL          reduce using rule 25 (relacional -> expression GREATEREQUAL expression .)
+    DIFERENT        reduce using rule 25 (relacional -> expression GREATEREQUAL expression .)
+    MINOR           reduce using rule 25 (relacional -> expression GREATEREQUAL expression .)
+    MINOREQUAL      reduce using rule 25 (relacional -> expression GREATEREQUAL expression .)
+    GREATER         reduce using rule 25 (relacional -> expression GREATEREQUAL expression .)
+    GREATEREQUAL    reduce using rule 25 (relacional -> expression GREATEREQUAL expression .)
+    CONSOLE         reduce using rule 25 (relacional -> expression GREATEREQUAL expression .)
+    RVAR            reduce using rule 25 (relacional -> expression GREATEREQUAL expression .)
+    $end            reduce using rule 25 (relacional -> expression GREATEREQUAL expression .)
+    PARC            reduce using rule 25 (relacional -> expression GREATEREQUAL expression .)
+    PLUS            shift and go to state 35
+    BY              shift and go to state 36
+    DIVIDED         shift and go to state 37
+    LESS            shift and go to state 38
+    MODUL           shift and go to state 39
+
+  ! PLUS            [ reduce using rule 25 (relacional -> expression GREATEREQUAL expression .) ]
+  ! BY              [ reduce using rule 25 (relacional -> expression GREATEREQUAL expression .) ]
+  ! DIVIDED         [ reduce using rule 25 (relacional -> expression GREATEREQUAL expression .) ]
+  ! LESS            [ reduce using rule 25 (relacional -> expression GREATEREQUAL expression .) ]
+  ! MODUL           [ reduce using rule 25 (relacional -> expression GREATEREQUAL expression .) ]
+  ! DEQUAL          [ shift and go to state 40 ]
+  ! DIFERENT        [ shift and go to state 41 ]
+  ! MINOR           [ shift and go to state 42 ]
+  ! MINOREQUAL      [ shift and go to state 43 ]
+  ! GREATER         [ shift and go to state 44 ]
+  ! GREATEREQUAL    [ shift and go to state 45 ]
+
+
+state 63
+
+    (26) logica -> boolean AND boolean .
+
+    PLUS            reduce using rule 26 (logica -> boolean AND boolean .)
+    BY              reduce using rule 26 (logica -> boolean AND boolean .)
+    DIVIDED         reduce using rule 26 (logica -> boolean AND boolean .)
+    LESS            reduce using rule 26 (logica -> boolean AND boolean .)
+    MODUL           reduce using rule 26 (logica -> boolean AND boolean .)
+    DEQUAL          reduce using rule 26 (logica -> boolean AND boolean .)
+    DIFERENT        reduce using rule 26 (logica -> boolean AND boolean .)
+    MINOR           reduce using rule 26 (logica -> boolean AND boolean .)
+    MINOREQUAL      reduce using rule 26 (logica -> boolean AND boolean .)
+    GREATER         reduce using rule 26 (logica -> boolean AND boolean .)
+    GREATEREQUAL    reduce using rule 26 (logica -> boolean AND boolean .)
+    CONSOLE         reduce using rule 26 (logica -> boolean AND boolean .)
+    RVAR            reduce using rule 26 (logica -> boolean AND boolean .)
+    $end            reduce using rule 26 (logica -> boolean AND boolean .)
+    PARC            reduce using rule 26 (logica -> boolean AND boolean .)
+
+
+state 64
+
+    (27) logica -> boolean OR boolean .
+
+    PLUS            reduce using rule 27 (logica -> boolean OR boolean .)
+    BY              reduce using rule 27 (logica -> boolean OR boolean .)
+    DIVIDED         reduce using rule 27 (logica -> boolean OR boolean .)
+    LESS            reduce using rule 27 (logica -> boolean OR boolean .)
+    MODUL           reduce using rule 27 (logica -> boolean OR boolean .)
+    DEQUAL          reduce using rule 27 (logica -> boolean OR boolean .)
+    DIFERENT        reduce using rule 27 (logica -> boolean OR boolean .)
+    MINOR           reduce using rule 27 (logica -> boolean OR boolean .)
+    MINOREQUAL      reduce using rule 27 (logica -> boolean OR boolean .)
+    GREATER         reduce using rule 27 (logica -> boolean OR boolean .)
+    GREATEREQUAL    reduce using rule 27 (logica -> boolean OR boolean .)
+    CONSOLE         reduce using rule 27 (logica -> boolean OR boolean .)
+    RVAR            reduce using rule 27 (logica -> boolean OR boolean .)
+    $end            reduce using rule 27 (logica -> boolean OR boolean .)
+    PARC            reduce using rule 27 (logica -> boolean OR boolean .)
 
