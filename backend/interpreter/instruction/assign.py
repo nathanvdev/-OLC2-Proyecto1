@@ -1,4 +1,4 @@
-from ..abtract.instruction import instruction
+from ..abstract.instruction import instruction
 
 class Assign(instruction):
     def __init__(self, line, column, name, op, expression):

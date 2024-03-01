@@ -1,4 +1,4 @@
-from ..abtract.expression import expression
+from ..abstract.expression import expression
 
 class Primitive(expression):
     def __init__(self, line, column, value, Type):

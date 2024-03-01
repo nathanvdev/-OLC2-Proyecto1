@@ -1,7 +1,7 @@
 import ply.lex as lex
 import ply.yacc as yacc
 
-from ..abtract.types import ExpressionType
+from ..abstract.types import ExpressionType
 from ..expression.primitive import Primitive
 from ..instruction.Print import Print
 from ..expression.aritmetic import Aritmetic
@@ -10,6 +10,7 @@ from ..expression.logica import Logica
 from ..instruction.declarate import Declarate
 from ..instruction.assign import Assign
 from ..instruction.find_variable import FindVariable
+from ..instruction.if_else import If_else
 
 #palabras reservadas
 reserved = {
@@ -23,10 +24,12 @@ reserved = {
     'float': 'RFLOAT',
     'string': 'RSTRING',
     'boolean': 'RBOOLEAN',
+    'if' : 'RIF',
+    'else' : 'RELSE',
 }
 
 #lista de tokens
-tokens = ['PARA', 'PARC', 'DOT', 'DOUBLEDOT',
+tokens = ['PARA', 'PARC', 'DOT', 'DOUBLEDOT', 'LLAVEA', 'LLAVEC',
           'NUMBER', 'FLOAT', 'STRING', 'ID',
           'PLUS', 'LESS', 'BY', 'DIVIDED', 'MODUL',
           'EQUAL','DEQUAL','DIFERENT','MINOR','MINOREQUAL','GREATER','GREATEREQUAL',
@@ -38,6 +41,8 @@ t_PARA = r'\('
 t_PARC = r'\)'
 t_DOT = r'\.'
 t_DOUBLEDOT = r'\:'
+t_LLAVEA = r'\{'
+t_LLAVEC = r'\}'
 
 ###Aritmetica
 t_PLUS = r'\+'
@@ -135,7 +140,7 @@ def p_start(p):
 def p_instrucciones(p):
     '''instrucciones    : instrucciones instruccion
                         | instruccion '''
-    if 2 < len(p):
+    if len(p) > 2:
         p[1].append(p[2])
         p[0] = p[1]
     else:
@@ -146,7 +151,8 @@ def p_instruccion(p):
     '''instruccion  : print
                     | declare
                     | declareConst
-                    | assignVar'''
+                    | assignVar
+                    | if_else'''
     p[0] = p[1]
 
 
@@ -199,8 +205,31 @@ def p_assignVar(p):
     elif p[2] == '-':
         p[0] = Assign(tmp.line, tmp.column, p[1], '-=', p[4])
 
+def p_if_else(p):
+    '''if_else  : RIF PARA expression PARC LLAVEA instrucciones LLAVEC else'''
+
+    tmp = get_params(p)
+    p[0] = If_else(tmp.line, tmp.column, p[3], p[6], p[8])
+    
+def p_else(p):
+    '''else : RELSE LLAVEA instrucciones LLAVEC
+            | RELSE if_else
+            |'''
+    
+    if len(p) == 5:
+        p[0] = p[3]
+    elif len(p) == 3:
+        p[0] = [p[2]]
+    else:
+        p[0] = None
 
 
+    # if len(p) == 5:
+    #     p[0] = [p[1]]
+    # elif len(p) == 3:
+    #     p[1].append(p[2])
+    #     p[0] = p[1]
+    # else:
 
 
 def p_expression(p):
@@ -232,7 +261,6 @@ def p_aritmetica(p):
     elif p.slice[2].type == 'PLUS':
         p[0] = Aritmetic(tmp.line, tmp.column, p[1], p[3], p[2])
 
-
     elif p.slice[2].type == 'LESS':
         p[0] = Aritmetic(tmp.line, tmp.column, p[1], p[3], p[2])
 
@@ -259,7 +287,7 @@ def p_relacional(p):
     
     tmp = get_params(p)
 
-    if p.slice[2].type == 'EQUAL':
+    if p.slice[2].type == 'DEQUAL':
         p[0] = Relational(tmp.line, tmp.column, p[1], p[3], p[2])
 
     elif p.slice[2].type == 'DIFERENT':

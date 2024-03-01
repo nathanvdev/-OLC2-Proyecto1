@@ -1,6 +1,6 @@
-from ..abtract.instruction import instruction
-from ..abtract.environment import Environment
-from ..abtract.variables import Variables
+from ..abstract.instruction import instruction
+from ..abstract.environment import Environment
+from ..abstract.variables import Variables
 
 
 class Declarate(instruction):

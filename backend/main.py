@@ -1,9 +1,9 @@
-from interpreter.abtract.environment import Environment
+from interpreter.abstract.environment import Environment
 from interpreter.analyzer import grammar
 
 
 if __name__ == "__main__":
-    input_text = '''var valor1 : number = 1\nvalor1 = valor1 + 5\nconsole.log(valor1)\nvar valor2 : string = "hola mundo"\nvalor2 += " desde python" \nconsole.log(valor2)'''
+    input_text = '''var valor1 : number = 50\nvar valor2 : number = 10\nif (valor1 < valor2) {\n     console.log(valor1*valor2)\n     valor1 += 1\n} else if (valor1 == valor2) {\n     console.log("son iguales")\n     valor1 -= 1\n console.log(valor1)\n} else {\n     console.log(valor1+valor2)\n     valor1 = 1}'''
     resultado = grammar.parse(input_text)
 
     GlobalEnvironment = Environment(None, 'Global')
