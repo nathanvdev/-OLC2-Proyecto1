@@ -1,13 +1,18 @@
 from ..abtract.instruction import instruction
 from ..abtract.environment import Environment
+from ..abtract.variables import Variables
+
+
 class Declarate(instruction):
-    def __init__(self, line, column, id, type, expression):
+    def __init__(self, line, column, id, type, expression, const):
         super().__init__(line, column)
         self.id = id 
         self.type = type
         self.value = expression
+        self.const = const
 
     def Eject(self, env: Environment):
+
         if self.value != None:
             self.value = self.value.Eject(env)
         
@@ -20,6 +25,8 @@ class Declarate(instruction):
         if self.type == None and self.value != None:
             self.type = self.value.Type
 
+        newVar = Variables(self.id, self.type, self.value, self.const)
 
-        env.SaveVariable(self.id, self.value)
-        print(f'Variable {self.id}')
+
+        env.SaveVariable(newVar)
+

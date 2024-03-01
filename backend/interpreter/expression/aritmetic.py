@@ -1,7 +1,6 @@
 from ..abtract.expression import expression
 from .primitive import Primitive
 from ..abtract.types import ExpressionType
-import copy
 
 dominant_table = [
     [ExpressionType.INTEGER,    ExpressionType.FLOAT,   ExpressionType.NULL,    ExpressionType.NULL,    ExpressionType.NULL],

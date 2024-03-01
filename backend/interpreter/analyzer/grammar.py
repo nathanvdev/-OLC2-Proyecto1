@@ -8,7 +8,8 @@ from ..expression.aritmetic import Aritmetic
 from ..expression.relational import Relational
 from ..expression.logica import Logica
 from ..instruction.declarate import Declarate
-
+from ..instruction.assign import Assign
+from ..instruction.find_variable import FindVariable
 
 #palabras reservadas
 reserved = {
@@ -17,6 +18,7 @@ reserved = {
     'true': 'TRUE',
     'false': 'FALSE',
     'var': 'RVAR',
+    'const': 'RCONST',
     'number': 'RNUMBER',
     'float': 'RFLOAT',
     'string': 'RSTRING',
@@ -142,7 +144,9 @@ def p_instrucciones(p):
     
 def p_instruccion(p):
     '''instruccion  : print
-                    | declare'''
+                    | declare
+                    | declareConst
+                    | assignVar'''
     p[0] = p[1]
 
 
@@ -159,22 +163,59 @@ def p_declare(p):
     
     tmp = get_params(p)
     if len(p) == 7:
-        p[0] = Declarate(tmp.line, tmp.column, p[2], p[4], p[6])
+        p[0] = Declarate(tmp.line, tmp.column, p[2], p[4], p[6], False)
 
     elif p[3] =="=" :
-        p[0] = Declarate(tmp.line, tmp.column, p[2], None, p[4])
+        p[0] = Declarate(tmp.line, tmp.column, p[2], None, p[4], False)
 
     elif p[3] ==":" : 
-        p[0] = Declarate(tmp.line, tmp.column, p[2], p[4], None)
+        p[0] = Declarate(tmp.line, tmp.column, p[2], p[4], None, False)
+
+def p_declareConst(p):
+    '''declareConst : RCONST ID DOUBLEDOT type EQUAL expression
+                    | RCONST ID EQUAL expression
+                    | RCONST ID DOUBLEDOT type'''
+    
+    tmp = get_params(p)
+    if len(p) == 7:
+        p[0] = Declarate(tmp.line, tmp.column, p[2], p[4], p[6], True)
+
+    elif p[3] =="=" :
+        p[0] = Declarate(tmp.line, tmp.column, p[2], None, p[4], True)
+
+    elif p[3] ==":" : 
+        p[0] = Declarate(tmp.line, tmp.column, p[2], p[4], None, True)
+
+def p_assignVar(p):
+    '''assignVar    : ID EQUAL expression
+                    | ID PLUS EQUAL expression
+                    | ID LESS EQUAL expression'''
+    
+    tmp = get_params(p)
+    if p[2] == '=':
+        p[0] = Assign(tmp.line, tmp.column, p[1], '=', p[3])
+    elif p[2] == '+':
+        p[0] = Assign(tmp.line, tmp.column, p[1], '+=', p[4])
+    elif p[2] == '-':
+        p[0] = Assign(tmp.line, tmp.column, p[1], '-=', p[4])
+
+
+
 
 
 def p_expression(p):
     '''expression   : primitivo 
                     | aritmetica
                     | relacional
-                    | logica'''
+                    | logica
+                    | ID'''
+    
+    tmp = get_params(p)
+    if p.slice[1].type == 'ID':
+        p[0] = FindVariable(tmp.line, tmp.column, p[1])
+    else:
+        p[0] = p[1]
 
-    p[0] = p[1]
 
 def p_aritmetica(p):
     '''aritmetica   : expression PLUS expression
