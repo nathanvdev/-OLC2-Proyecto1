@@ -3,7 +3,8 @@ from .primitive import Primitive
 from ..abstract.types import ExpressionType
 
 
-import copy
+
+
 
 class Relational(expression):
     def __init__(self, line, column, left, right, operator):

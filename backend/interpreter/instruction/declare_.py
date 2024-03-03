@@ -3,7 +3,7 @@ from ..abstract.environment import Environment
 from ..abstract.variables import Variables
 
 
-class Declarate(instruction):
+class Declare_(instruction):
     def __init__(self, line, column, id, type, expression, const):
         super().__init__(line, column)
         self.id = id 

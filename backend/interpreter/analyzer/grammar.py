@@ -7,10 +7,12 @@ from ..instruction.Print import Print
 from ..expression.aritmetic import Aritmetic
 from ..expression.relational import Relational
 from ..expression.logica import Logica
-from ..instruction.declarate import Declarate
+from ..instruction.declare_ import Declare_
 from ..instruction.assign import Assign
 from ..instruction.find_variable import FindVariable
 from ..instruction.if_else import If_else
+from ..instruction.while_ import while_
+from ..instruction.for_ import for_
 
 #palabras reservadas
 reserved = {
@@ -26,10 +28,12 @@ reserved = {
     'boolean': 'RBOOLEAN',
     'if' : 'RIF',
     'else' : 'RELSE',
+    'while' : 'RWHILE',
+    'for' : 'RFOR',
 }
 
 #lista de tokens
-tokens = ['PARA', 'PARC', 'DOT', 'DOUBLEDOT', 'LLAVEA', 'LLAVEC',
+tokens = ['PARA', 'PARC', 'DOT', 'DOUBLEDOT', 'LLAVEA', 'LLAVEC', 'SEMICOLON',
           'NUMBER', 'FLOAT', 'STRING', 'ID',
           'PLUS', 'LESS', 'BY', 'DIVIDED', 'MODUL',
           'EQUAL','DEQUAL','DIFERENT','MINOR','MINOREQUAL','GREATER','GREATEREQUAL',
@@ -43,6 +47,7 @@ t_DOT = r'\.'
 t_DOUBLEDOT = r'\:'
 t_LLAVEA = r'\{'
 t_LLAVEC = r'\}'
+t_SEMICOLON = r'\;'
 
 ###Aritmetica
 t_PLUS = r'\+'
@@ -152,7 +157,9 @@ def p_instruccion(p):
                     | declare
                     | declareConst
                     | assignVar
-                    | if_else'''
+                    | if_else
+                    | while_
+                    | for_'''
     p[0] = p[1]
 
 
@@ -169,13 +176,13 @@ def p_declare(p):
     
     tmp = get_params(p)
     if len(p) == 7:
-        p[0] = Declarate(tmp.line, tmp.column, p[2], p[4], p[6], False)
+        p[0] = Declare_(tmp.line, tmp.column, p[2], p[4], p[6], False)
 
     elif p[3] =="=" :
-        p[0] = Declarate(tmp.line, tmp.column, p[2], None, p[4], False)
+        p[0] = Declare_(tmp.line, tmp.column, p[2], None, p[4], False)
 
     elif p[3] ==":" : 
-        p[0] = Declarate(tmp.line, tmp.column, p[2], p[4], None, False)
+        p[0] = Declare_(tmp.line, tmp.column, p[2], p[4], None, False)
 
 def p_declareConst(p):
     '''declareConst : RCONST ID DOUBLEDOT type EQUAL expression
@@ -184,13 +191,13 @@ def p_declareConst(p):
     
     tmp = get_params(p)
     if len(p) == 7:
-        p[0] = Declarate(tmp.line, tmp.column, p[2], p[4], p[6], True)
+        p[0] = Declare_(tmp.line, tmp.column, p[2], p[4], p[6], True)
 
     elif p[3] =="=" :
-        p[0] = Declarate(tmp.line, tmp.column, p[2], None, p[4], True)
+        p[0] = Declare_(tmp.line, tmp.column, p[2], None, p[4], True)
 
     elif p[3] ==":" : 
-        p[0] = Declarate(tmp.line, tmp.column, p[2], p[4], None, True)
+        p[0] = Declare_(tmp.line, tmp.column, p[2], p[4], None, True)
 
 def p_assignVar(p):
     '''assignVar    : ID EQUAL expression
@@ -223,13 +230,19 @@ def p_else(p):
     else:
         p[0] = None
 
+def p_while(p):
+    '''while_   : RWHILE PARA expression PARC LLAVEA instrucciones LLAVEC'''
+    
+    tmp = get_params(p)
+    p[0] = while_(tmp.line, tmp.column, p[3], p[6])
 
-    # if len(p) == 5:
-    #     p[0] = [p[1]]
-    # elif len(p) == 3:
-    #     p[1].append(p[2])
-    #     p[0] = p[1]
-    # else:
+def p_for(p):
+    '''for_ : RFOR PARA declare SEMICOLON relacional SEMICOLON id_ PLUS PLUS PARC LLAVEA instrucciones LLAVEC
+            | RFOR PARA declare SEMICOLON relacional SEMICOLON id_ LESS LESS PARC LLAVEA instrucciones LLAVEC'''
+    #                    [3]                 [5]              [7]  [8]                        [12]
+    
+    tmp = get_params(p)
+    p[0] = for_(tmp.line, tmp.column, p[3], p[5], p[7], p[8], p[12])
 
 
 def p_expression(p):
@@ -237,13 +250,15 @@ def p_expression(p):
                     | aritmetica
                     | relacional
                     | logica
-                    | ID'''
+                    | id_'''
     
+    p[0] = p[1]
+
+def p_id_(p):
+    '''id_   : ID'''
+
     tmp = get_params(p)
-    if p.slice[1].type == 'ID':
-        p[0] = FindVariable(tmp.line, tmp.column, p[1])
-    else:
-        p[0] = p[1]
+    p[0] = FindVariable(tmp.line, tmp.column, p[1])
 
 
 def p_aritmetica(p):
