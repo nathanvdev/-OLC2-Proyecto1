@@ -1,6 +1,6 @@
 from ..abstract.instruction import instruction
 
-class Assign(instruction):
+class AssignVar_(instruction):
     def __init__(self, line, column, name, op, expression):
         super().__init__(line, column)
         self.name = name
@@ -11,3 +11,5 @@ class Assign(instruction):
 
         value = self.expression.Eject(env)
         env.AssignVariable(self.name, self.op, value)
+
+        return

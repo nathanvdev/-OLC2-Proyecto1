@@ -3,7 +3,7 @@ from ..abstract.environment import Environment
 from ..abstract.variables import Variables
 
 
-class Declare_(instruction):
+class DeclareVar_(instruction):
     def __init__(self, line, column, id, type, expression, const):
         super().__init__(line, column)
         self.id = id 
@@ -29,4 +29,6 @@ class Declare_(instruction):
 
 
         env.SaveVariable(newVar)
+
+        return
 

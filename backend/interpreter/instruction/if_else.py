@@ -10,6 +10,7 @@ class If_else(instruction):
         self.else_instructions = else_instructions
 
     def Eject(self, env):
+        result = None
         resultCondition = self.condition.Eject(env)
         if resultCondition.Type != ExpressionType.BOOLEAN:
             print(f'Error: Type mismatch \n column: {self.column} line: {self.line}')
@@ -19,12 +20,43 @@ class If_else(instruction):
             env.envsCount += 1
             newEnv = Environment(env, f'{env.envsCount}-if')
             for instruction in self.if_instructions:
-                instruction.Eject(newEnv)
-            return
+                result = instruction.Eject(newEnv)
+
+                if result != None:
+                    if result.Type == ExpressionType.BREAK:
+                        break
+                    elif result.Type == ExpressionType.CONTINUE:
+                        break
+                    elif result.Type == ExpressionType.RETURN:
+                        return result
+
+            if result != None:
+                if result.Type == ExpressionType.BREAK:
+                    return result
+                elif result.Type == ExpressionType.RETURN:
+                    return result
+                
+            return result
         
         elif self.else_instructions != None:
             env.envsCount += 1
             newEnv = Environment(env, f'{env.envsCount}-else')
+
             for instruction in self.else_instructions:
-                instruction.Eject(newEnv)
-            return
+                result = instruction.Eject(newEnv)
+
+                if result != None:
+                    if result.Type == ExpressionType.BREAK:
+                        break
+                    elif result.Type == ExpressionType.CONTINUE:
+                        break
+                    elif result.Type == ExpressionType.RETURN:
+                        return result
+
+            if result != None:
+                if result.Type == ExpressionType.BREAK:
+                    return
+                elif result.Type == ExpressionType.RETURN:
+                    return result
+                
+            return result

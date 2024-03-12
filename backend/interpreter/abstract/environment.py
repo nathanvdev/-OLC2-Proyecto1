@@ -7,10 +7,10 @@ class Environment():
         self.name = name
         self.varibles = {}
         self.functions = {}
+        self.arrays = {}
         self.envsCount = 0
 
     def SaveVariable(self, newVar: Variables):
-
         if newVar.id_ in self.varibles:
             if self.varibles[newVar.id_].type != newVar.Type:
                 print(f'Error: Type mismatch \n column: {self.column} line: {self.line}')
@@ -22,7 +22,6 @@ class Environment():
             print(f'Variable saved: {newVar.id_}')
 
     def AssignVariable(self, name, op, value):
-        
         env = self
         while env != None:
             if name in env.varibles:
@@ -83,4 +82,20 @@ class Environment():
                 return env.varibles[name]
             env = env.previus
         print(f'Error: Variable {name} not found \n column: {self.column} line: {self.line}')
+        return None
+    
+    def SaveArray(self, newArray):
+        if newArray.id in self.arrays:
+            print(f'Error: Array {newArray.id} already exists \n column: {self.column} line: {self.line}')
+            return
+        self.arrays[newArray.id] = newArray
+        print(f'Array saved: {newArray.id}')
+
+    def GetArray(self, name):
+        env = self
+        while env != None:
+            if name in env.arrays:
+                return env.arrays[name]
+            env = env.previus
+        print(f'Error: Array {name} not found \n column: {self.column} line: {self.line}')
         return None

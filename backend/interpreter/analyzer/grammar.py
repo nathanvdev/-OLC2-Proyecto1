@@ -7,12 +7,16 @@ from ..instruction.Print import Print
 from ..expression.aritmetic import Aritmetic
 from ..expression.relational import Relational
 from ..expression.logica import Logica
-from ..instruction.declare_ import Declare_
-from ..instruction.assign import Assign
+from ..instruction.declareVar_ import DeclareVar_
+from ..instruction.assignVar_ import AssignVar_
 from ..instruction.find_variable import FindVariable
 from ..instruction.if_else import If_else
 from ..instruction.while_ import while_
 from ..instruction.for_ import for_
+from ..instruction.return_ import Return_
+from ..instruction.declareArr_ import DeclareArr_
+from ..instruction.arrayFuncs_ import ArrayFuncs_
+from ..instruction.assingArr_ import AssignArr_
 
 #palabras reservadas
 reserved = {
@@ -30,14 +34,26 @@ reserved = {
     'else' : 'RELSE',
     'while' : 'RWHILE',
     'for' : 'RFOR',
+    'break' : 'RBREAK',
+    'continue' : 'RCONTINUE',
+    'return' : 'RRETURN',
+    'push' : 'RPUSH',
+    'pop' : 'RPOP',
+    'atoll' : 'RINDEXOF',
+    'join' : 'RJOIN',
+    'length' : 'RLENGTH',
+
 }
 
 #lista de tokens
-tokens = ['PARA', 'PARC', 'DOT', 'DOUBLEDOT', 'LLAVEA', 'LLAVEC', 'SEMICOLON',
+tokens = ['PARA', 'PARC', 'DOT', 'DOUBLEDOT', 'LLAVEA', 'LLAVEC', 'SEMICOLON', 
+          'QUESTIONM', 'BRACKETO', 'BRACKETC', 'COMMA',
+
           'NUMBER', 'FLOAT', 'STRING', 'ID',
           'PLUS', 'LESS', 'BY', 'DIVIDED', 'MODUL',
           'EQUAL','DEQUAL','DIFERENT','MINOR','MINOREQUAL','GREATER','GREATEREQUAL',
-          'AND','OR','NOT'] + list(reserved.values())
+          'AND','OR','NOT'
+          ] + list(reserved.values())
 
 
 #-----------------------------------------------------definicion de tokens
@@ -48,6 +64,10 @@ t_DOUBLEDOT = r'\:'
 t_LLAVEA = r'\{'
 t_LLAVEC = r'\}'
 t_SEMICOLON = r'\;'
+t_QUESTIONM = r'\?'
+t_BRACKETO = r'\['
+t_BRACKETC = r'\]'
+t_COMMA = r'\,'
 
 ###Aritmetica
 t_PLUS = r'\+'
@@ -154,12 +174,17 @@ def p_instrucciones(p):
     
 def p_instruccion(p):
     '''instruccion  : print
-                    | declare
-                    | declareConst
+                    | declarevar
                     | assignVar
+                    | declareArray
+                    | assingArray
+                    | declareMatrix
+                    | arrayFuncs
                     | if_else
+                    | ternario
                     | while_
-                    | for_'''
+                    | for_
+                    | transfer'''
     p[0] = p[1]
 
 
@@ -168,36 +193,28 @@ def p_print(p):
     tmp = get_params(p)
     p[0] = Print(tmp.line, tmp.column, p[5])
 
-def p_declare(p):
+def p_declaration_type(p):
+    '''declaration_type : RCONST
+                        | RVAR'''
     
-    '''declare  : RVAR ID DOUBLEDOT type EQUAL expression
-                | RVAR ID EQUAL expression
-                | RVAR ID DOUBLEDOT type'''
-    
-    tmp = get_params(p)
-    if len(p) == 7:
-        p[0] = Declare_(tmp.line, tmp.column, p[2], p[4], p[6], False)
+    p[0] = p[1]
 
-    elif p[3] =="=" :
-        p[0] = Declare_(tmp.line, tmp.column, p[2], None, p[4], False)
-
-    elif p[3] ==":" : 
-        p[0] = Declare_(tmp.line, tmp.column, p[2], p[4], None, False)
-
-def p_declareConst(p):
-    '''declareConst : RCONST ID DOUBLEDOT type EQUAL expression
-                    | RCONST ID EQUAL expression
-                    | RCONST ID DOUBLEDOT type'''
+def p_declarevar(p):
+    '''declarevar   : declaration_type ID DOUBLEDOT type EQUAL expression
+                    | declaration_type ID EQUAL expression
+                    | declaration_type ID DOUBLEDOT type'''
     
     tmp = get_params(p)
-    if len(p) == 7:
-        p[0] = Declare_(tmp.line, tmp.column, p[2], p[4], p[6], True)
 
-    elif p[3] =="=" :
-        p[0] = Declare_(tmp.line, tmp.column, p[2], None, p[4], True)
+    is_const = p[1] == 'const'
+    if p[1] in ['var', 'const']:
+        if len(p) == 7:
+            p[0] = DeclareVar_(tmp.line, tmp.column, p[2], p[4], p[6], is_const)
+        elif p[3] == "=":
+            p[0] = DeclareVar_(tmp.line, tmp.column, p[2], None, p[4], is_const)
+        elif p[3] == ":":
+            p[0] = DeclareVar_(tmp.line, tmp.column, p[2], p[4], None, is_const)
 
-    elif p[3] ==":" : 
-        p[0] = Declare_(tmp.line, tmp.column, p[2], p[4], None, True)
 
 def p_assignVar(p):
     '''assignVar    : ID EQUAL expression
@@ -206,11 +223,87 @@ def p_assignVar(p):
     
     tmp = get_params(p)
     if p[2] == '=':
-        p[0] = Assign(tmp.line, tmp.column, p[1], '=', p[3])
+        p[0] = AssignVar_(tmp.line, tmp.column, p[1], '=', p[3])
     elif p[2] == '+':
-        p[0] = Assign(tmp.line, tmp.column, p[1], '+=', p[4])
+        p[0] = AssignVar_(tmp.line, tmp.column, p[1], '+=', p[4])
     elif p[2] == '-':
-        p[0] = Assign(tmp.line, tmp.column, p[1], '-=', p[4])
+        p[0] = AssignVar_(tmp.line, tmp.column, p[1], '-=', p[4])
+
+def p_declareArray(p):
+    '''declareArray : declaration_type ID DOUBLEDOT type BRACKETO BRACKETC EQUAL BRACKETO expression_list BRACKETC
+                    | declaration_type ID DOUBLEDOT type BRACKETO BRACKETC EQUAL expression
+                    | declaration_type ID DOUBLEDOT type BRACKETO BRACKETC EQUAL BRACKETO BRACKETC'''
+    
+    tmp = get_params(p)
+
+    is_const = p[1] == 'const'
+    if p[1] in ['var', 'const']:
+        if len(p) == 11:
+            p[0] = DeclareArr_(tmp.line, tmp.column, p[2], p[4], p[9], is_const)
+        elif len(p) == 9:
+            p[0] = DeclareArr_(tmp.line, tmp.column, p[2], p[4], [p[8]], is_const)
+        elif len(p) == 10:
+            p[0] = DeclareArr_(tmp.line, tmp.column, p[2], p[4], [], is_const)
+
+def p_assingArray(p):
+    '''assingArray : ID BRACKETO expression BRACKETC EQUAL expression'''
+
+    tmp = get_params(p)
+    p[0] = AssignArr_(tmp.line, tmp.column, p[1], p[3], p[6])
+
+def p_arrayFuncs(p):
+    '''arrayFuncs   : ID DOT RPUSH PARA expression PARC
+                    | ID DOT RPOP PARA PARC'''
+    
+    tmp = get_params(p)
+    p[0] = ArrayFuncs_(tmp.line, tmp.column, p[1], p[3], p[5])
+
+
+
+
+def p_declareMatrix(p):
+    '''declareMatrix    : declaration_type ID DOUBLEDOT type matrix_dimension EQUAL matrix_values''' 
+
+
+def p_matrix_dimension(p):
+    '''matrix_dimension : matrix_dimension BRACKETO expression BRACKETC
+                        | BRACKETO expression BRACKETC'''
+    tmp = get_params(p)
+    if len(p) == 5:
+        p[0] = [p[2]] + p[1]
+    elif len(p) == 4:
+        p[0] = [p[2]]
+    
+def p_matrix_values(p):
+    '''matrix_values : BRACKETO matrix_valuesList2 BRACKETC'''
+
+    tmp = get_params(p)
+    p[0] = p[2]
+
+
+def p_matrix_valuesList2(p):
+    '''matrix_valuesList2 : matrix_valuesList2 COMMA BRACKETO args BRACKETC
+                          | BRACKETO args BRACKETC'''
+    
+    if len(p) > 4:
+        p[1].append(p[4])
+        p[0] = p[1]
+    else:
+        p[0] = [p[2]]
+
+    
+def p_args(p):
+    '''args : matrix_valuesList2
+            | expression_list'''
+    
+    p[0] = p[1]
+
+
+
+
+
+
+
 
 def p_if_else(p):
     '''if_else  : RIF PARA expression PARC LLAVEA instrucciones LLAVEC else'''
@@ -230,6 +323,12 @@ def p_else(p):
     else:
         p[0] = None
 
+def p_ternario(p):
+    '''ternario : expression QUESTIONM expression DOUBLEDOT expression'''
+
+    tmp = get_params(p)
+    p[0] = If_else(tmp.line, tmp.column, p[1], p[3], p[5])
+
 def p_while(p):
     '''while_   : RWHILE PARA expression PARC LLAVEA instrucciones LLAVEC'''
     
@@ -237,12 +336,35 @@ def p_while(p):
     p[0] = while_(tmp.line, tmp.column, p[3], p[6])
 
 def p_for(p):
-    '''for_ : RFOR PARA declare SEMICOLON relacional SEMICOLON id_ PLUS PLUS PARC LLAVEA instrucciones LLAVEC
-            | RFOR PARA declare SEMICOLON relacional SEMICOLON id_ LESS LESS PARC LLAVEA instrucciones LLAVEC'''
+    '''for_ : RFOR PARA declarevar SEMICOLON relacional SEMICOLON id_ PLUS PLUS PARC LLAVEA instrucciones LLAVEC
+            | RFOR PARA declarevar SEMICOLON relacional SEMICOLON id_ LESS LESS PARC LLAVEA instrucciones LLAVEC'''
     #                    [3]                 [5]              [7]  [8]                        [12]
     
     tmp = get_params(p)
     p[0] = for_(tmp.line, tmp.column, p[3], p[5], p[7], p[8], p[12])
+
+def p_transfer(p):
+    '''transfer : RBREAK
+                | RCONTINUE
+                | RRETURN
+                | RRETURN expression'''
+    
+    tmp = get_params(p)
+
+    if len(p) == 2:
+        p[0] = Return_(tmp.line, tmp.column, p[2])
+        
+    else:
+        if p[1] == 'break':
+            p[0] = Primitive(tmp.line, tmp.column, None, ExpressionType.BREAK)
+
+        elif p[1] == 'continue':
+            p[0] = Primitive(tmp.line, tmp.column, None, ExpressionType.CONTINUE)
+
+        elif p[1] == 'return':
+            p[0] = Primitive(tmp.line, tmp.column, None, ExpressionType.RETURN)
+        
+
 
 
 def p_expression(p):
@@ -250,15 +372,30 @@ def p_expression(p):
                     | aritmetica
                     | relacional
                     | logica
-                    | id_'''
+                    | id_
+                    | arraysExpression'''
     
     p[0] = p[1]
 
+def p_expression_list(p):
+    '''expression_list  : expression_list COMMA expression
+                         | expression'''
+    
+    if len(p) > 2:
+        p[1].append(p[3])
+        p[0] = p[1]
+    else:
+        p[0] = [p[1]]
+
 def p_id_(p):
-    '''id_   : ID'''
+    '''id_  : ID
+            | ID BRACKETO expression BRACKETC'''
 
     tmp = get_params(p)
-    p[0] = FindVariable(tmp.line, tmp.column, p[1])
+    if len(p) == 2:
+        p[0] = FindVariable(tmp.line, tmp.column, p[1])
+    elif len(p) == 5:
+        p[0] = ArrayFuncs_(tmp.line, tmp.column, p[1], 'Find', p[3])
 
 
 def p_aritmetica(p):
@@ -353,6 +490,15 @@ def p_primitivo(p):
     else:
         p[0] = p[1]
 
+def p_arraysExpression(p):
+    '''arraysExpression : ID DOT RPOP PARA PARC
+                        | ID DOT RINDEXOF PARA expression PARC
+                        | ID DOT RJOIN PARA PARC
+                        | ID DOT RLENGTH PARA PARC'''
+    
+    tmp = get_params(p)
+    p[0] = ArrayFuncs_(tmp.line, tmp.column, p[1], p[3], p[5])
+
 
 def p_boolean(p):
     '''boolean  : TRUE
@@ -361,7 +507,6 @@ def p_boolean(p):
     tmp = get_params(p)
 
     if p[1] == 'true':
-        tmp = Primitive(tmp.line, tmp.column, True, ExpressionType.BOOLEAN)
         p[0] = Primitive(tmp.line, tmp.column, True, ExpressionType.BOOLEAN)
     elif p[1] == 'false':
         p[0] = Primitive(tmp.line, tmp.column, False, ExpressionType.BOOLEAN)
