@@ -12,7 +12,12 @@ class Logica(expression):
     def Eject(self, env):
         left = self.left.Eject(env)
         right = self.right.Eject(env)
-
+        
+        if left.Type != ExpressionType.BOOLEAN or right.Type != ExpressionType.BOOLEAN:
+            print(f'Error: Type mismatch \n column: {self.column} line: {self.line}')
+            return
+        
+        
         result = Primitive(self.line, self.column, None, ExpressionType.BOOLEAN)
 
         if left.Type != ExpressionType.BOOLEAN or right.Type != ExpressionType.BOOLEAN:

@@ -1,4 +1,6 @@
 from ..abstract.instruction import instruction
+import main
+
 
 class Print(instruction):
     def __init__(self, line, column, expression):
@@ -7,6 +9,10 @@ class Print(instruction):
         
 
     def Eject(self, env):
-        value = self.expression.Eject(env)
-        print(value.value)
+        toPrint = ""
+        for exp in self.expression:
+            result = exp.Eject(env)
+            toPrint += str(result.value)
+
+        main.response += toPrint + "\n"
         return 

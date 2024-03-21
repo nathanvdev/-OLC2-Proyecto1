@@ -8,6 +8,7 @@ class Environment():
         self.varibles = {}
         self.functions = {}
         self.arrays = {}
+        self.interfaces = {}
         self.envsCount = 0
 
     def SaveVariable(self, newVar: Variables):
@@ -98,4 +99,20 @@ class Environment():
                 return env.arrays[name]
             env = env.previus
         print(f'Error: Array {name} not found \n column: {self.column} line: {self.line}')
+        return None
+    
+    def SaveInterface(self, newInterface):
+        if newInterface.id_ in self.interfaces:
+            print(f'Error: Interface {newInterface.id_} already exists \n column: {self.column} line: {self.line}')
+            return
+        self.interfaces[newInterface.id_] = newInterface
+        print(f'Interface saved: {newInterface.id_}')
+
+    def  GetInterface(self, name):
+        env = self
+        while env != None:
+            if name in env.interfaces:
+                return env.interfaces[name]
+            env = env.previus
+        print(f'Error: Interface {name} not found \n column: {self.column} line: {self.line}')
         return None
