@@ -1,6 +1,5 @@
 import ply.lex as lex
 import ply.yacc as yacc
-
 from ..abstract.types import ExpressionType
 from ..expression.primitive import Primitive
 from ..instruction.Print import Print
@@ -21,6 +20,14 @@ from ..instruction.assingArr_ import AssignArr_
 from ..instruction.createInterface_ import CreateInterface_
 from ..instruction.declareInterface_ import DeclareInterface_
 from ..instruction.modifyInterface_ import ModifyInterface_
+from ..instruction.switch_ import Switch_
+from ..instruction.declareFunc_ import DeclareFunction_
+from ..instruction.callFunc_ import CallFunction_
+from ..expression.funcEmbebidas_ import funcEmbebidas_
+from ..expression.callInterface_ import callInterface_
+
+
+Errors = []
 
 #palabras reservadas
 reserved = {
@@ -43,13 +50,23 @@ reserved = {
     'return' : 'RRETURN',
     'push' : 'RPUSH',
     'pop' : 'RPOP',
-    'atoll' : 'RINDEXOF',
+    'indexOf' : 'RINDEXOF',
     'join' : 'RJOIN',
     'length' : 'RLENGTH',
     'interface' : 'RINTERFACE',
     'keys' : 'RKEYS',
     'values' : 'RVALUES',
-
+    'switch' : 'RSWITCH',
+    'case' : 'RCASE',
+    'default' : 'RDEFAULT',
+    'function' : 'RFUNCTION',
+    'parseInt' : 'RPARSEINT',
+    'parseFloat' : 'RPARSEFLOAT',
+    'toString' : 'RTOSTRING',
+    'toLowerCase' : 'RTOLOWERCASE',
+    'toUpperCase' : 'RTOUPPERCASE',
+    'typeof' : 'RTYPEOF',
+    'object' : 'ROBJECT',
 }
 
 #lista de tokens
@@ -119,7 +136,7 @@ def t_NUMBER(t):
     return t
 
 def t_STRING(t):
-    r'\"(.+?)\"'
+    r'\"(.*?)\"'
     try:
         t.value = str(t.value).replace('"', '')
     except ValueError:
@@ -134,14 +151,29 @@ def t_ID(t):
     return t
 
 t_ignore = " \t"
-t_ignore_COMMENTLINE = r'\/\*.*?\*\/'
+t_ignore_COMMENTLINE = r'\/\/.*'
 
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += t.value.count("\n")
 
+def t_ignore_COMMENTBLOCK(t):
+    r'\/\*[^*]*\*+(?:[^/*][^*]*\*+)*\/'
+    t.lexer.lineno += t.value.count('\n')
+
 def t_error(t):
-    print(f'Error lexico {t.value} \n column: {t.lexpos} line: {t.lineno}')
+    try:
+        print(f'Error lexico {t.value} \n column: {t.lexpos} line: {t.lineno}')
+        newError = {
+            "Tipo": "Lexico",
+            "Linea": t.lineno,
+            "Columna": t.lexpos,
+            "Ambito": "Global",
+            "Descricion": f"Error lexico {t.value}"
+        }
+        Errors.append(newError)
+    except Exception as e:
+        print(f"Ocurrió un error: {str(e)}")
     t.lexer.skip(1) # recuperacion del error
 
 
@@ -170,9 +202,9 @@ def p_start(p):
 
 
 def p_instrucciones(p):
-    '''instrucciones    : instrucciones instruccion SEMICOLON
-                        | instruccion SEMICOLON'''
-    if len(p) > 3:
+    '''instrucciones    : instrucciones instruccion
+                        | instruccion'''
+    if len(p) > 2:
         p[1].append(p[2])
         p[0] = p[1]
     else:
@@ -180,21 +212,25 @@ def p_instrucciones(p):
 
     
 def p_instruccion(p):
-    '''instruccion  : print
-                    | declarevar
-                    | declareConst
-                    | assignVar
-                    | declareArray
-                    | assingArray
-                    | arrayFuncs
+    '''instruccion  : print SEMICOLON
+                    | declarevar SEMICOLON
+                    | declareConst SEMICOLON
+                    | assignVar SEMICOLON
+                    | declareArray SEMICOLON
+                    | declareArrayConst SEMICOLON
+                    | assingArray SEMICOLON
+                    | arrayFuncs SEMICOLON
                     | if_else
-                    | ternario
+                    | case_inst
+                    | ternario SEMICOLON
                     | while_
                     | for_
-                    | transfer
+                    | transfer SEMICOLON
                     | createInterface
-                    | declareInterface
-                    | modifyInterface'''
+                    | declareInterface SEMICOLON
+                    | modifyInterface SEMICOLON
+                    | declareFunction
+                    | callFunction SEMICOLON'''
     p[0] = p[1]
 
 
@@ -202,12 +238,6 @@ def p_print(p):
     '''print    : CONSOLE DOT LOG PARA expression_list PARC'''
     tmp = get_params(p)
     p[0] = Print(tmp.line, tmp.column, p[5])
-
-def p_declaration_type(p):
-    '''declaration_type : RCONST
-                        | RVAR'''
-    
-    p[0] = p[1]
 
 def p_declarevar(p):
     '''declarevar  : RVAR ID DOUBLEDOT type EQUAL expression
@@ -255,20 +285,32 @@ def p_assignVar(p):
         p[0] = AssignVar_(tmp.line, tmp.column, p[1], '-=', p[4])
 
 def p_declareArray(p):
-    '''declareArray : declaration_type ID DOUBLEDOT type BRACKETO BRACKETC EQUAL BRACKETO expression_list BRACKETC
-                    | declaration_type ID DOUBLEDOT type BRACKETO BRACKETC EQUAL expression
-                    | declaration_type ID DOUBLEDOT type BRACKETO BRACKETC EQUAL BRACKETO BRACKETC'''
+    '''declareArray : RVAR ID DOUBLEDOT type BRACKETO BRACKETC EQUAL BRACKETO expression_list BRACKETC
+                    | RVAR ID DOUBLEDOT type BRACKETO BRACKETC EQUAL expression
+                    | RVAR ID DOUBLEDOT type BRACKETO BRACKETC EQUAL BRACKETO BRACKETC'''
     
     tmp = get_params(p)
 
-    is_const = p[1] == 'const'
-    if p[1] in ['var', 'const']:
-        if len(p) == 11:
-            p[0] = DeclareArr_(tmp.line, tmp.column, p[2], p[4], p[9], is_const)
-        elif len(p) == 9:
-            p[0] = DeclareArr_(tmp.line, tmp.column, p[2], p[4], [p[8]], is_const)
-        elif len(p) == 10:
-            p[0] = DeclareArr_(tmp.line, tmp.column, p[2], p[4], [], is_const)
+    if len(p) == 11:
+        p[0] = DeclareArr_(tmp.line, tmp.column, p[2], p[4], p[9], False)
+    elif len(p) == 9:
+        p[0] = DeclareArr_(tmp.line, tmp.column, p[2], p[4], [p[8]], False)
+    elif len(p) == 10:
+        p[0] = DeclareArr_(tmp.line, tmp.column, p[2], p[4], [], False)
+
+def p_declareArrayConst(p):
+    '''declareArrayConst : RCONST ID DOUBLEDOT type BRACKETO BRACKETC EQUAL BRACKETO expression_list BRACKETC
+                    | RCONST ID DOUBLEDOT type BRACKETO BRACKETC EQUAL expression
+                    | RCONST ID DOUBLEDOT type BRACKETO BRACKETC EQUAL BRACKETO BRACKETC'''
+    
+    tmp = get_params(p)
+
+    if len(p) == 11:
+        p[0] = DeclareArr_(tmp.line, tmp.column, p[2], p[4], p[9], True)
+    elif len(p) == 9:
+        p[0] = DeclareArr_(tmp.line, tmp.column, p[2], p[4], [p[8]], True)
+    elif len(p) == 10:
+        p[0] = DeclareArr_(tmp.line, tmp.column, p[2], p[4], [], True)
 
 def p_assingArray(p):
     '''assingArray : ID BRACKETO expression BRACKETC EQUAL expression'''
@@ -277,8 +319,7 @@ def p_assingArray(p):
     p[0] = AssignArr_(tmp.line, tmp.column, p[1], p[3], p[6])
 
 def p_arrayFuncs(p):
-    '''arrayFuncs   : ID DOT RPUSH PARA expression PARC
-                    | ID DOT RPOP PARA PARC'''
+    '''arrayFuncs   : ID DOT RPUSH PARA expression PARC'''
     
     tmp = get_params(p)
     p[0] = ArrayFuncs_(tmp.line, tmp.column, p[1], p[3], p[5])
@@ -344,6 +385,37 @@ def p_else(p):
     else:
         p[0] = None
 
+def p_case_inst(p):
+    '''case_inst : RSWITCH PARA expression PARC LLAVEA cases RDEFAULT DOUBLEDOT instrucciones LLAVEC'''
+
+    tmp = get_params(p)
+    p[0] = Switch_(tmp.line, tmp.column, p[3], p[6], p[9])
+    
+
+def p_cases(p):
+    '''cases : cases case 
+             | case'''
+
+    if len(p) > 2:
+        p[1].append(p[2])
+        p[0] = p[1]
+    else:
+        p[0] = [p[1]]
+    
+def p_case(p):
+    '''case : RCASE expression DOUBLEDOT instrucciones'''
+
+    tmp = get_params(p)
+
+    p[0] = {
+        'line': tmp.line,
+        'column': tmp.column,
+        'expression': p[2],
+        'instructions': p[4],
+    }
+    
+
+
 def p_ternario(p):
     '''ternario : expression QUESTIONM expression DOUBLEDOT expression'''
 
@@ -372,11 +444,12 @@ def p_transfer(p):
     
     tmp = get_params(p)
 
-    if len(p) == 2:
+    if len(p) == 3:
         p[0] = Return_(tmp.line, tmp.column, p[2])
         
     else:
         if p[1] == 'break':
+            
             p[0] = Primitive(tmp.line, tmp.column, None, ExpressionType.BREAK)
 
         elif p[1] == 'continue':
@@ -393,20 +466,22 @@ def p_createInterface(p):
     
 
 def p_attributesList(p):
-    '''attributesList : attributesList ID DOUBLEDOT type
-                      | ID DOUBLEDOT type'''
+    '''attributesList : attributesList ID DOUBLEDOT type SEMICOLON
+                      | ID DOUBLEDOT type SEMICOLON'''
 
-    arr = []
-    if len(p) > 4:
+    if len(p) > 5:
         param = {p[2] : p[4]}
-        arr = p[1] + [param]
+        p[1].append(param)
+        p[0] = p[1]
     else:
         param = {p[1] : p[3]}
-        arr.append(param)
-    p[0] = arr
+        p[0] = [param]
+
+
 
 def p_declareInterface(p):
-    '''declareInterface : RVAR ID DOUBLEDOT ID EQUAL LLAVEA interfaceContent LLAVEC'''
+    '''declareInterface : RVAR ID DOUBLEDOT ID EQUAL LLAVEA interfaceContent LLAVEC
+                        | RCONST ID DOUBLEDOT ID EQUAL LLAVEA interfaceContent LLAVEC'''
 
     tmp = get_params(p)
     p[0] = DeclareInterface_(tmp.line, tmp.column, p[2], p[4], p[7])
@@ -430,6 +505,55 @@ def p_modifyInterface(p):
     tmp = get_params(p)
     p[0] = ModifyInterface_(tmp.line, tmp.column, p[1], p[3], p[5])
         
+def p_declareFunction(p):
+    '''declareFunction : RFUNCTION ID PARA funcparams PARC returntype LLAVEA instrucciones LLAVEC'''
+
+    tmp = get_params(p)
+    p[0] = DeclareFunction_(tmp.line, tmp.column, p[2], p[4], p[6], p[8])
+
+def p_funcparams(p):
+    '''funcparams : funcparams COMMA param
+                  | param
+                  |'''  
+    
+    if len(p) > 2:
+        p[1].append(p[3])
+        p[0] = p[1]
+    elif len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = []
+
+def p_param(p):
+    '''param : ID DOUBLEDOT type'''
+
+    tmp = get_params(p)
+    p[0] = {
+        'line': tmp.line,
+        'column': tmp.column,
+        'id_': p[1],
+        'Type': p[3]
+    }
+
+def p_returntype(p):
+    '''returntype : DOUBLEDOT type
+                  |'''
+
+    if len(p) == 3:
+        p[0] = p[2]
+    else:
+        p[0] = None
+
+def p_callFunction(p):
+    '''callFunction : ID PARA expression_list PARC
+                    | ID PARA PARC'''
+
+    tmp = get_params(p)
+    if len(p) == 5:
+        p[0] = CallFunction_(tmp.line, tmp.column, p[1], p[3])
+    elif len(p) == 4:
+        p[0] = CallFunction_(tmp.line, tmp.column, p[1], [])
+
 
 def p_expression(p):
     '''expression   : primitivo 
@@ -439,20 +563,49 @@ def p_expression(p):
                     | expression_group
                     | id_
                     | arraysExpression
-                    | interfaceContent
-                    | boolean'''
+                    | callInterface
+                    | boolean
+                    | callFunction
+                    | funcEmbebida'''
     
     p[0] = p[1]
+
+def p_funcEmbebida(p):
+    '''funcEmbebida : RPARSEINT PARA expression PARC
+                    | RPARSEFLOAT PARA expression PARC
+                    | ID DOT RTOSTRING PARA PARC
+                    | FALSE DOT RTOSTRING PARA PARC
+                    | ID DOT RTOLOWERCASE PARA PARC
+                    | ID DOT RTOUPPERCASE PARA PARC
+                    | RTYPEOF expression'''
+
+    tmp = get_params(p)
+    if p[1] == 'false':
+        tmp45 = Primitive(tmp.line, tmp.column, False, ExpressionType.BOOLEAN)
+        p[0] = funcEmbebidas_(tmp.line, tmp.column, p[3], tmp45)
+    elif len(p) == 5:
+        p[0] = funcEmbebidas_(tmp.line, tmp.column, p[1], p[3])
+    elif len(p) == 6:
+        tmp43 = FindVariable(tmp.line, tmp.column, p[1])
+        p[0] = funcEmbebidas_(tmp.line, tmp.column, p[3], tmp43)
+    elif len(p) == 3:
+        p[0] = funcEmbebidas_(tmp.line, tmp.column, p[1], p[2])
 
 def p_expression_group(p):
     '''expression_group   : PARA expression PARC'''
     p[0] = p[2]
 
 def p_interfaceContent(p):
-    '''interfaceContent : ID DOT RKEYS PARA PARC
-                        | ID DOT RVALUES PARA PARC'''
+    '''callInterface    : ID DOT ID
+                        | ROBJECT DOT RKEYS PARA ID PARC
+                        | ROBJECT DOT RVALUES PARA ID PARC'''
 
     tmp = get_params(p)
+    if len(p) == 4:
+        p[0] = callInterface_(tmp.line, tmp.column, p[1], p[3])
+    elif len(p) == 7:
+        p[0] = callInterface_(tmp.line, tmp.column, p[5], p[3])
+
 
 
 def p_expression_list(p):
@@ -484,9 +637,10 @@ def p_aritmetica(p):
                     | expression MODUL expression
                     | LESS expression %prec UMENOS'''
     
+
     tmp = get_params(p)
     if p.slice[1].type == 'LESS':
-        p[0] = Aritmetic(tmp.line, tmp.column, p[2], p[2], p[1])
+        p[0] = Aritmetic(tmp.line, tmp.column, p[2], p[2], 'UMINUS')
 
     elif p.slice[2].type == 'PLUS':
         p[0] = Aritmetic(tmp.line, tmp.column, p[1], p[3], p[2])
@@ -502,9 +656,6 @@ def p_aritmetica(p):
 
     elif p.slice[2].type == 'MODUL':
         p[0] = Aritmetic(tmp.line, tmp.column, p[1], p[3], p[2])
-
-    elif p.slice[1].type == 'LESS':
-        p[0] = Aritmetic(tmp.line, tmp.column, p[2], 0, p[1])
 
 
 def p_relacional(p):
@@ -571,10 +722,14 @@ def p_arraysExpression(p):
     '''arraysExpression : ID DOT RPOP PARA PARC
                         | ID DOT RINDEXOF PARA expression PARC
                         | ID DOT RJOIN PARA PARC
-                        | ID DOT RLENGTH PARA PARC'''
+                        | ID DOT RLENGTH'''
     
     tmp = get_params(p)
-    p[0] = ArrayFuncs_(tmp.line, tmp.column, p[1], p[3], p[5])
+    if len(p) == 4:
+        p[0] = ArrayFuncs_(tmp.line, tmp.column, p[1], p[3], None)
+    else:
+        p[0] = ArrayFuncs_(tmp.line, tmp.column, p[1], p[3], p[5])
+
 
 
 def p_boolean(p):
@@ -592,7 +747,8 @@ def p_type(p):
     '''type     : RNUMBER
                 | RFLOAT
                 | RSTRING
-                | RBOOLEAN'''
+                | RBOOLEAN
+                | type BRACKETO BRACKETC'''
     
     if p[1] == 'number':
         p[0] = ExpressionType.INTEGER
@@ -602,14 +758,27 @@ def p_type(p):
         p[0] = ExpressionType.STRING
     elif p[1] == 'boolean':
         p[0] = ExpressionType.BOOLEAN
+    else:
+        p[0] = p[1]
 
 
 
 def p_error(p):
-    if p:
-        print(f'Error sintactico linea:{p.lineno}, col: {p.lexpos}: Token {p.value}')
-    else:
-        print(f'Error de sintaxis  \n column: {p.lexpos} line: {p.lineno}')
+    try:
+        if p:
+            newError = {
+                "Tipo": "Sintactico",
+                "Linea": p.lineno,
+                "Columna": p.lexpos,
+                "Ambito": "Global",
+                "Descricion": f"Error sintactico linea:{p.lineno}, col:{p.lexpos} Token: {p.value}"
+            }
+            Errors.append(newError)
+            print(f'Error sintactico linea:{p.lineno}, col:{p.lexpos} Token: {p.value}')
+        else:
+            print(f'Error de sintaxis  \n column: {p.lexpos} line: {p.lineno}')
+    except Exception as e:
+        print(f"Ocurrió un error: {str(e)}")
 
 class codeParams:
     def __init__(self, line, column):
@@ -623,10 +792,12 @@ def get_params(t):
     return codeParams(line, column)
 
 
-def parse(input_text):
+def parse(input_text, GlobalErrors):
     lexer = lex.lex() #lexico
     parser = yacc.yacc() #sintactico
     result = parser.parse(input_text)
+    GlobalErrors.extend(Errors)
+    
     return result
 
 

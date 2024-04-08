@@ -1,44 +1,70 @@
 from interpreter.abstract.environment import Environment
 from interpreter.analyzer import grammar
-
-import json
-
 from flask import Flask, jsonify, request
-from collections import OrderedDict
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
 
-response = ""
+tmpSymbols = []
+tmpErrors = []
 
 @app.route('/')
 def home():
-    credenciales = OrderedDict()
-    credenciales['Nombre'] = 'Nathan Antonio Valdez Valdez'
-    credenciales['Carnet'] = '202001568'
-    credenciales['Curso'] = 'Compiladores 2'
-    env = json.dumps(credenciales)
-    return env
+    credenciales = {
+        "Nombre": "Nathan Antonio Valdez Valdez",
+        "Carnet": "202001568",
+        "Curso": "Compiladores 2"
+    }
+    return jsonify(credenciales)
+
 
 @app.route('/send_command', methods=['POST'])
 def send_command():
-
+    GlobalEnvironment = Environment(None, 'Global')
+    if not request.json or 'code_in' not in request.json:
+        return jsonify({"error": "La solicitud debe ser un JSON y contener el campo 'code_in'"}), 400
 
     code_in = request.json['code_in']
     print("\n\n-------------------------------------New Request-------------------------------------")
     print(code_in)
     print("_________________________________________________________________________________________")
-    ast = grammar.parse(code_in)
-    GlobalEnvironment = Environment(None, 'Global')
-
-    for instruction in ast:
-        instruction.Eject(GlobalEnvironment)
-        
-    pass
 
 
-    return jsonify({'message': response})
+    ast = grammar.parse(code_in, GlobalEnvironment.Errors)
+
+
+    try:
+        for instruction in ast:
+            instruction.Eject(GlobalEnvironment)
+    except Exception as e:
+        print(f"Ocurrió un error: {str(e)}")
+
+
+    response = GlobalEnvironment.console
+    global tmpSymbols
+    global tmpErrors
+    tmpSymbols = []
+    tmpErrors = []
+    tmpSymbols = GlobalEnvironment.Symbols
+    tmpErrors = GlobalEnvironment.Errors
+
+    result = {
+        "response": response,
+        "status": 200
+    }
+    return jsonify(result)
+
+@app.route('/reports/all', methods=['POST'])
+def reports():
+    global tmpSymbols
+    global tmpErrors
+    result = {
+        "symbols": tmpSymbols,
+        "errors": tmpErrors
+    }
+    return jsonify(result)
+
 
 if __name__ == "__main__":
     app.run(debug=True)

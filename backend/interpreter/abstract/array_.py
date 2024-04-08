@@ -19,11 +19,11 @@ class Array_():
         return self.value.pop()
 
     def IndexOf(self, expression):
+
         for i in range(len(self.value)):
             if self.value[i].value == expression.value:
                 return Primitive(0, 0, i, ExpressionType.INTEGER)
-                 
-        print(f'Error: Value not found \n column: {self.column} line: {self.line}')
+            
         return Primitive(0, 0, -1, ExpressionType.INTEGER)
     
     def Join(self):

@@ -18,6 +18,8 @@ function Home() {
   const apiUrl = "http://127.0.0.1:5000"
 
 
+
+
   const OpenFile = () => {
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
@@ -49,9 +51,13 @@ function Home() {
   };
 
   const sendCommands = async (commands) => {
-    console.log(commands);
+    if (!commands) {
+      console.error('No se proporcionaron comandos para enviar.');
+      return;
+    }
+
     try {
-      const response = await fetch(apiUrl + '/send_command', {
+      const response = await fetch(`${apiUrl}/send_command`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -59,25 +65,23 @@ function Home() {
         body: JSON.stringify({ code_in: commands }),
       });
 
-      
-      console.log(response);
+      if (!response.ok) {
+        throw new Error(`Error en la solicitud: ${response.statusText}`);
+      }
+
       const data = await response.json();
-      if (data.reponse != '') {
-        setOutput(prevResults => prevResults + `${data.reponse}\n`);
+      if (data.response != '') {
+        setOutput(data.response);
+        console.log(data.symbols);
       }
 
+
+      console.log(errors)
     } catch (error) {
-      console.error(`Error en la solicitud ${error}`);
+      console.error(`Error en la solicitud: ${error.message}`);
     }
   };
 
-  const handleTextAreaKeyPress = (event) => {
-    if (event.key === 'Enter') {
-      if (isPaused) {
-        sendCommands(commands_list);
-      }
-    }
-  };
 
   useEffect(() => {
     if (textAreaRef.current) {
@@ -92,7 +96,6 @@ function Home() {
     console.log('The link was clicked.');
     navigate('/reports');
   };
-
 
   return (
     <>
@@ -138,8 +141,7 @@ function Home() {
           className="input-75"
           placeholder="output"
           value={output}
-          ref={textAreaRef}
-          onKeyDown={handleTextAreaKeyPress}>
+          ref={textAreaRef}>
         </textarea>
 
       </div>

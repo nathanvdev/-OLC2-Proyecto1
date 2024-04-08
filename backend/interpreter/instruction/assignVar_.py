@@ -10,6 +10,6 @@ class AssignVar_(instruction):
     def Eject(self, env):
 
         value = self.expression.Eject(env)
-        env.AssignVariable(self.name, self.op, value)
+        env.AssignVariable(self.line, self.column, self.name, self.op, value)
 
         return

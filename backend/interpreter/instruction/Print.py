@@ -1,5 +1,5 @@
 from ..abstract.instruction import instruction
-import main
+from ..abstract.array_ import Array_
 
 
 class Print(instruction):
@@ -9,10 +9,23 @@ class Print(instruction):
         
 
     def Eject(self, env):
+        
+        globalenv = env.GetGlobal()
         toPrint = ""
         for exp in self.expression:
             result = exp.Eject(env)
-            toPrint += str(result.value)
+            if isinstance(result, Array_):
+                toPrint += "["
+                for i in result.value:
+                    toPrint += str(i.value) + ", "
+                toPrint = toPrint[:-2]
+                toPrint += "] "
+                continue
+            while hasattr(result.value, 'Eject'):
+                result = result.value.Eject(env)
+            while not isinstance(result.value, (int, float, str, bool)) and result.value != None:
+                result = result.value
+            toPrint += str(result.value) + str(result.Type) + " "
 
-        main.response += toPrint + "\n"
+        globalenv.console += toPrint + "\n"
         return 

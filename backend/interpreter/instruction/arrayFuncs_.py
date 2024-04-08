@@ -8,11 +8,20 @@ class ArrayFuncs_(instruction):
         self.expression = expression
 
     def Eject(self, env):
-        tmp = env.GetArray(self.id_)
+        globalenv = env.GetGlobal()
+        tmp = env.GetArray(self.line, self.column, self.id_)
         if tmp == None:
             return
         
         elif tmp.const:
+            newError = {
+                "Tipo": "Semantico",
+                "Linea": self.line,
+                "Columna": self.column,
+                "Ambito": env.name,
+                "Descricion": "Error en la operacion de array"
+            }
+            globalenv.Errors.append(newError)
             print(f'Error: Array {self.id_} is constant \n column: {self.column} line: {self.line}')
             return
         
@@ -23,7 +32,7 @@ class ArrayFuncs_(instruction):
         elif self.FuncType == 'pop':
             return tmp.Pop()
         
-        if self.FuncType == 'atoll':
+        if self.FuncType == 'indexOf':
             return tmp.IndexOf(self.expression.Eject(env))
         
         elif self.FuncType == 'join':

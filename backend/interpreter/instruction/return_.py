@@ -8,5 +8,5 @@ class Return_(instruction):
 
     def Eject(self, env):
         result = self.expression.Eject(env)
-        result.Type = ExpressionType.RETURN
+        result.tmpType = ExpressionType.RETURN
         return result

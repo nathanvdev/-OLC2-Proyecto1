@@ -5,6 +5,7 @@ class Primitive(expression):
         super().__init__(line, column)
         self.value = value
         self.Type = Type
+        self.tmpType = Type
 
     def Eject(self, env):
         return self

@@ -10,9 +10,18 @@ class If_else(instruction):
         self.else_instructions = else_instructions
 
     def Eject(self, env):
+        globalenv = env.GetGlobal()
         result = None
         resultCondition = self.condition.Eject(env)
         if resultCondition.Type != ExpressionType.BOOLEAN:
+            newError = {
+                "Tipo": "Semantico",
+                "Linea": self.line,
+                "Columna": self.column,
+                "Ambito": env.name,
+                "Descricion": "Error de tipo en la condicion del if"
+            }
+            globalenv.Errors.append(newError)
             print(f'Error: Type mismatch \n column: {self.column} line: {self.line}')
             return
         
@@ -22,18 +31,18 @@ class If_else(instruction):
             for instruction in self.if_instructions:
                 result = instruction.Eject(newEnv)
 
-                if result != None:
-                    if result.Type == ExpressionType.BREAK:
+                if result != None and hasattr(result, 'tmpType'):
+                    if result.tmpType == ExpressionType.BREAK:
                         break
-                    elif result.Type == ExpressionType.CONTINUE:
+                    elif result.tmpType == ExpressionType.CONTINUE:
                         break
-                    elif result.Type == ExpressionType.RETURN:
+                    elif result.tmpType == ExpressionType.RETURN:
                         return result
 
-            if result != None:
-                if result.Type == ExpressionType.BREAK:
+            if result != None and hasattr(result, 'tmpType'):
+                if result.tmpType == ExpressionType.BREAK:
                     return result
-                elif result.Type == ExpressionType.RETURN:
+                elif result.tmpType == ExpressionType.RETURN:
                     return result
                 
             return result
@@ -45,18 +54,18 @@ class If_else(instruction):
             for instruction in self.else_instructions:
                 result = instruction.Eject(newEnv)
 
-                if result != None:
-                    if result.Type == ExpressionType.BREAK:
+                if result != None and hasattr(result, 'tmpType'):
+                    if result.tmpType == ExpressionType.BREAK:
+                        return result
+                    elif result.tmpType == ExpressionType.CONTINUE:
                         break
-                    elif result.Type == ExpressionType.CONTINUE:
-                        break
-                    elif result.Type == ExpressionType.RETURN:
+                    elif result.tmpType == ExpressionType.RETURN:
                         return result
 
-            if result != None:
-                if result.Type == ExpressionType.BREAK:
-                    return
-                elif result.Type == ExpressionType.RETURN:
+            if result != None and hasattr(result, 'tmpType'):
+                if result.tmpType == ExpressionType.BREAK:
+                    return result
+                elif result.tmpType == ExpressionType.RETURN:
                     return result
                 
             return result

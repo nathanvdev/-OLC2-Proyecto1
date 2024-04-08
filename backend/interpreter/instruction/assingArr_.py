@@ -9,11 +9,20 @@ class AssignArr_(instruction):
         self.expression2 = expression2
 
     def Eject(self, env):
-        tmp = env.GetArray(self.id_)
+        globalenv = env.GetGlobal()
+        tmp = env.GetArray(self.line, self.column, self.id_)
         if tmp == None:
             return
         
         elif tmp.const:
+            newError = {
+                "Tipo": "Semantico",
+                "Linea": self.line,
+                "Columna": self.column,
+                "Ambito": env.name,
+                "Descricion": "Error en la operacion de array"
+            }
+            globalenv.Errors.append(newError)
             print(f'Error: Array {self.id_} is constant \n column: {self.column} line: {self.line}')
             return
 
@@ -21,6 +30,14 @@ class AssignArr_(instruction):
         value = self.expression2.Eject(env)
 
         if index.Type != ExpressionType.INTEGER:
+            newError = {
+                "Tipo": "Semantico",
+                "Linea": self.line,
+                "Columna": self.column,
+                "Ambito": env.name,
+                "Descricion": "Error de tipo en el index"
+            }
+            globalenv.Errors.append(newError)
             print(f'Error: Type mismatch \n column: {self.column} line: {self.line}')
             return
 

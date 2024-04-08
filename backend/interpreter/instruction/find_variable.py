@@ -6,6 +6,6 @@ class FindVariable(instruction):
         self.name = name
 
     def Eject(self, environment):
-        return environment.Get_Variable(self.name).value
+        return environment.Get_Variable(self.line, self.column, self.name)
 
    

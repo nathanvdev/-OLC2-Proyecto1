@@ -12,8 +12,17 @@ class DeclareInterface_(instruction):
 
 
     def Eject(self, env: Environment):
-        interface = env.GetInterface(self.id2_)
+        globalenv = env.GetGlobal()
+        interface = env.GetInterface(self.line, self.column, self.id2_)
         if interface == None:
+            newError = {
+                "Tipo": "Semantico",
+                "Linea": self.line,
+                "Columna": self.column,
+                "Ambito": env.name,
+                "Descricion": "Error en la declaracion de la interfaz"
+            }
+            globalenv.Errors.append(newError)
             print(f'Error: Interface {self.id2_} not found \n column: {self.column} line: {self.line}')
             return
         newEnv = Environment(None, 'INTERFACE_'+self.id_)
@@ -25,13 +34,20 @@ class DeclareInterface_(instruction):
             valExp = list(self.attributes[i].values())[0].Eject(env)
 
             if type_param == valExp.Type and id_param == id_exp:
-
-                newVar = Variables(id_param, type_param, valExp.value, False)
+                newVar = Variables(self.line, self.column, id_param, type_param, valExp.value, False)
                 newEnv.SaveVariable(newVar)
 
             else:
+                newError = {
+                    "Tipo": "Semantico",
+                    "Linea": self.line,
+                    "Columna": self.column,
+                    "Ambito": env.name,
+                    "Descricion": "Error de tipo en la declaracion de interfaz"
+                }
+                globalenv.Errors.append(newError)
                 print(f'Error: Type mismatch \n column: {self.column} line: {self.line}')
                 return None
         
-        newVar2 = Variables(self.id_, 'interface', newEnv, False)
+        newVar2 = Variables(self.line, self.column, self.id_, 'interface', newEnv, False)
         env.SaveVariable(newVar2)

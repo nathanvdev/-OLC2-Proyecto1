@@ -10,10 +10,31 @@ class Logica(expression):
         self.operator = operator
 
     def Eject(self, env):
+        globalenv = env.GetGlobal()
         left = self.left.Eject(env)
+        while hasattr(left.value, 'Eject'):
+            left = left.value.Eject(env)
+
         right = self.right.Eject(env)
+        while hasattr(right.value, 'Eject'):
+                right = right.value.Eject(env)
         
+
+        while not isinstance(left.value, (int, float, str, dict)):
+            left = left.value.Eject(env)
+
+        while not isinstance(right.value, (int, float, str, dict)):
+            right = right.value.Eject(env)
+
         if left.Type != ExpressionType.BOOLEAN or right.Type != ExpressionType.BOOLEAN:
+            newError = {
+                "Tipo": "Semantico",
+                "Linea": self.line,
+                "Columna": self.column,
+                "Ambito": env.name,
+                "Descricion": "Error de tipo en la operacion logica"
+            }
+            globalenv.Errors.append(newError)
             print(f'Error: Type mismatch \n column: {self.column} line: {self.line}')
             return
         
@@ -21,6 +42,14 @@ class Logica(expression):
         result = Primitive(self.line, self.column, None, ExpressionType.BOOLEAN)
 
         if left.Type != ExpressionType.BOOLEAN or right.Type != ExpressionType.BOOLEAN:
+            newError = {
+                "Tipo": "Semantico",
+                "Linea": self.line,
+                "Columna": self.column,
+                "Ambito": env.name,
+                "Descricion": "Error de tipo en la operacion logica"
+            }
+            globalenv.Errors.append(newError)
             print(f'Error: Type mismatch \n column: {self.column} line: {self.line}')
             return result
 

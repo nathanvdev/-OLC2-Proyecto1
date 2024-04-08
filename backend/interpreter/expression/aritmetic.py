@@ -2,11 +2,6 @@ from ..abstract.expression import expression
 from .primitive import Primitive
 from ..abstract.types import ExpressionType
 
-# The `dominant_table` is a 2D list that represents the dominant type resulting from arithmetic
-# operations between two operands. Each row corresponds to the type of the left operand, and each
-# column corresponds to the type of the right operand. The value at the intersection of a row and
-# column represents the resulting dominant type when performing an arithmetic operation between
-# operands of those types.
 dominant_table = [
     [ExpressionType.INTEGER,    ExpressionType.FLOAT,   ExpressionType.NULL,    ExpressionType.NULL,    ExpressionType.NULL],
     [ExpressionType.FLOAT,      ExpressionType.FLOAT,   ExpressionType.NULL,    ExpressionType.NULL,    ExpressionType.NULL],
@@ -24,19 +19,18 @@ class Aritmetic(expression):
         self.operator = operator
 
     def Eject(self, env):
+        globalenv = env.GetGlobal()
         
-        # The function `Eject` performs arithmetic operations on two operands and handles error cases for
-        # type mismatch and division by zero.
-        
-        # :param env: It seems like the code snippet you provided is a method called `Eject` within a
-        # class. The method seems to handle arithmetic operations such as addition, subtraction,
-        # multiplication, division, modulus, and unary minus on expressions represented by nodes in a tree
-        # structure
-        # :return: The function `Eject` returns the result of the operation performed based on the
-        # operator specified in the code snippet. The result is an instance of the `Primitive` class with
-        # the appropriate type and value calculated from the left and right operands.
         left = self.left.Eject(env)
+        if hasattr(left, 'value'):
+            while hasattr(left.value, 'Eject'):
+                left = left.value.Eject(env)
+
         right = self.right.Eject(env)
+        if hasattr(right, 'value'):
+            while hasattr(right.value, 'Eject'):
+                right = right.value.Eject(env)
+
 
         result = Primitive(self.line, self.column, None, None)
         result.Type = dominant_table[left.Type.value][right.Type.value]
@@ -45,18 +39,42 @@ class Aritmetic(expression):
             if result.Type != ExpressionType.NULL:
                 result.value = left.value + right.value
             else:
+                newError = {
+                    "Tipo": "Semantico",
+                    "Linea": self.line,
+                    "Columna": self.column,
+                    "Ambito": env.name,
+                    "Descricion": "Error de tipo en la operacion aritmetica"
+                }
+                globalenv.Errors.append(newError)
                 print(f'Error: Type mismatch \n column: {self.column} line: {self.line}')
 
         elif self.operator == '-':
             if result.Type != ExpressionType.NULL and result.Type != ExpressionType.STRING:
                 result.value = left.value - right.value
             else:
+                newError = {
+                    "Tipo": "Semantico",
+                    "Linea": self.line,
+                    "Columna": self.column,
+                    "Ambito": env.name,
+                    "Descricion": "Error de tipo en la operacion aritmetica"
+                }
+                globalenv.Errors.append(newError)
                 print(f'Error: Type mismatch \n column: {self.column} line: {self.line}')
 
         elif self.operator == '*':
             if result.Type != ExpressionType.NULL and result.Type != ExpressionType.STRING:
                 result.value = left.value * right.value
             else:
+                newError = {
+                    "Tipo": "Semantico",
+                    "Linea": self.line,
+                    "Columna": self.column,
+                    "Ambito": env.name,
+                    "Descricion": "Error de tipo en la operacion aritmetica"
+                }
+                globalenv.Errors.append(newError)
                 print(f'Error: Type mismatch \n column: {self.column} line: {self.line}')
 
         elif self.operator == '/':
@@ -64,27 +82,66 @@ class Aritmetic(expression):
                 if right.value != 0:
                     result.value = left.value / right.value
                 else:
+                    newError = {
+                        "Tipo": "Semantico",
+                        "Linea": self.line,
+                        "Columna": self.column,
+                        "Ambito": env.name,
+                        "Descricion": "Error de division por cero"
+                    }
+                    globalenv.Errors.append(newError)
                     print(f'Error: Division by zero \n column: {self.column} line: {self.line}')
             else:
+                newError = {
+                    "Tipo": "Semantico",
+                    "Linea": self.line,
+                    "Columna": self.column,
+                    "Ambito": env.name,
+                    "Descricion": "Error de tipo en la operacion aritmetica"
+                }
+                globalenv.Errors.append(newError)
                 print(f'Error: Type mismatch \n column: {self.column} line: {self.line}')
 
 
         elif self.operator == '%':
             
-            if result.Type == ExpressionType.INTEGER:
-                        if right.value != 0:
-                            result.Type = right.Type
-                        else:
-                            print(f'Error: Division by zero \n column: {self.column} line: {self.line}')
-            else:
+            if result.Type != ExpressionType.INTEGER:
+                newError = {
+                    "Tipo": "Semantico",
+                    "Linea": self.line,
+                    "Columna": self.column,
+                    "Ambito": env.name,
+                    "Descricion": "Error de tipo en la operacion aritmetica"
+                }
+                globalenv.Errors.append(newError)
                 print(f'Error: Type mismatch \n column: {self.column} line: {self.line}')
-            
-
+            else:
+                if right.value != 0:
+                    result.value = left.value % right.value
+                else:
+                    newError = {
+                        "Tipo": "Semantico",
+                        "Linea": self.line,
+                        "Columna": self.column,
+                        "Ambito": env.name,
+                        "Descricion": "Error de division por cero"
+                    }
+                    globalenv.Errors.append(newError)
+                    print(f'Error: Division by zero \n column: {self.column} line: {self.line}')
+           
 
         elif self.operator == 'UMINUS':
             if result.Type != ExpressionType.NULL and result.Type != ExpressionType.STRING:
-                result.Type = right.Type
+                result.value = -left.value
             else:
+                newError = {
+                    "Tipo": "Semantico",
+                    "Linea": self.line,
+                    "Columna": self.column,
+                    "Ambito": env.name,
+                    "Descricion": "Error de tipo en la operacion aritmetica"
+                }
+                globalenv.Errors.append(newError)
                 print(f'Error: Type mismatch \n column: {self.column} line: {self.line}')
 
         return result
